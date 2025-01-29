@@ -1,3 +1,3 @@
-# plant-doctor-h2
+# plant-doctor-postgres
 
 A Spring-boot app with Postgres database for the Plant Doctor API.
