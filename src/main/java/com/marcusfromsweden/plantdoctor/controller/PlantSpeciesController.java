@@ -1,10 +1,10 @@
-package com.marcusfromsweden.plantdoctorh2.controller;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.marcusfromsweden.plantdoctorh2.entity.PlantSpecies;
-import com.marcusfromsweden.plantdoctorh2.service.PlantSpeciesService;
+import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.service.PlantSpeciesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

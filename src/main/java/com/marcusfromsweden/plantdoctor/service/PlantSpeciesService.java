@@ -1,11 +1,11 @@
-package com.marcusfromsweden.plantdoctorh2.service;
+package com.marcusfromsweden.plantdoctor.service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-import com.marcusfromsweden.plantdoctorh2.entity.PlantSpecies;
-import com.marcusfromsweden.plantdoctorh2.repository.PlantSpeciesRepository;
+import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
 
 @Service
 public class PlantSpeciesService {

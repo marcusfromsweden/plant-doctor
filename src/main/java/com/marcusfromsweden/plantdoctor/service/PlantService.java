@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctorh2.service;
+package com.marcusfromsweden.plantdoctor.service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -6,12 +6,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.marcusfromsweden.plantdoctorh2.entity.GrowingLocation;
-import com.marcusfromsweden.plantdoctorh2.entity.Plant;
-import com.marcusfromsweden.plantdoctorh2.entity.PlantSpecies;
-import com.marcusfromsweden.plantdoctorh2.repository.GrowingLocationRepository;
-import com.marcusfromsweden.plantdoctorh2.repository.PlantRepository;
-import com.marcusfromsweden.plantdoctorh2.repository.PlantSpeciesRepository;
+import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+import com.marcusfromsweden.plantdoctor.entity.Plant;
+import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
+import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
+import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
 
 @Service
 public class PlantService {

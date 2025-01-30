@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctorh2.exception;
+package com.marcusfromsweden.plantdoctor.exception;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctorh2.entity;
+package com.marcusfromsweden.plantdoctor.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
