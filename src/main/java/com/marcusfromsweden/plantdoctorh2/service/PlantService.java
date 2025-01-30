@@ -16,14 +16,16 @@ import com.marcusfromsweden.plantdoctorh2.repository.PlantSpeciesRepository;
 @Service
 public class PlantService {
 
-    @Autowired
-    private PlantRepository plantRepository;
+    private final PlantRepository plantRepository;
+    private final PlantSpeciesRepository plantSpeciesRepository;
+    private final GrowingLocationRepository growingLocationRepository;
 
     @Autowired
-    private PlantSpeciesRepository plantSpeciesRepository;
-
-    @Autowired
-    private GrowingLocationRepository growingLocationRepository;
+    public PlantService(PlantRepository plantRepository, PlantSpeciesRepository plantSpeciesRepository, GrowingLocationRepository growingLocationRepository) {
+        this.plantRepository = plantRepository;
+        this.plantSpeciesRepository = plantSpeciesRepository;
+        this.growingLocationRepository = growingLocationRepository;
+    }
 
     public List<Plant> getAllPlants() {
         return plantRepository.findAll();

@@ -2,7 +2,6 @@ package com.marcusfromsweden.plantdoctorh2.service;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.marcusfromsweden.plantdoctorh2.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctorh2.repository.GrowingLocationRepository;
@@ -10,8 +9,11 @@ import com.marcusfromsweden.plantdoctorh2.repository.GrowingLocationRepository;
 @Service
 public class GrowingLocationService {
 
-    @Autowired
-    private GrowingLocationRepository growingLocationRepository;
+    private final GrowingLocationRepository growingLocationRepository;
+
+    public GrowingLocationService(GrowingLocationRepository growingLocationRepository) {
+        this.growingLocationRepository = growingLocationRepository;
+    }
 
     public List<GrowingLocation> getAllGrowingLocations() {
         return growingLocationRepository.findAll();

@@ -3,7 +3,6 @@ package com.marcusfromsweden.plantdoctorh2.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.marcusfromsweden.plantdoctorh2.entity.PlantSpecies;
 import com.marcusfromsweden.plantdoctorh2.repository.PlantSpeciesRepository;
@@ -11,8 +10,7 @@ import com.marcusfromsweden.plantdoctorh2.repository.PlantSpeciesRepository;
 @Service
 public class PlantSpeciesService {
 
-    @Autowired
-    private PlantSpeciesRepository plantSpeciesRepository;
+    private final PlantSpeciesRepository plantSpeciesRepository;
 
     public List<PlantSpecies> getAllPlantSpecies() {
         return plantSpeciesRepository.findAll();
@@ -20,6 +18,10 @@ public class PlantSpeciesService {
 
     public Optional<PlantSpecies> getPlantSpeciesById(Long id) {
         return plantSpeciesRepository.findById(id);
+    }
+
+    public PlantSpeciesService(PlantSpeciesRepository plantSpeciesRepository) {
+        this.plantSpeciesRepository = plantSpeciesRepository;
     }
 
     public PlantSpecies createPlantSpecies(PlantSpecies plantSpecies) {

@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.marcusfromsweden.plantdoctorh2.entity.PlantSpecies;
 import com.marcusfromsweden.plantdoctorh2.service.PlantSpeciesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +21,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/plant-species")
 public class PlantSpeciesController {
 
-    @Autowired
-    private PlantSpeciesService plantSpeciesService;
+    private final PlantSpeciesService plantSpeciesService;
+
+    public PlantSpeciesController(PlantSpeciesService plantSpeciesService) {
+        this.plantSpeciesService = plantSpeciesService;
+    }
 
     @GetMapping
     public ResponseEntity<List<PlantSpecies>> getAllPlantSpecies() {

@@ -2,7 +2,6 @@ package com.marcusfromsweden.plantdoctorh2.controller;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +20,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/growing-locations")
 public class GrowingLocationController {
 
-    @Autowired
-    private GrowingLocationService growingLocationService;
+    private final GrowingLocationService growingLocationService;
+
+    public GrowingLocationController(GrowingLocationService growingLocationService) {
+        this.growingLocationService = growingLocationService;
+    }
 
     @GetMapping
     public ResponseEntity<List<GrowingLocation>> getAllGrowingLocations() {

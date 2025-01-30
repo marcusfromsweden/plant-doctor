@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +25,11 @@ public class PlantController {
 
     private static final Logger log = LoggerFactory.getLogger(PlantController.class);
 
-    @Autowired
-    private PlantService plantService;
+    private final PlantService plantService;
+
+    public PlantController(PlantService plantService) {
+        this.plantService = plantService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Plant>> getAllPlants() {

@@ -9,10 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.marcusfromsweden</groupId>
-    <artifactId>plant-doctor-h2</artifactId>
+    <artifactId>plant-doctor-postgres</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Plant doctor H2</name>
-    <description>plant-doctor-h2</description>
+    <name>Plant doctor Postgres</name>
 
     <properties>
         <java.version>17</java.version>
