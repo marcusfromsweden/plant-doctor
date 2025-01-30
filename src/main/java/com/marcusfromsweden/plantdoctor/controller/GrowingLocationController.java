@@ -2,6 +2,9 @@ package com.marcusfromsweden.plantdoctor.controller;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +23,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/growing-locations")
 public class GrowingLocationController {
 
+    private static final Logger log = LoggerFactory.getLogger(GrowingLocationController.class);
+
     private final GrowingLocationService growingLocationService;
 
     public GrowingLocationController(GrowingLocationService growingLocationService) {
@@ -29,6 +34,7 @@ public class GrowingLocationController {
     @GetMapping
     public ResponseEntity<List<GrowingLocation>> getAllGrowingLocations() {
         List<GrowingLocation> growingLocationList = growingLocationService.getAllGrowingLocations();
+        log.info("Returning {} growing locations", growingLocationList.size());
         return new ResponseEntity<>(growingLocationList, HttpStatus.OK);
     }
 
