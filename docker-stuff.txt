@@ -1,0 +1,2 @@
+docker build -t plantdoctor-app:latest .
+docker run -d --name plantdoctor-app -p 8080:8080 plantdoctor-app:latest
