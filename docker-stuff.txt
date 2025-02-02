@@ -1,5 +1,5 @@
 docker build -t plantdoctor-app:latest .
-docker run -d --name plantdoctor-app -p 8080:8080 plantdoctor-app:latest
+docker run -d --name plantdoctor-app -p 8080:8080 -e SPRING_DATASOURCE_PLANTDOCTOR_URL plantdoctor-app:latest
 
 to enable remote connections, add the following line to
 pg_hba.conf:

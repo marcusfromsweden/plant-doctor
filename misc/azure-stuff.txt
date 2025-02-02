@@ -1,0 +1,18 @@
+Connect to Azure Postgres:
+psql -h bootcamp-marcusfromsweden.postgres.database.azure.com -U marcusfromsweden -d plantdoctor -W
+
+
+jdbc:postgresql://mypgserver.postgres.database.azure.com:5432/plantdoctor?sslmode=require
+
+- Create a new user:
+CREATE USER plantdoctoradmin WITH PASSWORD '1k2m3n5ndo5';
+ALTER DATABASE plantdoctor OWNER TO plantdoctoradmin;
+DROP USER plantdoctoruser;
+
+Authenticate to your Container Registry:
+az acr login --name plantdoctorregistry
+
+Tag Docker image:
+docker tag plantdoctor-app plantdoctorregistry.azurecr.io/plantdoctor-app
+Tag Docker image with latest tag:
+docker tag plantdoctor-app:latest plantdoctorregistry.azurecr.io/plantdoctor-app:latest
