@@ -39,7 +39,11 @@ public class GrowingLocationControllerTests {
 
     @BeforeEach
     public void setup() {
-        growingLocationDTO = new GrowingLocationDTO(1L, "Pot 1", true);
+        growingLocationDTO = GrowingLocationDTO.builder()
+                .id(1L)
+                .locationName("Pot 1")
+                .occupied(true)
+                .build();
     }
 
     @Test

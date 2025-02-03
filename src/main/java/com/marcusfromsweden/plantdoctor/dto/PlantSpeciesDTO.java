@@ -6,6 +6,10 @@ public record PlantSpeciesDTO(
         String description,
         Integer estimatedDaysToGermination
 ) {
+    public static PlantSpeciesDTO.Builder builder() {
+        return new PlantSpeciesDTO.Builder();
+    }
+
     public static class Builder {
         private Long id;
         private String name;

@@ -34,7 +34,12 @@ public class PlantSpeciesControllerTests {
 
     @BeforeEach
     public void setup() {
-        plantSpeciesDTO = new PlantSpeciesDTO(1L, "Tomato", "A tasty treat", 7);
+        plantSpeciesDTO = PlantSpeciesDTO.builder()
+                .id(1L)
+                .name("Tomato")
+                .description("A tasty treat")
+                .estimatedDaysToGermination(7)
+                .build();
     }
 
     @Test
