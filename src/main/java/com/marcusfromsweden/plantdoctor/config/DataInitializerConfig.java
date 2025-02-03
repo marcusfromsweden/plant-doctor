@@ -1,92 +1,103 @@
 package com.marcusfromsweden.plantdoctor.config;
 
-import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
-import com.marcusfromsweden.plantdoctor.entity.Plant;
-import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
-import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
-import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
-import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+        import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+        import com.marcusfromsweden.plantdoctor.entity.Plant;
+        import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+        import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
+        import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
+        import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
+        import com.marcusfromsweden.plantdoctor.util.CustomProperties;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.boot.CommandLineRunner;
+        import org.springframework.context.annotation.Bean;
+        import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDate;
+        import java.time.LocalDate;
 
-@Configuration
-public class DataInitializerConfig {
+        @Configuration
+        public class DataInitializerConfig {
 
-    // add logger
-    private static final Logger log = LoggerFactory.getLogger(DataInitializerConfig.class);
+            private static final Logger log = LoggerFactory.getLogger(DataInitializerConfig.class);
 
-    private final PlantSpeciesRepository plantSpeciesRepository;
-    private final GrowingLocationRepository growingLocationRepository;
-    private final PlantRepository plantRepository;
+            private final PlantSpeciesRepository plantSpeciesRepository;
+            private final GrowingLocationRepository growingLocationRepository;
+            private final PlantRepository plantRepository;
+            private final CustomProperties customProperties;
 
-    public DataInitializerConfig(PlantSpeciesRepository plantSpeciesRepository, GrowingLocationRepository growingLocationRepository, PlantRepository plantRepository) {
-        this.plantSpeciesRepository = plantSpeciesRepository;
-        this.growingLocationRepository = growingLocationRepository;
-        this.plantRepository = plantRepository;
-    }
+            public DataInitializerConfig(PlantSpeciesRepository plantSpeciesRepository,
+                                         GrowingLocationRepository growingLocationRepository,
+                                         PlantRepository plantRepository,
+                                         CustomProperties customProperties) {
+                this.plantSpeciesRepository = plantSpeciesRepository;
+                this.growingLocationRepository = growingLocationRepository;
+                this.plantRepository = plantRepository;
+                this.customProperties = customProperties;
+            }
 
-    @Bean
-    public CommandLineRunner dataInitializer() {
-        return args -> {
-            deleteTableData();
+            @Bean
+            public CommandLineRunner dataInitializer() {
+                return args -> {
+                    if (customProperties.isDeleteAndPopulateTables()) {
+                        deleteTableData();
+                        populateTableData();
+                    } else {
+                        log.info("Skipping data initialization as delete-and-populate-tables is set to false.");
+                    }
+                };
+            }
 
-            log.info("Adding PlantSpecies");
-            // Add initial data for PlantSpecies
-            PlantSpecies regularBasil = new PlantSpecies();
-            regularBasil.setName("Basil");
-            regularBasil.setDescription("Regular basil of the mint family.");
+            private void deleteTableData() {
+                log.info("Deleting all data from tables.");
+                plantRepository.deleteAll();
+                plantSpeciesRepository.deleteAll();
+                growingLocationRepository.deleteAll();
+                log.info("All data deleted.");
+            }
 
-            PlantSpecies favouriteRadish = new PlantSpecies();
-            favouriteRadish.setName("Radish");
-            favouriteRadish.setDescription("A root vegetable of the Brassicaceae family.");
+            private void populateTableData() {
+                log.info("Adding PlantSpecies");
+                PlantSpecies regularBasil = new PlantSpecies();
+                regularBasil.setName("Basil");
+                regularBasil.setDescription("Regular basil of the mint family.");
 
-            plantSpeciesRepository.save(regularBasil);
-            plantSpeciesRepository.save(favouriteRadish);
+                PlantSpecies favouriteRadish = new PlantSpecies();
+                favouriteRadish.setName("Radish");
+                favouriteRadish.setDescription("A root vegetable of the Brassicaceae family.");
 
-            log.info("Adding GrowingLocations");
-            GrowingLocation pot1 = new GrowingLocation();
-            pot1.setLocationName("Pot 1");
-            pot1.setOccupied(false);
+                plantSpeciesRepository.save(regularBasil);
+                plantSpeciesRepository.save(favouriteRadish);
 
-            GrowingLocation pot2 = new GrowingLocation();
-            pot2.setLocationName("Pot 2");
-            pot2.setOccupied(false);
+                log.info("Adding GrowingLocations");
+                GrowingLocation pot1 = new GrowingLocation();
+                pot1.setLocationName("Pot 1");
+                pot1.setOccupied(false);
 
-            growingLocationRepository.save(pot1);
-            growingLocationRepository.save(pot2);
+                GrowingLocation pot2 = new GrowingLocation();
+                pot2.setLocationName("Pot 2");
+                pot2.setOccupied(false);
 
-            log.info("Adding Plants");
-            Plant rosePlant = new Plant();
-            rosePlant.setPlantSpecies(regularBasil);
-            rosePlant.setGrowingLocation(pot1);
-            rosePlant.setComment("This is a comment.");
-            rosePlant.setPlantingDate(LocalDate.parse("2021-01-01"));
-            rosePlant.setGerminationDate(LocalDate.parse("2021-01-20"));
+                growingLocationRepository.save(pot1);
+                growingLocationRepository.save(pot2);
 
-            Plant tulipPlant = new Plant();
-            tulipPlant.setPlantSpecies(favouriteRadish);
-            tulipPlant.setGrowingLocation(pot2);
-            tulipPlant.setComment("This is another comment.");
-            tulipPlant.setPlantingDate(LocalDate.parse("2021-01-11"));
-            tulipPlant.setGerminationDate(LocalDate.parse("2021-01-30"));
+                log.info("Adding Plants");
+                Plant rosePlant = new Plant();
+                rosePlant.setPlantSpecies(regularBasil);
+                rosePlant.setGrowingLocation(pot1);
+                rosePlant.setComment("This is a comment.");
+                rosePlant.setPlantingDate(LocalDate.parse("2021-01-01"));
+                rosePlant.setGerminationDate(LocalDate.parse("2021-01-20"));
 
-            plantRepository.save(rosePlant);
-            plantRepository.save(tulipPlant);
+                Plant tulipPlant = new Plant();
+                tulipPlant.setPlantSpecies(favouriteRadish);
+                tulipPlant.setGrowingLocation(pot2);
+                tulipPlant.setComment("This is another comment.");
+                tulipPlant.setPlantingDate(LocalDate.parse("2021-01-11"));
+                tulipPlant.setGerminationDate(LocalDate.parse("2021-01-30"));
 
-            log.info("Test data initialized.");
-        };
-    }
+                plantRepository.save(rosePlant);
+                plantRepository.save(tulipPlant);
 
-    private void deleteTableData() {
-        log.info("Deleting all data from tables.");
-        plantRepository.deleteAll();
-        plantSpeciesRepository.deleteAll();
-        growingLocationRepository.deleteAll();
-        log.info("All data deleted.");
-    }
-}
+                log.info("Test data initialized.");
+            }
+        }
