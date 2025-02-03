@@ -1,11 +1,14 @@
 package com.marcusfromsweden.plantdoctor.service;
 
+import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
+import com.marcusfromsweden.plantdoctor.util.GrowingLocationMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GrowingLocationService {
@@ -16,25 +19,31 @@ public class GrowingLocationService {
         this.growingLocationRepository = growingLocationRepository;
     }
 
-    public List<GrowingLocation> getAllGrowingLocations() {
-        return growingLocationRepository.findAll();
+    public List<GrowingLocationDTO> getAllGrowingLocations() {
+        return growingLocationRepository.findAll().stream()
+                .map(GrowingLocationMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Optional<GrowingLocation> getGrowingLocationById(Long id) {
-        return growingLocationRepository.findById(id);
+    public Optional<GrowingLocationDTO> getGrowingLocationById(Long id) {
+        return growingLocationRepository.findById(id)
+                .map(GrowingLocationMapper::toDTO);
     }
 
-    public GrowingLocation createGrowingLocation(GrowingLocation growingLocation) {
-        return growingLocationRepository.save(growingLocation);
+    public GrowingLocationDTO createGrowingLocation(GrowingLocationDTO growingLocationDTO) {
+        GrowingLocation growingLocation = GrowingLocationMapper.toEntity(growingLocationDTO);
+        GrowingLocation createdGrowingLocation = growingLocationRepository.save(growingLocation);
+        return GrowingLocationMapper.toDTO(createdGrowingLocation);
     }
 
-    public GrowingLocation updateGrowingLocation(Long id, GrowingLocation growingLocation) {
+    public GrowingLocationDTO updateGrowingLocation(Long id, GrowingLocationDTO growingLocationDTO) {
         Optional<GrowingLocation> optionalGrowingLocation = growingLocationRepository.findById(id);
         if (optionalGrowingLocation.isPresent()) {
             GrowingLocation existingGrowingLocation = optionalGrowingLocation.get();
-            existingGrowingLocation.setLocationName(growingLocation.getLocationName());
-            existingGrowingLocation.setOccupied(growingLocation.isOccupied());
-            return growingLocationRepository.save(existingGrowingLocation);
+            existingGrowingLocation.setLocationName(growingLocationDTO.locationName());
+            existingGrowingLocation.setOccupied(growingLocationDTO.occupied());
+            GrowingLocation updatedGrowingLocation = growingLocationRepository.save(existingGrowingLocation);
+            return GrowingLocationMapper.toDTO(updatedGrowingLocation);
         } else {
             throw new RuntimeException("GrowingLocation not found with id " + id);
         }

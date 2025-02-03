@@ -20,7 +20,7 @@ public class PlantMapper {
         this.plantSpeciesRepository = plantSpeciesRepository;
     }
 
-    public static PlantDTO toDTO(Plant plant) {
+    public PlantDTO toDTO(Plant plant) {
         return new PlantDTO(
                 plant.getId(),
                 plant.getPlantSpecies().getId(),
@@ -42,7 +42,7 @@ public class PlantMapper {
         GrowingLocation growingLocation = growingLocationRepository.findById(plantDTO.growingLocationId())
                 .orElseThrow(() -> new RuntimeException("GrowingLocation not found with ID: " + plantDTO.growingLocationId()));
         plant.setGrowingLocation(growingLocation);
-        
+
         plant.setPlantingDate(plantDTO.plantingDate());
         plant.setGerminationDate(plantDTO.germinationDate());
         plant.setComment(plantDTO.comment());

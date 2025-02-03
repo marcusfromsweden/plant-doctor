@@ -1,6 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
-import com.marcusfromsweden.plantdoctor.entity.Plant;
+import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.service.PlantService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -25,41 +25,28 @@ public class PlantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Plant>> getAllPlants() {
+    public ResponseEntity<List<PlantDTO>> getAllPlants() {
         log.warn("Getting all plants");
-        List<Plant> plants = plantService.getAllPlants();
+        List<PlantDTO> plants = plantService.getAllPlants();
         return new ResponseEntity<>(plants, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Plant> getPlantById(@PathVariable Long id) {
-        Optional<Plant> plant = plantService.getPlantById(id);
+    public ResponseEntity<PlantDTO> getPlantById(@PathVariable Long id) {
+        Optional<PlantDTO> plant = plantService.getPlantById(id);
         return plant.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<Plant> createPlant(@Valid @RequestBody Plant plant) {
-        Plant createdPlant = plantService.addPlant(
-                plant.getPlantSpecies().getId(),
-                plant.getGrowingLocation().getId(),
-                plant.getPlantingDate(),
-                plant.getGerminationDate(),
-                plant.getComment()
-        );
+    public ResponseEntity<PlantDTO> createPlant(@Valid @RequestBody PlantDTO plantDTO) {
+        PlantDTO createdPlant = plantService.createPlant(plantDTO);
         return new ResponseEntity<>(createdPlant, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Plant> updatePlant(@PathVariable Long id, @Valid @RequestBody Plant plant) {
-        Plant updatedPlant = plantService.updatePlant(
-                id,
-                plant.getPlantSpecies().getId(),
-                plant.getGrowingLocation().getId(),
-                plant.getPlantingDate(),
-                plant.getGerminationDate(),
-                plant.getComment()
-        );
+    public ResponseEntity<PlantDTO> updatePlant(@PathVariable Long id, @Valid @RequestBody PlantDTO plantDTO) {
+        PlantDTO updatedPlant = plantService.updatePlant(id, plantDTO);
         return new ResponseEntity<>(updatedPlant, HttpStatus.OK);
     }
 

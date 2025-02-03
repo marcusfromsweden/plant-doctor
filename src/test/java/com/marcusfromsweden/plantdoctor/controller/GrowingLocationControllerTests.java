@@ -1,6 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
-import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -31,97 +31,80 @@ public class GrowingLocationControllerTests {
     @MockBean
     private GrowingLocationService growingLocationService;
 
-    private GrowingLocation growingLocation;
+    private GrowingLocationDTO growingLocationDTO;
 
     @BeforeEach
     public void setup() {
-        growingLocation = new GrowingLocation();
-        growingLocation.setId(1L);
-        growingLocation.setLocationName("Pot 1");
-        growingLocation.setOccupied(true);
+        growingLocationDTO = new GrowingLocationDTO(1L, "Pot 1", true);
     }
 
     @Test
     public void testGetAllGrowingLocations() throws Exception {
         Mockito.when(growingLocationService.getAllGrowingLocations())
-                .thenReturn(Collections.singletonList(growingLocation));
+                .thenReturn(Collections.singletonList(growingLocationDTO));
 
         mockMvc.perform(get("/api/growing-locations")
                         .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id",
-                        is(growingLocation.getId().intValue())))
-                .andExpect(jsonPath("$[0].locationName",
-                        is(growingLocation.getLocationName())))
-                .andExpect(jsonPath("$[0].occupied",
-                        is(growingLocation.isOccupied())));
+                .andExpect(jsonPath("$[0].id", is(growingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$[0].locationName", is(growingLocationDTO.locationName())))
+                .andExpect(jsonPath("$[0].occupied", is(growingLocationDTO.occupied())));
     }
 
     @Test
     public void testGetGrowingLocationById() throws Exception {
-        Mockito.when(growingLocationService.getGrowingLocationById(growingLocation.getId()))
-                .thenReturn(Optional.of(growingLocation));
+        Mockito.when(growingLocationService.getGrowingLocationById(growingLocationDTO.id()))
+                .thenReturn(Optional.of(growingLocationDTO));
 
-        mockMvc.perform(get("/api/growing-locations/{id}", growingLocation.getId())
+        mockMvc.perform(get("/api/growing-locations/{id}", growingLocationDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(growingLocation.getId().intValue())))
-                .andExpect(jsonPath("$.locationName",
-                        is(growingLocation.getLocationName())))
-                .andExpect(jsonPath("$.occupied",
-                        is(growingLocation.isOccupied())));
+                .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.locationName", is(growingLocationDTO.locationName())))
+                .andExpect(jsonPath("$.occupied", is(growingLocationDTO.occupied())));
     }
 
     @Test
     public void testCreateGrowingLocation() throws Exception {
-        Mockito.when(growingLocationService
-                        .createGrowingLocation(Mockito.any(GrowingLocation.class)))
-                .thenReturn(growingLocation);
+        Mockito.when(growingLocationService.createGrowingLocation(Mockito.any(GrowingLocationDTO.class)))
+                .thenReturn(growingLocationDTO);
 
         String growingLocationJson = "{\"locationName\":\"%s\",\"occupied\":%b}".formatted(
-                growingLocation.getLocationName(), growingLocation.isOccupied());
+                growingLocationDTO.locationName(), growingLocationDTO.occupied());
 
         mockMvc.perform(post("/api/growing-locations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(growingLocationJson)).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(growingLocation.getId().intValue())))
-                .andExpect(jsonPath("$.locationName",
-                        is(growingLocation.getLocationName())))
-                .andExpect(jsonPath("$.occupied",
-                        is(growingLocation.isOccupied())));
+                .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.locationName", is(growingLocationDTO.locationName())))
+                .andExpect(jsonPath("$.occupied", is(growingLocationDTO.occupied())));
     }
 
     @Test
     @Disabled
-    /*
-     * This test is disabled because it fails due to a bug in the code causing a 404 instead of
-     * 200 for andExpect(status().isOk())
-     */
     public void testUpdateGrowingLocation() throws Exception {
         Mockito.when(growingLocationService.updateGrowingLocation(
-                Mockito.eq(growingLocation.getId()),
-                Mockito.any(GrowingLocation.class))).thenReturn(growingLocation);
+                Mockito.eq(growingLocationDTO.id()),
+                Mockito.any(GrowingLocationDTO.class))).thenReturn(growingLocationDTO);
 
         String growingLocationJson =
                 "{\"id\":\"%s\",\"locationName\":\"%s\",\"occupied\":%b}".formatted(
-                        growingLocation.getId(),
-                        growingLocation.getLocationName(),
-                        growingLocation.isOccupied());
+                        growingLocationDTO.id(),
+                        growingLocationDTO.locationName(),
+                        growingLocationDTO.occupied());
 
-        mockMvc.perform(put("/api/growing-locations/{id}", growingLocation.getId())
+        mockMvc.perform(put("/api/growing-locations/{id}", growingLocationDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(growingLocationJson)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(growingLocation.getId().intValue())))
-                .andExpect(jsonPath("$.locationName",
-                        is(growingLocation.getLocationName())))
-                .andExpect(jsonPath("$.occupied",
-                        is(growingLocation.isOccupied())));
+                .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.locationName", is(growingLocationDTO.locationName())))
+                .andExpect(jsonPath("$.occupied", is(growingLocationDTO.occupied())));
     }
 
     @Test
     public void testDeleteGrowingLocation() throws Exception {
         Mockito.doNothing().when(growingLocationService)
-                .deleteGrowingLocation(growingLocation.getId());
+                .deleteGrowingLocation(growingLocationDTO.id());
 
-        mockMvc.perform(delete("/api/growing-locations/{id}", growingLocation.getId())
+        mockMvc.perform(delete("/api/growing-locations/{id}", growingLocationDTO.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }

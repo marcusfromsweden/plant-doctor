@@ -1,6 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
-import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.dto.PlantSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.PlantSpeciesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,76 +30,77 @@ public class PlantSpeciesControllerTests {
     @MockBean
     private PlantSpeciesService plantSpeciesService;
 
-    private PlantSpecies plantSpecies;
+    private PlantSpeciesDTO plantSpeciesDTO;
 
     @BeforeEach
     public void setup() {
-        plantSpecies = new PlantSpecies();
-        plantSpecies.setId(1L);
-        plantSpecies.setName("Tomato");
-        plantSpecies.setDescription("A tasty treat");
+        plantSpeciesDTO = new PlantSpeciesDTO(1L, "Tomato", "A tasty treat", 7);
     }
 
     @Test
     public void testGetAllPlantSpecies() throws Exception {
         Mockito.when(plantSpeciesService.getAllPlantSpecies())
-                .thenReturn(Collections.singletonList(plantSpecies));
+                .thenReturn(Collections.singletonList(plantSpeciesDTO));
 
         mockMvc.perform(get("/api/plant-species").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(plantSpecies.getId().intValue())))
-                .andExpect(jsonPath("$[0].name", is(plantSpecies.getName())))
-                .andExpect(jsonPath("$[0].description", is(plantSpecies.getDescription())));
+                .andExpect(jsonPath("$[0].id", is(plantSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$[0].name", is(plantSpeciesDTO.name())))
+                .andExpect(jsonPath("$[0].description", is(plantSpeciesDTO.description())))
+                .andExpect(jsonPath("$[0].estimatedDaysToGermination", is(plantSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testGetPlantSpeciesById() throws Exception {
-        Mockito.when(plantSpeciesService.getPlantSpeciesById(plantSpecies.getId()))
-                .thenReturn(Optional.of(plantSpecies));
+        Mockito.when(plantSpeciesService.getPlantSpeciesById(plantSpeciesDTO.id()))
+                .thenReturn(Optional.of(plantSpeciesDTO));
 
-        mockMvc.perform(get("/api/plant-species/{id}", plantSpecies.getId())
+        mockMvc.perform(get("/api/plant-species/{id}", plantSpeciesDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(plantSpecies.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(plantSpecies.getName())))
-                .andExpect(jsonPath("$.description", is(plantSpecies.getDescription())));
+                .andExpect(jsonPath("$.id", is(plantSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.name", is(plantSpeciesDTO.name())))
+                .andExpect(jsonPath("$.description", is(plantSpeciesDTO.description())))
+                .andExpect(jsonPath("$.estimatedDaysToGermination", is(plantSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testCreatePlantSpecies() throws Exception {
-        Mockito.when(plantSpeciesService.createPlantSpecies(Mockito.any(PlantSpecies.class)))
-                .thenReturn(plantSpecies);
+        Mockito.when(plantSpeciesService.createPlantSpecies(Mockito.any(PlantSpeciesDTO.class)))
+                .thenReturn(plantSpeciesDTO);
 
-        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\"}"
-                .formatted(plantSpecies.getName(), plantSpecies.getDescription());
+        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
+                .formatted(plantSpeciesDTO.name(), plantSpeciesDTO.description(), plantSpeciesDTO.estimatedDaysToGermination());
 
         mockMvc.perform(post("/api/plant-species").contentType(MediaType.APPLICATION_JSON)
                         .content(plantSpeciesJson)).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(plantSpecies.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(plantSpecies.getName())))
-                .andExpect(jsonPath("$.description", is(plantSpecies.getDescription())));
+                .andExpect(jsonPath("$.id", is(plantSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.name", is(plantSpeciesDTO.name())))
+                .andExpect(jsonPath("$.description", is(plantSpeciesDTO.description())))
+                .andExpect(jsonPath("$.estimatedDaysToGermination", is(plantSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testUpdatePlantSpecies() throws Exception {
-        Mockito.when(plantSpeciesService.updatePlantSpecies(Mockito.eq(plantSpecies.getId()),
-                Mockito.any(PlantSpecies.class))).thenReturn(plantSpecies);
+        Mockito.when(plantSpeciesService.updatePlantSpecies(Mockito.eq(plantSpeciesDTO.id()),
+                Mockito.any(PlantSpeciesDTO.class))).thenReturn(plantSpeciesDTO);
 
-        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\"}"
-                .formatted(plantSpecies.getName(), plantSpecies.getDescription());
+        String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
+                .formatted(plantSpeciesDTO.name(), plantSpeciesDTO.description(), plantSpeciesDTO.estimatedDaysToGermination());
 
-        mockMvc.perform(put("/api/plant-species/{id}", plantSpecies.getId())
+        mockMvc.perform(put("/api/plant-species/{id}", plantSpeciesDTO.id())
                         .contentType(MediaType.APPLICATION_JSON).content(plantSpeciesJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(plantSpecies.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(plantSpecies.getName())))
-                .andExpect(jsonPath("$.description", is(plantSpecies.getDescription())));
+                .andExpect(jsonPath("$.id", is(plantSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.name", is(plantSpeciesDTO.name())))
+                .andExpect(jsonPath("$.description", is(plantSpeciesDTO.description())))
+                .andExpect(jsonPath("$.estimatedDaysToGermination", is(plantSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testDeletePlantSpecies() throws Exception {
-        Mockito.doNothing().when(plantSpeciesService).deletePlantSpecies(plantSpecies.getId());
+        Mockito.doNothing().when(plantSpeciesService).deletePlantSpecies(plantSpeciesDTO.id());
 
-        mockMvc.perform(delete("/api/plant-species/{id}", plantSpecies.getId())
+        mockMvc.perform(delete("/api/plant-species/{id}", plantSpeciesDTO.id())
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
     }
 }

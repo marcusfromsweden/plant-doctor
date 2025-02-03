@@ -1,8 +1,8 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
-import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
-import com.marcusfromsweden.plantdoctor.entity.Plant;
-import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
+import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
+import com.marcusfromsweden.plantdoctor.dto.PlantSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.PlantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,127 +33,102 @@ public class PlantControllerTests {
     @MockBean
     private PlantService plantService;
 
-    private Plant plant;
-    private PlantSpecies plantSpecies;
-    private GrowingLocation growingLocation;
+    private PlantDTO plantDTO;
+    private PlantSpeciesDTO plantSpeciesDTO;
+    private GrowingLocationDTO growingLocationDTO;
 
     @BeforeEach
     public void setup() {
-        plantSpecies = new PlantSpecies();
-        plantSpecies.setId(1L);
-        plantSpecies.setName("Rose");
-        plantSpecies.setDescription("Beautiful flower");
-
-        growingLocation = new GrowingLocation();
-        growingLocation.setId(1L);
-        growingLocation.setLocationName("Clay pot nbr 1");
-        growingLocation.setOccupied(true);
-
-        plant = new Plant();
-        plant.setId(1L);
-        plant.setPlantSpecies(plantSpecies);
-        plant.setGrowingLocation(growingLocation);
-        plant.setPlantingDate(LocalDate.of(2025, 1, 1));
-        plant.setGerminationDate(LocalDate.of(2025, 1, 15));
-        plant.setComment("Healthy plant");
+        plantSpeciesDTO = new PlantSpeciesDTO(1L, "Rose", "Beautiful flower", 7);
+        growingLocationDTO = new GrowingLocationDTO(1L, "Clay pot nbr 1", true);
+        plantDTO = new PlantDTO(1L, plantSpeciesDTO.id(), growingLocationDTO.id(), LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 15), "Healthy plant");
     }
 
     @Test
     public void testGetAllPlants() throws Exception {
-        Mockito.when(plantService.getAllPlants()).thenReturn(Collections.singletonList(plant));
+        Mockito.when(plantService.getAllPlants()).thenReturn(Collections.singletonList(plantDTO));
 
         mockMvc.perform(get("/api/plants")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(plant.getId().intValue())))
-                .andExpect(jsonPath("$[0].plantSpecies.id", is(plantSpecies.getId().intValue())))
-                .andExpect(jsonPath("$[0].growingLocation.id", is(growingLocation.getId().intValue())))
-                .andExpect(jsonPath("$[0].plantingDate", is(plant.getPlantingDate().toString())))
-                .andExpect(jsonPath("$[0].germinationDate", is(plant.getGerminationDate().toString())))
-                .andExpect(jsonPath("$[0].comment", is(plant.getComment())));
+                .andExpect(jsonPath("$[0].id", is(plantDTO.id().intValue())))
+                .andExpect(jsonPath("$[0].plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$[0].growingLocationId", is(growingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$[0].plantingDate", is(plantDTO.plantingDate().toString())))
+                .andExpect(jsonPath("$[0].germinationDate", is(plantDTO.germinationDate().toString())))
+                .andExpect(jsonPath("$[0].comment", is(plantDTO.comment())));
     }
 
     @Test
     public void testGetPlantById() throws Exception {
-        Mockito.when(plantService.getPlantById(plant.getId())).thenReturn(Optional.of(plant));
+        Mockito.when(plantService.getPlantById(plantDTO.id())).thenReturn(Optional.of(plantDTO));
 
-        mockMvc.perform(get("/api/plants/{id}", plant.getId())
+        mockMvc.perform(get("/api/plants/{id}", plantDTO.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(plant.getId().intValue())))
-                .andExpect(jsonPath("$.plantSpecies.id", is(plantSpecies.getId().intValue())))
-                .andExpect(jsonPath("$.growingLocation.id", is(growingLocation.getId().intValue())))
-                .andExpect(jsonPath("$.plantingDate", is(plant.getPlantingDate().toString())))
-                .andExpect(jsonPath("$.germinationDate", is(plant.getGerminationDate().toString())))
-                .andExpect(jsonPath("$.comment", is(plant.getComment())));
+                .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
+                .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
+                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())))
+                .andExpect(jsonPath("$.comment", is(plantDTO.comment())));
     }
 
     @Test
     public void testCreatePlant() throws Exception {
-        Mockito.when(plantService.addPlant(
-                plant.getPlantSpecies().getId(),
-                plant.getGrowingLocation().getId(),
-                plant.getPlantingDate(),
-                plant.getGerminationDate(),
-                plant.getComment()
-        )).thenReturn(plant);
+        Mockito.when(plantService.createPlant(Mockito.any(PlantDTO.class)))
+                .thenReturn(plantDTO);
 
-        String plantJson = "{\"plantSpecies\":{\"id\":%d},\"growingLocation\":{\"id\":%d},\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}".formatted(
-                plant.getPlantSpecies().getId(),
-                plant.getGrowingLocation().getId(),
-                plant.getPlantingDate().toString(),
-                plant.getGerminationDate().toString(),
-                plant.getComment()
+        String plantJson = "{\"plantSpeciesId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}".formatted(
+                plantDTO.plantSpeciesId(),
+                plantDTO.growingLocationId(),
+                plantDTO.plantingDate().toString(),
+                plantDTO.germinationDate().toString(),
+                plantDTO.comment()
         );
 
         mockMvc.perform(post("/api/plants")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(plantJson))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(plant.getId().intValue())))
-                .andExpect(jsonPath("$.plantSpecies.id", is(plantSpecies.getId().intValue())))
-                .andExpect(jsonPath("$.growingLocation.id", is(growingLocation.getId().intValue())))
-                .andExpect(jsonPath("$.plantingDate", is(plant.getPlantingDate().toString())))
-                .andExpect(jsonPath("$.germinationDate", is(plant.getGerminationDate().toString())))
-                .andExpect(jsonPath("$.comment", is(plant.getComment())));
+                .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
+                .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
+                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())))
+                .andExpect(jsonPath("$.comment", is(plantDTO.comment())));
     }
 
     @Test
     public void testUpdatePlant() throws Exception {
-        Mockito.when(plantService.updatePlant(
-                plant.getId(),
-                plant.getPlantSpecies().getId(),
-                plant.getGrowingLocation().getId(),
-                plant.getPlantingDate(),
-                plant.getGerminationDate(),
-                plant.getComment()
-        )).thenReturn(plant);
+        Mockito.when(plantService.updatePlant(plantDTO.id(), plantDTO)).thenReturn(plantDTO);
 
-        String plantJson = "{\"plantSpecies\":{\"id\":%d},\"growingLocation\":{\"id\":%d},\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}".formatted(
-                plant.getPlantSpecies().getId(),
-                plant.getGrowingLocation().getId(),
-                plant.getPlantingDate().toString(),
-                plant.getGerminationDate().toString(),
-                plant.getComment()
+        String plantJson = "{\"id\":\"%s\",\"plantSpeciesId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}".formatted(
+                plantDTO.id(),
+                plantDTO.plantSpeciesId(),
+                plantDTO.growingLocationId(),
+                plantDTO.plantingDate().toString(),
+                plantDTO.germinationDate().toString(),
+                plantDTO.comment()
         );
 
-        mockMvc.perform(put("/api/plants/{id}", plant.getId())
+        mockMvc.perform(put("/api/plants/{id}", plantDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(plantJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(plant.getId().intValue())))
-                .andExpect(jsonPath("$.plantSpecies.id", is(plantSpecies.getId().intValue())))
-                .andExpect(jsonPath("$.growingLocation.id", is(growingLocation.getId().intValue())))
-                .andExpect(jsonPath("$.plantingDate", is(plant.getPlantingDate().toString())))
-                .andExpect(jsonPath("$.germinationDate", is(plant.getGerminationDate().toString())))
-                .andExpect(jsonPath("$.comment", is(plant.getComment())));
+                .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
+                .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
+                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())))
+                .andExpect(jsonPath("$.comment", is(plantDTO.comment())));
     }
 
     @Test
     public void testDeletePlant() throws Exception {
-        Mockito.doNothing().when(plantService).deletePlant(plant.getId());
+        Mockito.doNothing().when(plantService).deletePlant(plantDTO.id());
 
-        mockMvc.perform(delete("/api/plants/{id}", plant.getId())
+        mockMvc.perform(delete("/api/plants/{id}", plantDTO.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
