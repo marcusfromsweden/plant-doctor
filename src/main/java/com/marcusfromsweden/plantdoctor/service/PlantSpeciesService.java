@@ -34,6 +34,7 @@ public class PlantSpeciesService {
             PlantSpecies existingPlantSpecies = optionalPlantSpecies.get();
             existingPlantSpecies.setName(plantSpecies.getName());
             existingPlantSpecies.setDescription(plantSpecies.getDescription());
+            existingPlantSpecies.setEstimatedDaysToGermination(plantSpecies.getEstimatedDaysToGermination());
             return plantSpeciesRepository.save(existingPlantSpecies);
         } else {
             throw new RuntimeException("PlantSpecies not found with id " + id);

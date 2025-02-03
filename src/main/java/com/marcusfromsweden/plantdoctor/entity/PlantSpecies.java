@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class PlantSpecies {
 
+    private static final int GENERAL_DAYS_TO_GERMINATION = 10;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,6 +18,7 @@ public class PlantSpecies {
     @Size(min = 5)
     private String name;
     private String description;
+    private int estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION;
 
     // Getters and Setters
     public Long getId() {
@@ -40,5 +43,13 @@ public class PlantSpecies {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getEstimatedDaysToGermination() {
+        return estimatedDaysToGermination;
+    }
+
+    public void setEstimatedDaysToGermination(int estimatedDaysToGermination) {
+        this.estimatedDaysToGermination = estimatedDaysToGermination;
     }
 }

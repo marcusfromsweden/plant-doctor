@@ -6,6 +6,8 @@ import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
 import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
 import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,9 @@ import java.time.LocalDate;
 
 @Configuration
 public class DataInitializerConfig {
+
+    // add logger
+    private static final Logger log = LoggerFactory.getLogger(DataInitializerConfig.class);
 
     private final PlantSpeciesRepository plantSpeciesRepository;
     private final GrowingLocationRepository growingLocationRepository;
@@ -30,19 +35,20 @@ public class DataInitializerConfig {
         return args -> {
             deleteTableData();
 
+            log.info("Adding PlantSpecies");
             // Add initial data for PlantSpecies
-            PlantSpecies regaularBasil = new PlantSpecies();
-            regaularBasil.setName("Basil");
-            regaularBasil.setDescription("Regular basil of the mint family.");
+            PlantSpecies regularBasil = new PlantSpecies();
+            regularBasil.setName("Basil");
+            regularBasil.setDescription("Regular basil of the mint family.");
 
             PlantSpecies favouriteRadish = new PlantSpecies();
             favouriteRadish.setName("Radish");
             favouriteRadish.setDescription("A root vegetable of the Brassicaceae family.");
 
-            plantSpeciesRepository.save(regaularBasil);
+            plantSpeciesRepository.save(regularBasil);
             plantSpeciesRepository.save(favouriteRadish);
 
-            // Add initial data for GrowingLocation
+            log.info("Adding GrowingLocations");
             GrowingLocation pot1 = new GrowingLocation();
             pot1.setLocationName("Pot 1");
             pot1.setOccupied(false);
@@ -54,9 +60,9 @@ public class DataInitializerConfig {
             growingLocationRepository.save(pot1);
             growingLocationRepository.save(pot2);
 
-            // Add initial data for Plant
+            log.info("Adding Plants");
             Plant rosePlant = new Plant();
-            rosePlant.setPlantSpecies(regaularBasil);
+            rosePlant.setPlantSpecies(regularBasil);
             rosePlant.setGrowingLocation(pot1);
             rosePlant.setComment("This is a comment.");
             rosePlant.setPlantingDate(LocalDate.parse("2021-01-01"));
@@ -71,12 +77,16 @@ public class DataInitializerConfig {
 
             plantRepository.save(rosePlant);
             plantRepository.save(tulipPlant);
+
+            log.info("Test data initialized.");
         };
     }
 
     private void deleteTableData() {
+        log.info("Deleting all data from tables.");
         plantRepository.deleteAll();
         plantSpeciesRepository.deleteAll();
         growingLocationRepository.deleteAll();
+        log.info("All data deleted.");
     }
 }
