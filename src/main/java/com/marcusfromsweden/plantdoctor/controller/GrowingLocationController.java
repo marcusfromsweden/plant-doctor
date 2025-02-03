@@ -1,7 +1,9 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
+import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
+import com.marcusfromsweden.plantdoctor.util.GrowingLocationMapper;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/growing-locations")
@@ -25,41 +28,36 @@ public class GrowingLocationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GrowingLocation>> getAllGrowingLocations() {
+    public ResponseEntity<List<GrowingLocationDTO>> getAllGrowingLocations() {
         List<GrowingLocation> growingLocationList = growingLocationService.getAllGrowingLocations();
-        log.info("Returning {} growing locations", growingLocationList.size());
-        return new ResponseEntity<>(growingLocationList, HttpStatus.OK);
+        List<GrowingLocationDTO> growingLocationDTOList = growingLocationList.stream()
+                .map(GrowingLocationMapper::toDTO)
+                .collect(Collectors.toList());
+        log.info("Returning {} growing locations", growingLocationDTOList.size());
+        return new ResponseEntity<>(growingLocationDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GrowingLocation> getGrowingLocationById(@PathVariable Long id) {
-        Optional<GrowingLocation> growingLocation =
-                growingLocationService.getGrowingLocationById(id);
-        return growingLocation.map(location -> new ResponseEntity<>(location, HttpStatus.OK))
+    public ResponseEntity<GrowingLocationDTO> getGrowingLocationById(@PathVariable Long id) {
+        Optional<GrowingLocation> growingLocation = growingLocationService.getGrowingLocationById(id);
+        return growingLocation.map(location -> new ResponseEntity<>(GrowingLocationMapper.toDTO(location), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<GrowingLocation> createGrowingLocation(
-            @Valid @RequestBody GrowingLocation growingLocation) {
-        GrowingLocation createdGrowingLocation =
-                growingLocationService.createGrowingLocation(growingLocation);
-        return new ResponseEntity<>(createdGrowingLocation, HttpStatus.CREATED);
+    public ResponseEntity<GrowingLocationDTO> createGrowingLocation(
+            @Valid @RequestBody GrowingLocationDTO growingLocationDTO) {
+        GrowingLocation growingLocation = GrowingLocationMapper.toEntity(growingLocationDTO);
+        GrowingLocation createdGrowingLocation = growingLocationService.createGrowingLocation(growingLocation);
+        return new ResponseEntity<>(GrowingLocationMapper.toDTO(createdGrowingLocation), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GrowingLocation> updateGrowingLocation(@PathVariable Long id,
-                                                                 @Valid @RequestBody GrowingLocation growingLocation) {
-        Optional<GrowingLocation> existingLocation =
-                growingLocationService.getGrowingLocationById(id);
-        if (existingLocation.isPresent()) {
-            growingLocation.setId(id);
-            GrowingLocation updatedGrowingLocation =
-                    growingLocationService.updateGrowingLocation(id, growingLocation);
-            return new ResponseEntity<>(updatedGrowingLocation, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<GrowingLocationDTO> updateGrowingLocation(@PathVariable Long id,
+                                                                    @Valid @RequestBody GrowingLocationDTO growingLocationDTO) {
+        GrowingLocation growingLocation = GrowingLocationMapper.toEntity(growingLocationDTO);
+        GrowingLocation updatedGrowingLocation = growingLocationService.updateGrowingLocation(id, growingLocation);
+        return new ResponseEntity<>(GrowingLocationMapper.toDTO(updatedGrowingLocation), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

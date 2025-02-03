@@ -18,7 +18,7 @@ public class PlantSpecies {
     @Size(min = 5)
     private String name;
     private String description;
-    private int estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION;
+    private Integer estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION;
 
     // Getters and Setters
     public Long getId() {
@@ -45,11 +45,11 @@ public class PlantSpecies {
         this.description = description;
     }
 
-    public int getEstimatedDaysToGermination() {
+    public Integer getEstimatedDaysToGermination() {
         return estimatedDaysToGermination;
     }
 
-    public void setEstimatedDaysToGermination(int estimatedDaysToGermination) {
+    public void setEstimatedDaysToGermination(Integer estimatedDaysToGermination) {
         this.estimatedDaysToGermination = estimatedDaysToGermination;
     }
 }
