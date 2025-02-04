@@ -16,7 +16,7 @@ public class GrowingLocationMapper {
     public static GrowingLocation toEntity(GrowingLocationDTO growingLocationDTO) {
         GrowingLocation growingLocation = new GrowingLocation();
         growingLocation.setId(growingLocationDTO.id());
-        growingLocation.setName(growingLocationDTO.locationName());
+        growingLocation.setName(growingLocationDTO.name());
         growingLocation.setOccupied(growingLocationDTO.occupied());
         return growingLocation;
     }

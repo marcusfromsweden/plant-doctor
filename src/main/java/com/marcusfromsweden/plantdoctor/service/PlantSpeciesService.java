@@ -5,6 +5,8 @@ import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
 import com.marcusfromsweden.plantdoctor.exception.DuplicatePlantSpeciesNameException;
 import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
 import com.marcusfromsweden.plantdoctor.util.PlantSpeciesMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class PlantSpeciesService {
 
+    private final Logger log = LoggerFactory.getLogger(PlantSpeciesService.class);
     private final PlantSpeciesRepository plantSpeciesRepository;
 
     public PlantSpeciesService(PlantSpeciesRepository plantSpeciesRepository) {
@@ -64,8 +67,24 @@ public class PlantSpeciesService {
         return plantSpeciesRepository.findByName(name)
                 .map(PlantSpeciesMapper::toDTO);
     }
-    
+
     public void deletePlantSpecies(Long id) {
         plantSpeciesRepository.deleteById(id);
+    }
+
+    public PlantSpeciesDTO getOrCreatePlantSpeciesByName(String plantSpeciesName) {
+        Optional<PlantSpeciesDTO> plantSpecies = getPlantSpeciesByName(plantSpeciesName);
+
+        if (plantSpecies.isPresent()) {
+            log.debug("Plant species {} found", plantSpeciesName);
+            return plantSpecies.get();
+        }
+
+        log.debug("Plant species {} not found, creating a new one", plantSpeciesName);
+        PlantSpeciesDTO plantSpeciesDTO = PlantSpeciesDTO.builder().name(plantSpeciesName).build();
+
+        log.debug("Created plant species {}", plantSpeciesDTO);
+
+        return createPlantSpecies(plantSpeciesDTO);
     }
 }

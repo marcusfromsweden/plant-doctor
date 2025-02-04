@@ -2,7 +2,7 @@ package com.marcusfromsweden.plantdoctor.dto;
 
 public record GrowingLocationDTO(
         Long id,
-        String locationName,
+        String name,
         boolean occupied
 ) {
     public static Builder builder() {
@@ -11,7 +11,7 @@ public record GrowingLocationDTO(
 
     public static class Builder {
         private Long id;
-        private String locationName;
+        private String name;
         private boolean occupied;
 
         public Builder id(Long id) {
@@ -19,8 +19,8 @@ public record GrowingLocationDTO(
             return this;
         }
 
-        public Builder locationName(String locationName) {
-            this.locationName = locationName;
+        public Builder name(String locationName) {
+            this.name = locationName;
             return this;
         }
 
@@ -30,7 +30,7 @@ public record GrowingLocationDTO(
         }
 
         public GrowingLocationDTO build() {
-            return new GrowingLocationDTO(id, locationName, occupied);
+            return new GrowingLocationDTO(id, name, occupied);
         }
     }
 }

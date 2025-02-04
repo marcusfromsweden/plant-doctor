@@ -14,7 +14,7 @@ public class Plant {
     @ManyToOne
     private PlantSpecies plantSpecies;
 
-    @OneToOne
+    @ManyToOne
     private GrowingLocation growingLocation;
 
     private LocalDate plantingDate;
