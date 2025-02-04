@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PlantControllerTests {
 
+    public static final String API_PATH = "/api/internal/plants";
     @Autowired
     private MockMvc mockMvc;
 
@@ -48,7 +49,7 @@ public class PlantControllerTests {
     public void testGetAllPlants() throws Exception {
         Mockito.when(plantService.getAllPlants()).thenReturn(Collections.singletonList(plantDTO));
 
-        mockMvc.perform(get("/api/internal/plants")
+        mockMvc.perform(get(API_PATH)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(plantDTO.id().intValue())))
@@ -63,7 +64,7 @@ public class PlantControllerTests {
     public void testGetPlantById() throws Exception {
         Mockito.when(plantService.getPlantById(plantDTO.id())).thenReturn(Optional.of(plantDTO));
 
-        mockMvc.perform(get("/api/internal/plants/{id}", plantDTO.id())
+        mockMvc.perform(get(API_PATH + "/{id}", plantDTO.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
@@ -87,7 +88,7 @@ public class PlantControllerTests {
                 plantDTO.comment()
         );
 
-        mockMvc.perform(post("/api/internal/plants")
+        mockMvc.perform(post(API_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(plantJson))
                 .andExpect(status().isCreated())
@@ -112,7 +113,7 @@ public class PlantControllerTests {
                 plantDTO.comment()
         );
 
-        mockMvc.perform(put("/api/internal/plants/{id}", plantDTO.id())
+        mockMvc.perform(put(API_PATH + "/{id}", plantDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(plantJson))
                 .andExpect(status().isOk())
@@ -128,7 +129,7 @@ public class PlantControllerTests {
     public void testDeletePlant() throws Exception {
         Mockito.doNothing().when(plantService).deletePlant(plantDTO.id());
 
-        mockMvc.perform(delete("/api/internal/plants/{id}", plantDTO.id())
+        mockMvc.perform(delete(API_PATH + "/{id}", plantDTO.id())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }

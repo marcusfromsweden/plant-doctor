@@ -1,6 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller.external;
 
-import com.marcusfromsweden.plantdoctor.dto.PlantWebDTO;
+import com.marcusfromsweden.plantdoctor.dto.CompletePlantDTO;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
 import com.marcusfromsweden.plantdoctor.service.PlantService;
 import com.marcusfromsweden.plantdoctor.service.PlantSpeciesService;
@@ -15,27 +15,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/web/external/plants")
-public class PlantWebController {
+public class ExternalPlantDoctorController {
 
-    private static final Logger log = LoggerFactory.getLogger(PlantWebController.class);
+    private static final Logger log = LoggerFactory.getLogger(ExternalPlantDoctorController.class);
 
     private final PlantService plantService;
     private final PlantSpeciesService plantSpeciesService;
     private final GrowingLocationService growingLocationService;
 
-    public PlantWebController(PlantService plantService, PlantSpeciesService plantSpeciesService, GrowingLocationService growingLocationService) {
+    public ExternalPlantDoctorController(PlantService plantService, PlantSpeciesService plantSpeciesService, GrowingLocationService growingLocationService) {
         this.plantService = plantService;
         this.plantSpeciesService = plantSpeciesService;
         this.growingLocationService = growingLocationService;
     }
 
     @PostMapping
-    public ResponseEntity<PlantWebDTO> createPlant(@RequestBody PlantWebDTO plantWebDTO) {
+    public ResponseEntity<CompletePlantDTO> createPlant(@RequestBody CompletePlantDTO completePlantDTO) {
         log.warn("Creating a new plant for web");
 
 
         // Implement the logic to create a new plant using PlantWebDTO
         // For now, returning the input DTO
-        return new ResponseEntity<>(plantWebDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(completePlantDTO, HttpStatus.CREATED);
     }
 }
