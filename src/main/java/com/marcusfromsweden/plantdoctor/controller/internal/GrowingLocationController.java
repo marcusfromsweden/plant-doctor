@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctor.controller;
+package com.marcusfromsweden.plantdoctor.controller.internal;
 
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/growing-locations")
+@RequestMapping("/api/internal/growing-locations")
 public class GrowingLocationController {
 
     private static final Logger log = LoggerFactory.getLogger(GrowingLocationController.class);
@@ -63,4 +63,12 @@ public class GrowingLocationController {
         growingLocationService.deleteAllGrowingLocations();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<GrowingLocationDTO> getGrowingLocationByName(@PathVariable String name) {
+        Optional<GrowingLocationDTO> growingLocationDTO = growingLocationService.getGrowingLocationByName(name);
+        return growingLocationDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }

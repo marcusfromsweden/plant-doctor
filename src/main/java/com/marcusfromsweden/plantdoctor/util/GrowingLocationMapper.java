@@ -8,7 +8,7 @@ public class GrowingLocationMapper {
     public static GrowingLocationDTO toDTO(GrowingLocation growingLocation) {
         return new GrowingLocationDTO(
                 growingLocation.getId(),
-                growingLocation.getLocationName(),
+                growingLocation.getName(),
                 growingLocation.isOccupied()
         );
     }
@@ -16,8 +16,9 @@ public class GrowingLocationMapper {
     public static GrowingLocation toEntity(GrowingLocationDTO growingLocationDTO) {
         GrowingLocation growingLocation = new GrowingLocation();
         growingLocation.setId(growingLocationDTO.id());
-        growingLocation.setLocationName(growingLocationDTO.locationName());
+        growingLocation.setName(growingLocationDTO.locationName());
         growingLocation.setOccupied(growingLocationDTO.occupied());
         return growingLocation;
     }
+
 }

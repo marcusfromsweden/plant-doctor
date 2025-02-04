@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctor.controller;
+package com.marcusfromsweden.plantdoctor.controller.internal;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.PlantSpeciesService;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/plant-species")
+@RequestMapping("/api/internal/plant-species")
 public class PlantSpeciesController {
 
     private final PlantSpeciesService plantSpeciesService;
@@ -45,6 +45,13 @@ public class PlantSpeciesController {
                                                               @Valid @RequestBody PlantSpeciesDTO plantSpeciesDTO) {
         PlantSpeciesDTO updatedPlantSpeciesDTO = plantSpeciesService.updatePlantSpecies(id, plantSpeciesDTO);
         return new ResponseEntity<>(updatedPlantSpeciesDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<PlantSpeciesDTO> getPlantSpeciesByName(@PathVariable String name) {
+        Optional<PlantSpeciesDTO> plantSpeciesDTO = plantSpeciesService.getPlantSpeciesByName(name);
+        return plantSpeciesDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")

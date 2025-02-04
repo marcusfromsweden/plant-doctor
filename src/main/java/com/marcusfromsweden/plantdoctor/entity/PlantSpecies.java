@@ -1,9 +1,6 @@
 package com.marcusfromsweden.plantdoctor.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -15,7 +12,8 @@ public class PlantSpecies {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 5)
+    @Size(min = 3, max = 50)
+    @Column(unique = true)
     private String name;
     private String description;
     private Integer estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION;

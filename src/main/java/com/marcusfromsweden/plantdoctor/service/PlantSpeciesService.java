@@ -2,8 +2,10 @@ package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.exception.DuplicatePlantSpeciesNameException;
 import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
 import com.marcusfromsweden.plantdoctor.util.PlantSpeciesMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +34,12 @@ public class PlantSpeciesService {
 
     public PlantSpeciesDTO createPlantSpecies(PlantSpeciesDTO plantSpeciesDTO) {
         PlantSpecies plantSpecies = PlantSpeciesMapper.toEntity(plantSpeciesDTO);
-        PlantSpecies createdPlantSpecies = plantSpeciesRepository.save(plantSpecies);
-        return PlantSpeciesMapper.toDTO(createdPlantSpecies);
+        try {
+            PlantSpecies createdPlantSpecies = plantSpeciesRepository.save(plantSpecies);
+            return PlantSpeciesMapper.toDTO(createdPlantSpecies);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicatePlantSpeciesNameException("Plant species name already exists: " + plantSpecies.getName());
+        }
     }
 
     public PlantSpeciesDTO updatePlantSpecies(Long id, PlantSpeciesDTO plantSpeciesDTO) {
@@ -43,13 +49,22 @@ public class PlantSpeciesService {
             existingPlantSpecies.setName(plantSpeciesDTO.name());
             existingPlantSpecies.setDescription(plantSpeciesDTO.description());
             existingPlantSpecies.setEstimatedDaysToGermination(plantSpeciesDTO.estimatedDaysToGermination());
-            PlantSpecies updatedPlantSpecies = plantSpeciesRepository.save(existingPlantSpecies);
-            return PlantSpeciesMapper.toDTO(updatedPlantSpecies);
+            try {
+                PlantSpecies updatedPlantSpecies = plantSpeciesRepository.save(existingPlantSpecies);
+                return PlantSpeciesMapper.toDTO(updatedPlantSpecies);
+            } catch (DataIntegrityViolationException e) {
+                throw new DuplicatePlantSpeciesNameException("Plant species name already exists: " + existingPlantSpecies.getName());
+            }
         } else {
             throw new RuntimeException("PlantSpecies not found with id " + id);
         }
     }
 
+    public Optional<PlantSpeciesDTO> getPlantSpeciesByName(String name) {
+        return plantSpeciesRepository.findByName(name)
+                .map(PlantSpeciesMapper::toDTO);
+    }
+    
     public void deletePlantSpecies(Long id) {
         plantSpeciesRepository.deleteById(id);
     }

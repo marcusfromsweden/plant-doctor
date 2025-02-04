@@ -24,4 +24,14 @@ public class GlobalExceptionHandler {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(DuplicateGrowingLocationNameException.class)
+    public ResponseEntity<String> handleDuplicateLocationNameException(DuplicateGrowingLocationNameException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(DuplicatePlantSpeciesNameException.class)
+    public ResponseEntity<String> handleDuplicatePlantSpeciesNameException(DuplicatePlantSpeciesNameException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
 }

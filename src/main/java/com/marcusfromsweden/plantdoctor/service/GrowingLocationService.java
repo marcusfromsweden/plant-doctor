@@ -2,8 +2,10 @@ package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+import com.marcusfromsweden.plantdoctor.exception.DuplicateGrowingLocationNameException;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,24 +33,37 @@ public class GrowingLocationService {
     }
 
     public GrowingLocationDTO createGrowingLocation(GrowingLocationDTO growingLocationDTO) {
-        GrowingLocation growingLocation = GrowingLocationMapper.toEntity(growingLocationDTO);
-        GrowingLocation createdGrowingLocation = growingLocationRepository.save(growingLocation);
-        return GrowingLocationMapper.toDTO(createdGrowingLocation);
+        try {
+            GrowingLocation growingLocation = GrowingLocationMapper.toEntity(growingLocationDTO);
+            GrowingLocation createdGrowingLocation = growingLocationRepository.save(growingLocation);
+            return GrowingLocationMapper.toDTO(createdGrowingLocation);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateGrowingLocationNameException("Growing location name already exists: " + growingLocationDTO.locationName());
+        }
     }
 
     public GrowingLocationDTO updateGrowingLocation(Long id, GrowingLocationDTO growingLocationDTO) {
         Optional<GrowingLocation> optionalGrowingLocation = growingLocationRepository.findById(id);
         if (optionalGrowingLocation.isPresent()) {
             GrowingLocation existingGrowingLocation = optionalGrowingLocation.get();
-            existingGrowingLocation.setLocationName(growingLocationDTO.locationName());
+            existingGrowingLocation.setName(growingLocationDTO.locationName());
             existingGrowingLocation.setOccupied(growingLocationDTO.occupied());
-            GrowingLocation updatedGrowingLocation = growingLocationRepository.save(existingGrowingLocation);
-            return GrowingLocationMapper.toDTO(updatedGrowingLocation);
+            try {
+                GrowingLocation updatedGrowingLocation = growingLocationRepository.save(existingGrowingLocation);
+                return GrowingLocationMapper.toDTO(updatedGrowingLocation);
+            } catch (DataIntegrityViolationException e) {
+                throw new DuplicateGrowingLocationNameException("Growing location name already exists: " + growingLocationDTO.locationName());
+            }
         } else {
             throw new RuntimeException("GrowingLocation not found with id " + id);
         }
     }
 
+    public Optional<GrowingLocationDTO> getGrowingLocationByName(String name) {
+        return growingLocationRepository.findByName(name)
+                .map(GrowingLocationMapper::toDTO);
+    }
+    
     public void deleteGrowingLocation(Long id) {
         growingLocationRepository.deleteById(id);
     }

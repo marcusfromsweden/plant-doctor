@@ -1,9 +1,6 @@
 package com.marcusfromsweden.plantdoctor.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class GrowingLocation {
@@ -12,7 +9,8 @@ public class GrowingLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String locationName;
+    @Column(unique = true)
+    private String name;
     private boolean occupied;
 
     // Getters and Setters
@@ -24,12 +22,12 @@ public class GrowingLocation {
         this.id = id;
     }
 
-    public String getLocationName() {
-        return locationName;
+    public String getName() {
+        return name;
     }
 
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
+    public void setName(String locationName) {
+        this.name = locationName;
     }
 
     public boolean isOccupied() {
