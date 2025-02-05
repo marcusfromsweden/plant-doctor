@@ -2,8 +2,10 @@ package com.marcusfromsweden.plantdoctor.config;
 
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.entity.Plant;
+import com.marcusfromsweden.plantdoctor.entity.PlantComment;
 import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
+import com.marcusfromsweden.plantdoctor.repository.PlantCommentRepository;
 import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
 import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
 import com.marcusfromsweden.plantdoctor.util.CustomProperties;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Configuration
 public class DataInitializerConfig {
@@ -23,15 +26,17 @@ public class DataInitializerConfig {
     private final PlantSpeciesRepository plantSpeciesRepository;
     private final GrowingLocationRepository growingLocationRepository;
     private final PlantRepository plantRepository;
+    private final PlantCommentRepository plantCommentRepository;
     private final CustomProperties customProperties;
 
     public DataInitializerConfig(PlantSpeciesRepository plantSpeciesRepository,
                                  GrowingLocationRepository growingLocationRepository,
-                                 PlantRepository plantRepository,
+                                 PlantRepository plantRepository, PlantCommentRepository plantCommentRepository,
                                  CustomProperties customProperties) {
         this.plantSpeciesRepository = plantSpeciesRepository;
         this.growingLocationRepository = growingLocationRepository;
         this.plantRepository = plantRepository;
+        this.plantCommentRepository = plantCommentRepository;
         this.customProperties = customProperties;
     }
 
@@ -95,6 +100,13 @@ public class DataInitializerConfig {
 
         plantRepository.save(basilPlant);
         plantRepository.save(radishPlant);
+
+        log.info("Adding PlantComments");
+        PlantComment basilComment1 = new PlantComment();
+        basilComment1.setPlant(basilPlant);
+        basilComment1.setText("This basil is growing well.");
+        basilComment1.setCreatedDate(LocalDateTime.now());
+        plantCommentRepository.save(basilComment1);
 
         log.info("Test data initialized.");
     }
