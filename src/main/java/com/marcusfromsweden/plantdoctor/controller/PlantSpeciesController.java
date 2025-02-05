@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctor.controller.internal;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.PlantSpeciesService;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/internal/plant-species")
+@RequestMapping("/api/plant-species")
 public class PlantSpeciesController {
 
     private final PlantSpeciesService plantSpeciesService;

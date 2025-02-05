@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctor.controller.external;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SimplePlantDTO;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/web/external/plants")
+@RequestMapping("/api/plant-doctor")
 public class ExternalPlantDoctorController {
 
     private static final Logger log = LoggerFactory.getLogger(ExternalPlantDoctorController.class);

@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctor.controller.internal;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PlantControllerTests {
 
-    public static final String API_PATH = "/api/internal/plants";
+    public static final String API_PATH = "/api/plants";
     @Autowired
     private MockMvc mockMvc;
 

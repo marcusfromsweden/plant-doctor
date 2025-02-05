@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctor.controller.internal;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.service.PlantService;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/internal/plants")
+@RequestMapping("/api/plants")
 public class PlantController {
 
     private static final Logger log = LoggerFactory.getLogger(PlantController.class);

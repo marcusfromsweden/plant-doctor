@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctor.controller.internal;
+package com.marcusfromsweden.plantdoctor.controller;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.PlantSpeciesService;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PlantSpeciesControllerTests {
 
-    public static final String API_PATH_INTERNAL_PLANT_SPECIES = "/api/internal/plant-species";
+    public static final String API_PATH_PLANT_SPECIES = "/api/plant-species";
     @Autowired
     private MockMvc mockMvc;
 
@@ -48,7 +48,7 @@ public class PlantSpeciesControllerTests {
         Mockito.when(plantSpeciesService.getAllPlantSpecies())
                 .thenReturn(Collections.singletonList(plantSpeciesDTO));
 
-        mockMvc.perform(get(API_PATH_INTERNAL_PLANT_SPECIES).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(API_PATH_PLANT_SPECIES).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(plantSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$[0].name", is(plantSpeciesDTO.name())))
@@ -61,7 +61,7 @@ public class PlantSpeciesControllerTests {
         Mockito.when(plantSpeciesService.getPlantSpeciesById(plantSpeciesDTO.id()))
                 .thenReturn(Optional.of(plantSpeciesDTO));
 
-        mockMvc.perform(get(API_PATH_INTERNAL_PLANT_SPECIES + "/{id}", plantSpeciesDTO.id())
+        mockMvc.perform(get(API_PATH_PLANT_SPECIES + "/{id}", plantSpeciesDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(plantSpeciesDTO.name())))
@@ -77,7 +77,7 @@ public class PlantSpeciesControllerTests {
         String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
                 .formatted(plantSpeciesDTO.name(), plantSpeciesDTO.description(), plantSpeciesDTO.estimatedDaysToGermination());
 
-        mockMvc.perform(post(API_PATH_INTERNAL_PLANT_SPECIES).contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(API_PATH_PLANT_SPECIES).contentType(MediaType.APPLICATION_JSON)
                         .content(plantSpeciesJson)).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(plantSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(plantSpeciesDTO.name())))
@@ -93,7 +93,7 @@ public class PlantSpeciesControllerTests {
         String plantSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
                 .formatted(plantSpeciesDTO.name(), plantSpeciesDTO.description(), plantSpeciesDTO.estimatedDaysToGermination());
 
-        mockMvc.perform(put(API_PATH_INTERNAL_PLANT_SPECIES + "/{id}", plantSpeciesDTO.id())
+        mockMvc.perform(put(API_PATH_PLANT_SPECIES + "/{id}", plantSpeciesDTO.id())
                         .contentType(MediaType.APPLICATION_JSON).content(plantSpeciesJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantSpeciesDTO.id().intValue())))
@@ -108,7 +108,7 @@ public class PlantSpeciesControllerTests {
         Mockito.when(plantSpeciesService.getPlantSpeciesByName(speciesName))
                 .thenReturn(Optional.of(plantSpeciesDTO));
 
-        mockMvc.perform(get(API_PATH_INTERNAL_PLANT_SPECIES + "/name/{name}", speciesName)
+        mockMvc.perform(get(API_PATH_PLANT_SPECIES + "/name/{name}", speciesName)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantSpeciesDTO.id().intValue())))
@@ -121,7 +121,7 @@ public class PlantSpeciesControllerTests {
     public void testDeletePlantSpecies() throws Exception {
         Mockito.doNothing().when(plantSpeciesService).deletePlantSpecies(plantSpeciesDTO.id());
 
-        mockMvc.perform(delete(API_PATH_INTERNAL_PLANT_SPECIES + "/{id}", plantSpeciesDTO.id())
+        mockMvc.perform(delete(API_PATH_PLANT_SPECIES + "/{id}", plantSpeciesDTO.id())
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
     }
 }
