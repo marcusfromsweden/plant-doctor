@@ -2,6 +2,7 @@ package com.marcusfromsweden.plantdoctor.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ public class PlantComment {
     @JsonBackReference
     private Plant plant;
 
+    @Size(min = 3, max = 255)
     private String text;
     private LocalDateTime createdDate;
 

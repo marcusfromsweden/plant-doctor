@@ -5,7 +5,8 @@ import java.time.LocalDate;
 public record SimplePlantDTO(
         LocalDate plantingDate,
         String plantSpeciesName,
-        String growingLocationName
+        String growingLocationName,
+        String plantComment
 ) {
 
 }
