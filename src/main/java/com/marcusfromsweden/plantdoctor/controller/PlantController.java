@@ -1,6 +1,8 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
+import com.marcusfromsweden.plantdoctor.entity.PlantComment;
+import com.marcusfromsweden.plantdoctor.service.PlantCommentService;
 import com.marcusfromsweden.plantdoctor.service.PlantService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -19,9 +21,12 @@ public class PlantController {
     private static final Logger log = LoggerFactory.getLogger(PlantController.class);
 
     private final PlantService plantService;
+    private final PlantCommentService plantCommentService;
 
-    public PlantController(PlantService plantService) {
+    public PlantController(PlantService plantService,
+                           PlantCommentService plantCommentService) {
         this.plantService = plantService;
+        this.plantCommentService = plantCommentService;
     }
 
     @GetMapping
@@ -42,6 +47,18 @@ public class PlantController {
     public ResponseEntity<PlantDTO> createPlant(@Valid @RequestBody PlantDTO plantDTO) {
         PlantDTO createdPlant = plantService.createPlant(plantDTO);
         return new ResponseEntity<>(createdPlant, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<Void> addComment(@PathVariable Long id, @RequestParam String comment) {
+        plantCommentService.addComment(id, comment);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<PlantComment>> getCommentsByPlantId(@PathVariable Long id) {
+        List<PlantComment> comments = plantCommentService.getCommentsByPlantId(id);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

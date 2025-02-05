@@ -87,6 +87,11 @@ public class PlantService {
             throw new RuntimeException("Plant not found with id " + plantId);
         }
     }
+    
+    public Plant getPlantEntityByIdOrThrow(Long id) {
+        return plantRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Plant not found with id " + id));
+    }
 
     public void deletePlant(Long id) {
         plantRepository.deleteById(id);

@@ -1,8 +1,10 @@
 package com.marcusfromsweden.plantdoctor.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Plant {
@@ -19,6 +21,10 @@ public class Plant {
 
     private LocalDate plantingDate;
     private LocalDate germinationDate;
+
+    @OneToMany(mappedBy = "plant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<PlantComment> comments;
 
     // Getters and Setters
     public Long getId() {
@@ -61,4 +67,11 @@ public class Plant {
         this.germinationDate = germinationDate;
     }
 
+    public List<PlantComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<PlantComment> comments) {
+        this.comments = comments;
+    }
 }
