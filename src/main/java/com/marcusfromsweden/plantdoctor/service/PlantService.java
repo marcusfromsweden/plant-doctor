@@ -59,7 +59,6 @@ public class PlantService {
         // Set other fields
         plant.setPlantingDate(plantDTO.plantingDate());
         plant.setGerminationDate(plantDTO.germinationDate());
-        plant.setComment(plantDTO.comment());
 
         Plant savedPlant = plantRepository.save(plant);
         return plantMapper.toDTO(savedPlant);
@@ -81,7 +80,6 @@ public class PlantService {
             // Update other fields
             plant.setPlantingDate(plantDTO.plantingDate());
             plant.setGerminationDate(plantDTO.germinationDate());
-            plant.setComment(plantDTO.comment());
 
             Plant updatedPlant = plantRepository.save(plant);
             return plantMapper.toDTO(updatedPlant);

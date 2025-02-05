@@ -26,8 +26,7 @@ public class PlantMapper {
                 plant.getPlantSpecies().getId(),
                 plant.getGrowingLocation().getId(),
                 plant.getPlantingDate(),
-                plant.getGerminationDate(),
-                plant.getComment()
+                plant.getGerminationDate()
         );
     }
 
@@ -45,7 +44,6 @@ public class PlantMapper {
 
         plant.setPlantingDate(plantDTO.plantingDate());
         plant.setGerminationDate(plantDTO.germinationDate());
-        plant.setComment(plantDTO.comment());
         return plant;
     }
 }

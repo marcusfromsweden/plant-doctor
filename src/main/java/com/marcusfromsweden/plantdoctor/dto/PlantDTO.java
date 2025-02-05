@@ -7,8 +7,7 @@ public record PlantDTO(
         Long plantSpeciesId,
         Long growingLocationId,
         LocalDate plantingDate,
-        LocalDate germinationDate,
-        String comment
+        LocalDate germinationDate
 ) {
     public static Builder builder() {
         return new Builder();
@@ -20,7 +19,6 @@ public record PlantDTO(
         private Long growingLocationId;
         private LocalDate plantingDate;
         private LocalDate germinationDate;
-        private String comment;
 
         public Builder id(Long id) {
             this.id = id;
@@ -47,13 +45,8 @@ public record PlantDTO(
             return this;
         }
 
-        public Builder comment(String comment) {
-            this.comment = comment;
-            return this;
-        }
-
         public PlantDTO build() {
-            return new PlantDTO(id, plantSpeciesId, growingLocationId, plantingDate, germinationDate, comment);
+            return new PlantDTO(id, plantSpeciesId, growingLocationId, plantingDate, germinationDate);
         }
     }
 }

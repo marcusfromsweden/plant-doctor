@@ -81,22 +81,20 @@ public class DataInitializerConfig {
         growingLocationRepository.save(pot2);
 
         log.info("Adding Plants");
-        Plant rosePlant = new Plant();
-        rosePlant.setPlantSpecies(regularBasil);
-        rosePlant.setGrowingLocation(pot1);
-        rosePlant.setComment("This is a comment.");
-        rosePlant.setPlantingDate(LocalDate.parse("2021-01-01"));
-        rosePlant.setGerminationDate(LocalDate.parse("2021-01-20"));
+        Plant basilPlant = new Plant();
+        basilPlant.setPlantSpecies(regularBasil);
+        basilPlant.setGrowingLocation(pot1);
+        basilPlant.setPlantingDate(LocalDate.parse("2021-01-01"));
+        basilPlant.setGerminationDate(LocalDate.parse("2021-01-20"));
 
-        Plant tulipPlant = new Plant();
-        tulipPlant.setPlantSpecies(favouriteRadish);
-        tulipPlant.setGrowingLocation(pot2);
-        tulipPlant.setComment("This is another comment.");
-        tulipPlant.setPlantingDate(LocalDate.parse("2021-01-11"));
-        tulipPlant.setGerminationDate(LocalDate.parse("2021-01-30"));
+        Plant radishPlant = new Plant();
+        radishPlant.setPlantSpecies(favouriteRadish);
+        radishPlant.setGrowingLocation(pot2);
+        radishPlant.setPlantingDate(LocalDate.parse("2021-01-11"));
+        radishPlant.setGerminationDate(LocalDate.parse("2021-01-30"));
 
-        plantRepository.save(rosePlant);
-        plantRepository.save(tulipPlant);
+        plantRepository.save(basilPlant);
+        plantRepository.save(radishPlant);
 
         log.info("Test data initialized.");
     }

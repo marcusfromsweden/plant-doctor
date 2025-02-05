@@ -42,7 +42,12 @@ public class PlantControllerTests {
     public void setup() {
         plantSpeciesDTO = new PlantSpeciesDTO(1L, "Rose", "Beautiful flower", 7);
         growingLocationDTO = new GrowingLocationDTO(1L, "Clay pot nbr 1", true);
-        plantDTO = new PlantDTO(1L, plantSpeciesDTO.id(), growingLocationDTO.id(), LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 15), "Healthy plant");
+        plantDTO = new PlantDTO(
+                1L,
+                plantSpeciesDTO.id(),
+                growingLocationDTO.id(),
+                LocalDate.of(2025, 1, 1),
+                LocalDate.of(2025, 1, 15));
     }
 
     @Test
@@ -56,8 +61,7 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$[0].plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$[0].growingLocationId", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$[0].plantingDate", is(plantDTO.plantingDate().toString())))
-                .andExpect(jsonPath("$[0].germinationDate", is(plantDTO.germinationDate().toString())))
-                .andExpect(jsonPath("$[0].comment", is(plantDTO.comment())));
+                .andExpect(jsonPath("$[0].germinationDate", is(plantDTO.germinationDate().toString())));
     }
 
     @Test
@@ -71,8 +75,7 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
-                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())))
-                .andExpect(jsonPath("$.comment", is(plantDTO.comment())));
+                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())));
     }
 
     @Test
@@ -80,12 +83,11 @@ public class PlantControllerTests {
         Mockito.when(plantService.createPlant(Mockito.any(PlantDTO.class)))
                 .thenReturn(plantDTO);
 
-        String plantJson = "{\"plantSpeciesId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}".formatted(
+        String plantJson = "{\"plantSpeciesId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\"}".formatted(
                 plantDTO.plantSpeciesId(),
                 plantDTO.growingLocationId(),
                 plantDTO.plantingDate().toString(),
-                plantDTO.germinationDate().toString(),
-                plantDTO.comment()
+                plantDTO.germinationDate().toString()
         );
 
         mockMvc.perform(post(API_PATH)
@@ -96,21 +98,19 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
-                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())))
-                .andExpect(jsonPath("$.comment", is(plantDTO.comment())));
+                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())));
     }
 
     @Test
     public void testUpdatePlant() throws Exception {
         Mockito.when(plantService.updatePlant(plantDTO.id(), plantDTO)).thenReturn(plantDTO);
 
-        String plantJson = "{\"id\":\"%s\",\"plantSpeciesId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\",\"comment\":\"%s\"}".formatted(
+        String plantJson = "{\"id\":\"%s\",\"plantSpeciesId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\"}".formatted(
                 plantDTO.id(),
                 plantDTO.plantSpeciesId(),
                 plantDTO.growingLocationId(),
                 plantDTO.plantingDate().toString(),
-                plantDTO.germinationDate().toString(),
-                plantDTO.comment()
+                plantDTO.germinationDate().toString()
         );
 
         mockMvc.perform(put(API_PATH + "/{id}", plantDTO.id())
@@ -121,8 +121,7 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
-                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())))
-                .andExpect(jsonPath("$.comment", is(plantDTO.comment())));
+                .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())));
     }
 
     @Test

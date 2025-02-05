@@ -19,7 +19,6 @@ public class Plant {
 
     private LocalDate plantingDate;
     private LocalDate germinationDate;
-    private String comment;
 
     // Getters and Setters
     public Long getId() {
@@ -62,11 +61,4 @@ public class Plant {
         this.germinationDate = germinationDate;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 }
