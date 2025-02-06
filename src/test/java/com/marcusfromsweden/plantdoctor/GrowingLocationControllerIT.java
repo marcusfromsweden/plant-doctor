@@ -65,8 +65,6 @@ public class GrowingLocationControllerIT {
 
     @Test
     public void testCreateGrowingLocation() throws Exception {
-        //output the value of the test property spring.datasource.hikari.connection-timeout
-
         String growingLocationJson = "{\"name\":\"%s\",\"occupied\":%b}".formatted(
                 growingLocationDTO.name(), growingLocationDTO.occupied());
 
