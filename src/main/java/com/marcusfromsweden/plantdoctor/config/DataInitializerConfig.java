@@ -54,6 +54,7 @@ public class DataInitializerConfig {
 
     private void deleteTableData() {
         log.info("Deleting all data from tables.");
+        plantCommentRepository.deleteAll();
         plantRepository.deleteAll();
         plantSpeciesRepository.deleteAll();
         growingLocationRepository.deleteAll();

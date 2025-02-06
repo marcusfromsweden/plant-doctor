@@ -9,7 +9,7 @@ public class GrowingLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
     private boolean occupied;
 

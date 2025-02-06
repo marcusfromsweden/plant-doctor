@@ -13,7 +13,7 @@ public class PlantSpecies {
     private Long id;
 
     @Size(min = 3, max = 50)
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
     private String description;
     private Integer estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION;
