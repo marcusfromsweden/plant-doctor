@@ -21,25 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PlantCommentService_TestCommentTextSizeIsCheckedIT {
 
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
-
-    @BeforeAll
-    static void beforeAll() {
-        postgres.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
-
     @Autowired
     private PlantCommentService plantCommentService;
 
@@ -60,9 +41,9 @@ public class PlantCommentService_TestCommentTextSizeIsCheckedIT {
 
     @Test
     public void testAddComment_TextTooShort_ThrowsConstraintViolationException() {
-        assertThrows(ConstraintViolationException.class, () -> {
-            plantCommentService.addComment(plantToComment.id(), "Te");
-        });
+        assertThrows(ConstraintViolationException.class, () ->
+                plantCommentService.addComment(plantToComment.id(), "Te")
+        );
     }
 
     @Test
@@ -70,5 +51,24 @@ public class PlantCommentService_TestCommentTextSizeIsCheckedIT {
         assertDoesNotThrow(() -> {
             plantCommentService.addComment(plantToComment.id(), "Tes");
         });
+    }
+
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
+
+    @BeforeAll
+    static void beforeAll() {
+        postgres.start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        postgres.stop();
+    }
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
     }
 }

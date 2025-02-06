@@ -2,7 +2,6 @@ package com.marcusfromsweden.plantdoctor;
 
 import com.jayway.jsonpath.JsonPath;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
-import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,30 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class GrowingLocationControllerIT {
 
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
-
-    @BeforeAll
-    static void beforeAll() {
-        postgres.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
-
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private GrowingLocationRepository growingLocationRepository;
 
     private GrowingLocationDTO growingLocationDTO;
 
@@ -98,5 +75,24 @@ public class GrowingLocationControllerIT {
                 .andExpect(jsonPath("$.id", is(id.intValue())))
                 .andExpect(jsonPath("$.name", is(growingLocationDTO.name())))
                 .andExpect(jsonPath("$.occupied", is(growingLocationDTO.occupied())));
+    }
+
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
+
+    @BeforeAll
+    static void beforeAll() {
+        postgres.start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        postgres.stop();
+    }
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
     }
 }

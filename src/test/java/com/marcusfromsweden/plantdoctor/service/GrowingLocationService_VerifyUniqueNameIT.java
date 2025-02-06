@@ -21,6 +21,39 @@ public class GrowingLocationService_VerifyUniqueNameIT {
     public static final String GROWING_LOCATION_NAME_2 = "GROWING_LOCATION_NAME_2";
     public static final String GROWING_LOCATION_NAME_3 = "GROWING_LOCATION_NAME_3";
 
+    @Autowired
+    private GrowingLocationRepository growingLocationRepository;
+
+    @Test
+    void testUniqueNameConstraint() {
+        GrowingLocation location1 = new GrowingLocation();
+        location1.setName(GROWING_LOCATION_NAME_1);
+
+        GrowingLocation location2 = new GrowingLocation();
+        location2.setName(GROWING_LOCATION_NAME_1);
+
+        growingLocationRepository.save(location1);
+
+        assertThrows(DataIntegrityViolationException.class, () ->
+                growingLocationRepository.save(location2)
+        );
+    }
+
+    @Test
+    void testNonUniqueNameConstraint() {
+        GrowingLocation location1 = new GrowingLocation();
+        location1.setName(GROWING_LOCATION_NAME_2);
+
+        GrowingLocation location2 = new GrowingLocation();
+        location2.setName(GROWING_LOCATION_NAME_3);
+
+        growingLocationRepository.save(location1);
+
+        assertDoesNotThrow(() -> {
+            growingLocationRepository.save(location2);
+        });
+    }
+
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
 
     @BeforeAll
@@ -38,38 +71,5 @@ public class GrowingLocationService_VerifyUniqueNameIT {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
-    }
-
-    @Autowired
-    private GrowingLocationRepository growingLocationRepository;
-
-    @Test
-    void testUniqueNameConstraint() {
-        GrowingLocation location1 = new GrowingLocation();
-        location1.setName(GROWING_LOCATION_NAME_1);
-
-        GrowingLocation location2 = new GrowingLocation();
-        location2.setName(GROWING_LOCATION_NAME_1);
-
-        growingLocationRepository.save(location1);
-
-        assertThrows(DataIntegrityViolationException.class, () -> {
-            growingLocationRepository.save(location2);
-        });
-    }
-    
-    @Test
-    void testNonUniqueNameConstraint() {
-        GrowingLocation location1 = new GrowingLocation();
-        location1.setName(GROWING_LOCATION_NAME_2);
-
-        GrowingLocation location2 = new GrowingLocation();
-        location2.setName(GROWING_LOCATION_NAME_3);
-
-        growingLocationRepository.save(location1);
-
-        assertDoesNotThrow(() -> {
-            growingLocationRepository.save(location2);
-        });
     }
 }
