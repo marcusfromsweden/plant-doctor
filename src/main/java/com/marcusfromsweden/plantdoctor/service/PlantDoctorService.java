@@ -23,7 +23,8 @@ public class PlantDoctorService {
 
     public PlantDoctorService(PlantService plantService,
                               PlantSpeciesService plantSpeciesService,
-                              GrowingLocationService growingLocationService, PlantCommentService plantCommentService) {
+                              GrowingLocationService growingLocationService,
+                              PlantCommentService plantCommentService) {
         this.plantService = plantService;
         this.plantSpeciesService = plantSpeciesService;
         this.growingLocationService = growingLocationService;

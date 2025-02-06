@@ -19,14 +19,13 @@ public class PlantCommentService {
         this.plantService = plantService;
     }
 
-    //TODO: make sure the exception due to the comment text being to short is handled
     public PlantComment addComment(Long plantId, String text) {
         Plant plant = plantService.getPlantEntityByIdOrThrow(plantId);
         PlantComment comment = new PlantComment();
         comment.setPlant(plant);
         comment.setText(text);
         comment.setCreatedDate(LocalDateTime.now());
-        
+
         return plantCommentRepository.save(comment);
     }
 
