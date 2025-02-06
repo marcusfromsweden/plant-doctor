@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.time.LocalDate;
@@ -21,10 +20,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
 public class PlantDoctorService_TestQuickCreateIT {
-
-    private final Logger log = LoggerFactory.getLogger(PlantDoctorService_TestQuickCreateIT.class);
 
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
 
@@ -44,6 +40,8 @@ public class PlantDoctorService_TestQuickCreateIT {
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
     }
+
+    private final Logger log = LoggerFactory.getLogger(PlantDoctorService_TestQuickCreateIT.class);
 
     @Autowired
     private PlantDoctorService plantDoctorService;
