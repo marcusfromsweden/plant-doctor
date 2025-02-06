@@ -1,7 +1,7 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
-import com.marcusfromsweden.plantdoctor.dto.SimplePlantDTO;
+import com.marcusfromsweden.plantdoctor.dto.QuickCreatePlantDTO;
 import com.marcusfromsweden.plantdoctor.service.PlantDoctorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +25,8 @@ public class ExternalPlantDoctorController {
     }
 
     @PostMapping
-    public ResponseEntity<PlantDTO> createPlant(@RequestBody SimplePlantDTO simplePlantDTO) {
+    public ResponseEntity<PlantDTO> createPlant(@RequestBody QuickCreatePlantDTO quickCreatePlantDTO) {
         log.warn("Creating a new plant for web");
-        return new ResponseEntity<>(plantDoctorService.createPlant(simplePlantDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(plantDoctorService.quickCreatePlant(quickCreatePlantDTO), HttpStatus.CREATED);
     }
 }

@@ -3,7 +3,7 @@ package com.marcusfromsweden.plantdoctor.service;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantSpeciesDTO;
-import com.marcusfromsweden.plantdoctor.dto.SimplePlantDTO;
+import com.marcusfromsweden.plantdoctor.dto.QuickCreatePlantDTO;
 import com.marcusfromsweden.plantdoctor.entity.PlantComment;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -32,22 +32,22 @@ public class PlantDoctorService {
     }
 
     @Transactional
-    public PlantDTO createPlant(SimplePlantDTO simplePlantDTO) {
+    public PlantDTO quickCreatePlant(QuickCreatePlantDTO quickCreatePlantDTO) {
         PlantSpeciesDTO plantSpecies =
-                plantSpeciesService.getOrCreatePlantSpeciesByName(simplePlantDTO.plantSpeciesName());
+                plantSpeciesService.getOrCreatePlantSpeciesByName(quickCreatePlantDTO.plantSpeciesName());
         GrowingLocationDTO growingLocation =
-                growingLocationService.getOrCreateGrowingLocationByName(simplePlantDTO.growingLocationName());
+                growingLocationService.getOrCreateGrowingLocationByName(quickCreatePlantDTO.growingLocationName());
 
         log.debug("Creating a new plant with species {} and location {}",
                 plantSpecies.name(), growingLocation.name());
         PlantDTO plant = plantService.createPlant(PlantDTO.builder()
-                .plantingDate(simplePlantDTO.plantingDate())
+                .plantingDate(quickCreatePlantDTO.plantingDate())
                 .plantSpeciesId(plantSpecies.id())
                 .growingLocationId(growingLocation.id())
                 .build());
 
-        if (StringUtils.hasText(simplePlantDTO.plantComment())) {
-            PlantComment plantComment = plantCommentService.addComment(plant.id(), simplePlantDTO.plantComment());
+        if (StringUtils.hasText(quickCreatePlantDTO.plantComment())) {
+            PlantComment plantComment = plantCommentService.addComment(plant.id(), quickCreatePlantDTO.plantComment());
             log.debug("Added a comment to the plant: {}", plantComment);
         }
 

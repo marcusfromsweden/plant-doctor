@@ -1,7 +1,7 @@
 package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
-import com.marcusfromsweden.plantdoctor.dto.SimplePlantDTO;
+import com.marcusfromsweden.plantdoctor.dto.QuickCreatePlantDTO;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,12 +26,12 @@ public class PlantCommentService_TestCommentTextSizeIsCheckedIT {
 
     @BeforeEach
     public void setUp() {
-        SimplePlantDTO plantDTO = new SimplePlantDTO(
+        QuickCreatePlantDTO plantDTO = new QuickCreatePlantDTO(
                 LocalDate.now(),
                 "Test Species",
                 "Test Location", "");
 
-        plantToComment = plantDoctorService.createPlant(plantDTO);
+        plantToComment = plantDoctorService.quickCreatePlant(plantDTO);
     }
 
     @Test
