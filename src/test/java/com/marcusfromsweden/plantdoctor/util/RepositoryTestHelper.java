@@ -29,7 +29,7 @@ public class RepositoryTestHelper {
     }
 
     @SuppressWarnings("unused")
-    public void logTableCounts(String header) {
+    public void logEntityCounts(String header) {
         log.info("{}", header);
         log.info("  Plant count:            {}", plantRepository.count());
         log.info("  Plant comment count:    {}", plantCommentRepository.count());
