@@ -1,6 +1,7 @@
 package com.marcusfromsweden.plantdoctor.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class GrowingLocation {
@@ -9,7 +10,8 @@ public class GrowingLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotNull
+    @Column(unique = true)
     private String name;
     private boolean occupied;
 
