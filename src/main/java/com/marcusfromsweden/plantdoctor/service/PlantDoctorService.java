@@ -39,12 +39,12 @@ public class PlantDoctorService {
                 growingLocationService.getOrCreateGrowingLocationByName(quickCreatePlantDTO.growingLocationName());
 
         log.debug("Creating a new plant with species {} and location {}",
-                plantSpecies.name(), growingLocation.name());
+                  plantSpecies.name(), growingLocation.name());
         PlantDTO plant = plantService.createPlant(PlantDTO.builder()
-                .plantingDate(quickCreatePlantDTO.plantingDate())
-                .plantSpeciesId(plantSpecies.id())
-                .growingLocationId(growingLocation.id())
-                .build());
+                                                          .plantingDate(quickCreatePlantDTO.plantingDate())
+                                                          .plantSpeciesId(plantSpecies.id())
+                                                          .growingLocationId(growingLocation.id())
+                                                          .build());
 
         if (StringUtils.hasText(quickCreatePlantDTO.plantComment())) {
             PlantComment plantComment = plantCommentService.addComment(plant.id(), quickCreatePlantDTO.plantComment());

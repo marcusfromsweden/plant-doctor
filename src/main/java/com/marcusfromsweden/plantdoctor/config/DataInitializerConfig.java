@@ -31,7 +31,8 @@ public class DataInitializerConfig {
 
     public DataInitializerConfig(PlantSpeciesRepository plantSpeciesRepository,
                                  GrowingLocationRepository growingLocationRepository,
-                                 PlantRepository plantRepository, PlantCommentRepository plantCommentRepository,
+                                 PlantRepository plantRepository,
+                                 PlantCommentRepository plantCommentRepository,
                                  CustomProperties customProperties) {
         this.plantSpeciesRepository = plantSpeciesRepository;
         this.growingLocationRepository = growingLocationRepository;

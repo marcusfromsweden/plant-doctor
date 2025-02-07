@@ -45,7 +45,8 @@ public class PlantSpeciesService {
         }
     }
 
-    public PlantSpeciesDTO updatePlantSpecies(Long id, PlantSpeciesDTO plantSpeciesDTO) {
+    public PlantSpeciesDTO updatePlantSpecies(Long id,
+                                              PlantSpeciesDTO plantSpeciesDTO) {
         Optional<PlantSpecies> optionalPlantSpecies = plantSpeciesRepository.findById(id);
         if (optionalPlantSpecies.isPresent()) {
             PlantSpecies existingPlantSpecies = optionalPlantSpecies.get();

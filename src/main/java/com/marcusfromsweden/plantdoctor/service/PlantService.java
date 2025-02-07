@@ -64,7 +64,8 @@ public class PlantService {
         return plantMapper.toDTO(savedPlant);
     }
 
-    public PlantDTO updatePlant(Long plantId, PlantDTO plantDTO) {
+    public PlantDTO updatePlant(Long plantId,
+                                PlantDTO plantDTO) {
         Optional<Plant> optionalPlant = plantRepository.findById(plantId);
         if (optionalPlant.isPresent()) {
             Plant plant = optionalPlant.get();
@@ -87,7 +88,7 @@ public class PlantService {
             throw new RuntimeException("Plant not found with id " + plantId);
         }
     }
-    
+
     public Plant getPlantEntityByIdOrThrow(Long id) {
         return plantRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Plant not found with id " + id));

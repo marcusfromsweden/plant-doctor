@@ -46,8 +46,8 @@ public class GrowingLocationControllerIT {
                 growingLocationDTO.name(), growingLocationDTO.occupied());
 
         mockMvc.perform(post("/api/growing-locations")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(growingLocationJson))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(growingLocationJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is(growingLocationDTO.name())))
                 .andExpect(jsonPath("$.occupied", is(growingLocationDTO.occupied())));
@@ -60,8 +60,8 @@ public class GrowingLocationControllerIT {
                 growingLocationDTO.name(), growingLocationDTO.occupied());
 
         String response = mockMvc.perform(post("/api/growing-locations")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(growingLocationJson))
+                                                  .contentType(MediaType.APPLICATION_JSON)
+                                                  .content(growingLocationJson))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 
@@ -70,7 +70,7 @@ public class GrowingLocationControllerIT {
 
         // Then, retrieve the created growing location
         mockMvc.perform(get("/api/growing-locations/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(id.intValue())))
                 .andExpect(jsonPath("$.name", is(growingLocationDTO.name())))

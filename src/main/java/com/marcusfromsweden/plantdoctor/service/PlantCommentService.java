@@ -14,12 +14,14 @@ public class PlantCommentService {
     private final PlantCommentRepository plantCommentRepository;
     private final PlantService plantService;
 
-    public PlantCommentService(PlantCommentRepository plantCommentRepository, PlantService plantService) {
+    public PlantCommentService(PlantCommentRepository plantCommentRepository,
+                               PlantService plantService) {
         this.plantCommentRepository = plantCommentRepository;
         this.plantService = plantService;
     }
 
-    public PlantComment addComment(Long plantId, String text) {
+    public PlantComment addComment(Long plantId,
+                                   String text) {
         Plant plant = plantService.getPlantEntityByIdOrThrow(plantId);
         PlantComment comment = new PlantComment();
         comment.setPlant(plant);

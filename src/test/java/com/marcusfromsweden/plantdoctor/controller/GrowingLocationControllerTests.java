@@ -54,7 +54,7 @@ public class GrowingLocationControllerTests {
                 .thenReturn(Collections.singletonList(growingLocationDTO));
 
         mockMvc.perform(get(API_PATH_GROWING_LOCATIONS)
-                        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$[0].name", is(growingLocationDTO.name())))
                 .andExpect(jsonPath("$[0].occupied", is(growingLocationDTO.occupied())));
@@ -66,7 +66,7 @@ public class GrowingLocationControllerTests {
                 .thenReturn(Optional.of(growingLocationDTO));
 
         mockMvc.perform(get(API_PATH_GROWING_LOCATIONS + "/{id}", growingLocationDTO.id())
-                        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(growingLocationDTO.name())))
                 .andExpect(jsonPath("$.occupied", is(growingLocationDTO.occupied())));
@@ -81,8 +81,8 @@ public class GrowingLocationControllerTests {
                 growingLocationDTO.name(), growingLocationDTO.occupied());
 
         mockMvc.perform(post(API_PATH_GROWING_LOCATIONS)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(growingLocationJson)).andExpect(status().isCreated())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(growingLocationJson)).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(growingLocationDTO.name())))
                 .andExpect(jsonPath("$.occupied", is(growingLocationDTO.occupied())));
@@ -102,8 +102,8 @@ public class GrowingLocationControllerTests {
                         growingLocationDTO.occupied());
 
         mockMvc.perform(put(API_PATH_GROWING_LOCATIONS + "/{id}", growingLocationDTO.id())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(growingLocationJson)).andExpect(status().isOk())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(growingLocationJson)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(growingLocationDTO.name())))
                 .andExpect(jsonPath("$.occupied", is(growingLocationDTO.occupied())));
@@ -116,7 +116,7 @@ public class GrowingLocationControllerTests {
                 .thenReturn(Optional.of(growingLocationDTO));
 
         mockMvc.perform(get(API_PATH_GROWING_LOCATIONS + "/name/{name}", name)
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(growingLocationDTO.name())))
@@ -129,7 +129,7 @@ public class GrowingLocationControllerTests {
                 .deleteGrowingLocation(growingLocationDTO.id());
 
         mockMvc.perform(delete(API_PATH_GROWING_LOCATIONS + "/{id}", growingLocationDTO.id())
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
 }

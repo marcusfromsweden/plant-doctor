@@ -34,7 +34,8 @@ public class PlantCommentService_TestCommentTextSizeIsCheckedIT {
         QuickCreatePlantDTO plantDTO = new QuickCreatePlantDTO(
                 LocalDate.now(),
                 "Test Species",
-                "Test Location", "");
+                "Test Location",
+                "");
 
         plantToComment = plantDoctorService.quickCreatePlant(plantDTO);
     }

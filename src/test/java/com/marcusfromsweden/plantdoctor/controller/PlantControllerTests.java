@@ -36,7 +36,7 @@ public class PlantControllerTests {
     private PlantService plantService;
     @MockBean
     private PlantCommentService plantCommentService;
-    
+
     private PlantDTO plantDTO;
     private PlantSpeciesDTO plantSpeciesDTO;
     private GrowingLocationDTO growingLocationDTO;
@@ -58,7 +58,7 @@ public class PlantControllerTests {
         Mockito.when(plantService.getAllPlants()).thenReturn(Collections.singletonList(plantDTO));
 
         mockMvc.perform(get(API_PATH)
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(plantDTO.id().intValue())))
                 .andExpect(jsonPath("$[0].plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
@@ -72,7 +72,7 @@ public class PlantControllerTests {
         Mockito.when(plantService.getPlantById(plantDTO.id())).thenReturn(Optional.of(plantDTO));
 
         mockMvc.perform(get(API_PATH + "/{id}", plantDTO.id())
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
@@ -94,8 +94,8 @@ public class PlantControllerTests {
         );
 
         mockMvc.perform(post(API_PATH)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(plantJson))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(plantJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
@@ -117,8 +117,8 @@ public class PlantControllerTests {
         );
 
         mockMvc.perform(put(API_PATH + "/{id}", plantDTO.id())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(plantJson))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(plantJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantSpeciesId", is(plantSpeciesDTO.id().intValue())))
@@ -132,7 +132,7 @@ public class PlantControllerTests {
         Mockito.doNothing().when(plantService).deletePlant(plantDTO.id());
 
         mockMvc.perform(delete(API_PATH + "/{id}", plantDTO.id())
-                        .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
 }
