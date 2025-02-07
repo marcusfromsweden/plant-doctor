@@ -23,7 +23,7 @@ public class PlantCommentService_TestCommentTextSizeConstraintIT extends Postgre
     private PlantDoctorService plantDoctorService;
 
     private PlantDTO plantToComment;
-    
+
     @BeforeEach
     public void setUp() {
         QuickCreatePlantDTO plantDTO = new QuickCreatePlantDTO(
