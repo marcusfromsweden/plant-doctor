@@ -3,6 +3,7 @@ package com.marcusfromsweden.plantdoctor.util;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 
+//todo change to @Component and make static methods non-static
 public class GrowingLocationMapper {
 
     public static GrowingLocationDTO toDTO(GrowingLocation growingLocation) {

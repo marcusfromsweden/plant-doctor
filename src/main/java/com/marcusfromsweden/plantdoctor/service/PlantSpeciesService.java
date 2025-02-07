@@ -88,4 +88,10 @@ public class PlantSpeciesService {
 
         return createPlantSpecies(plantSpeciesDTO);
     }
+
+    public PlantSpecies getPlantSpeciesEntityByIdOrThrow(Long plantSpeciesId) {
+        //todo update when entity specific exception is added
+        return plantSpeciesRepository.findById(plantSpeciesId)
+                .orElseThrow(() -> new RuntimeException("PlantSpecies not found with id " + plantSpeciesId));
+    }
 }

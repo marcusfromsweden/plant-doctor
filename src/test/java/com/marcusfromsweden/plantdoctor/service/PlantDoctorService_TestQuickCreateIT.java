@@ -26,11 +26,13 @@ public class PlantDoctorService_TestQuickCreateIT extends PostgresTestContainerT
         QuickCreatePlantDTO quickCreatePlantDTO = new QuickCreatePlantDTO(
                 LocalDate.now(),
                 "Test Species",
+                "Test Seed Package",
                 "Test Location",
                 "This is a test comment");
 
         PlantDTO createdPlant = plantDoctorService.quickCreatePlant(quickCreatePlantDTO);
 
+        //todo add assertions for all fields
         assertNotNull(createdPlant);
         assertNotNull(createdPlant.id());
         assertNotNull(plantRepository.findById(createdPlant.id()).orElse(null));

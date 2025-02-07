@@ -3,10 +3,10 @@ package com.marcusfromsweden.plantdoctor.service;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.entity.Plant;
-import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
 import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
-import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
+import com.marcusfromsweden.plantdoctor.repository.SeedPackageRepository;
 import com.marcusfromsweden.plantdoctor.util.PlantMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,17 +19,17 @@ import java.util.stream.Collectors;
 public class PlantService {
 
     private final PlantRepository plantRepository;
-    private final PlantSpeciesRepository plantSpeciesRepository;
+    private final SeedPackageRepository seedPackageRepository;
     private final GrowingLocationRepository growingLocationRepository;
     private final PlantMapper plantMapper;
 
     @Autowired
     public PlantService(PlantRepository plantRepository,
-                        PlantSpeciesRepository plantSpeciesRepository,
+                        SeedPackageRepository seedPackageRepository,
                         GrowingLocationRepository growingLocationRepository,
                         PlantMapper plantMapper) {
         this.plantRepository = plantRepository;
-        this.plantSpeciesRepository = plantSpeciesRepository;
+        this.seedPackageRepository = seedPackageRepository;
         this.growingLocationRepository = growingLocationRepository;
         this.plantMapper = plantMapper;
     }
@@ -48,13 +48,16 @@ public class PlantService {
     public PlantDTO createPlant(PlantDTO plantDTO) {
         Plant plant = new Plant();
 
-        // Set plant species
-        Optional<PlantSpecies> optionalPlantSpecies = plantSpeciesRepository.findById(plantDTO.plantSpeciesId());
-        optionalPlantSpecies.ifPresent(plant::setPlantSpecies);
+        //todo: add validation of DTOs
 
-        // Set growing location
-        Optional<GrowingLocation> optionalGrowingLocation = growingLocationRepository.findById(plantDTO.growingLocationId());
-        optionalGrowingLocation.ifPresent(plant::setGrowingLocation);
+        //todo: add entity specific exception and update below
+        SeedPackage seedPackage = seedPackageRepository.findById(plantDTO.seedPackageId())
+                .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + plantDTO.seedPackageId()));
+        plant.setSeedPackage(seedPackage);
+
+        GrowingLocation growingLocation = growingLocationRepository.findById(plantDTO.growingLocationId())
+                .orElseThrow(() -> new RuntimeException("GrowingLocation not found with ID: " + plantDTO.growingLocationId()));
+        plant.setGrowingLocation(growingLocation);
 
         // Set other fields
         plant.setPlantingDate(plantDTO.plantingDate());
@@ -66,27 +69,22 @@ public class PlantService {
 
     public PlantDTO updatePlant(Long plantId,
                                 PlantDTO plantDTO) {
-        Optional<Plant> optionalPlant = plantRepository.findById(plantId);
-        if (optionalPlant.isPresent()) {
-            Plant plant = optionalPlant.get();
+        Plant plant = plantRepository.findById(plantId).orElseThrow(() -> new RuntimeException("Plant not found with id " + plantId));
 
-            // Update plant species
-            Optional<PlantSpecies> optionalPlantSpecies = plantSpeciesRepository.findById(plantDTO.plantSpeciesId());
-            optionalPlantSpecies.ifPresent(plant::setPlantSpecies);
+        SeedPackage seedPackage = seedPackageRepository.findById(plantDTO.seedPackageId())
+                .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + plantDTO.seedPackageId()));
+        plant.setSeedPackage(seedPackage);
 
-            // Update growing location
-            Optional<GrowingLocation> optionalGrowingLocation = growingLocationRepository.findById(plantDTO.growingLocationId());
-            optionalGrowingLocation.ifPresent(plant::setGrowingLocation);
+        GrowingLocation growingLocation = growingLocationRepository.findById(plantDTO.growingLocationId())
+                .orElseThrow(() -> new RuntimeException("GrowingLocation not found with ID: " + plantDTO.growingLocationId()));
+        plant.setGrowingLocation(growingLocation);
 
-            // Update other fields
-            plant.setPlantingDate(plantDTO.plantingDate());
-            plant.setGerminationDate(plantDTO.germinationDate());
+        // Update other fields
+        plant.setPlantingDate(plantDTO.plantingDate());
+        plant.setGerminationDate(plantDTO.germinationDate());
 
-            Plant updatedPlant = plantRepository.save(plant);
-            return plantMapper.toDTO(updatedPlant);
-        } else {
-            throw new RuntimeException("Plant not found with id " + plantId);
-        }
+        Plant updatedPlant = plantRepository.save(plant);
+        return plantMapper.toDTO(updatedPlant);
     }
 
     public Plant getPlantEntityByIdOrThrow(Long id) {

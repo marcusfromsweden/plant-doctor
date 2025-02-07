@@ -3,6 +3,7 @@ package com.marcusfromsweden.plantdoctor.util;
 import com.marcusfromsweden.plantdoctor.dto.PlantSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
 
+//todo change to @Component and make static methods non-static
 public class PlantSpeciesMapper {
 
     public static PlantSpeciesDTO toDTO(PlantSpecies plantSpecies) {

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public record PlantDTO(
         Long id,
-        Long plantSpeciesId,
+        Long seedPackageId,
         Long growingLocationId,
         LocalDate plantingDate,
         LocalDate germinationDate
@@ -15,7 +15,7 @@ public record PlantDTO(
 
     public static class Builder {
         private Long id;
-        private Long plantSpeciesId;
+        private Long seedPackageId;
         private Long growingLocationId;
         private LocalDate plantingDate;
         private LocalDate germinationDate;
@@ -25,8 +25,8 @@ public record PlantDTO(
             return this;
         }
 
-        public Builder plantSpeciesId(Long plantSpeciesId) {
-            this.plantSpeciesId = plantSpeciesId;
+        public Builder seedPackageId(Long seedPackageId) {
+            this.seedPackageId = seedPackageId;
             return this;
         }
 
@@ -46,7 +46,7 @@ public record PlantDTO(
         }
 
         public PlantDTO build() {
-            return new PlantDTO(id, plantSpeciesId, growingLocationId, plantingDate, germinationDate);
+            return new PlantDTO(id, seedPackageId, growingLocationId, plantingDate, germinationDate);
         }
     }
 }

@@ -29,6 +29,7 @@ public class PlantCommentService_TestCommentTextSizeConstraintIT extends Postgre
         QuickCreatePlantDTO plantDTO = new QuickCreatePlantDTO(
                 LocalDate.now(),
                 "Test Species",
+                "Test Seed Package",
                 "Test Location",
                 "");
 
