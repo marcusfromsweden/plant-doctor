@@ -37,10 +37,13 @@ public class PlantMapper {
         plant.setId(plantDTO.id());
 
         //todo use entity related exceptions
+        //todo create a service method getSeedPackageByIdOrThrow
         SeedPackage seedPackage = seedPackageRepository.findById(plantDTO.seedPackageId())
                 .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + plantDTO.seedPackageId()));
         plant.setSeedPackage(seedPackage);
 
+        //todo use entity related exceptions
+        //todo create a service method getGrowingLocationByIdOrThrow
         GrowingLocation growingLocation = growingLocationRepository.findById(plantDTO.growingLocationId())
                 .orElseThrow(() -> new RuntimeException("GrowingLocation not found with ID: " + plantDTO.growingLocationId()));
         plant.setGrowingLocation(growingLocation);
