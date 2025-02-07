@@ -71,6 +71,7 @@ public class PlantService {
                                 PlantDTO plantDTO) {
         Plant plant = plantRepository.findById(plantId).orElseThrow(() -> new RuntimeException("Plant not found with id " + plantId));
 
+        //todo use entity related exceptions
         SeedPackage seedPackage = seedPackageRepository.findById(plantDTO.seedPackageId())
                 .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + plantDTO.seedPackageId()));
         plant.setSeedPackage(seedPackage);
@@ -88,6 +89,7 @@ public class PlantService {
     }
 
     public Plant getPlantEntityByIdOrThrow(Long id) {
+        //todo use entity related exceptions
         return plantRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Plant not found with id " + id));
     }

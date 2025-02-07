@@ -37,19 +37,24 @@ public class SeedPackageService {
         return seedPackageMapper.toDTO(seedPackage);
     }
 
-    public SeedPackage updateSeedPackage(Long id,
-                                         SeedPackage seedPackageDetails) {
+    public SeedPackageDTO updateSeedPackage(Long id,
+                                            SeedPackageDTO seedPackageDetails) {
+        //todo use SeedPackage exceptions instead of RuntimeException
+        //todo create a service method getSeedPackageByIdOrThrow
         SeedPackage seedPackage = seedPackageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + id));
 
-        seedPackage.setPlantSpecies(seedPackageDetails.getPlantSpecies());
-        seedPackage.setName(seedPackageDetails.getName());
-        seedPackage.setNumberOfSeeds(seedPackageDetails.getNumberOfSeeds());
+        SeedPackageDTO seedPackageDTO = SeedPackageDTO.builder()
+                .id(seedPackage.getId())
+                .plantSpeciesId(seedPackageDetails.plantSpeciesId())
+                .name(seedPackageDetails.name())
+                .build();
 
-        return seedPackageRepository.save(seedPackage);
+        return seedPackageMapper.toDTO(seedPackageRepository.save(seedPackageMapper.toEntity(seedPackageDTO)));
     }
 
     public void deleteSeedPackage(Long id) {
+        //todo use entity related exceptions
         SeedPackage seedPackage = seedPackageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + id));
         seedPackageRepository.delete(seedPackage);
@@ -59,12 +64,12 @@ public class SeedPackageService {
                                                                         Long plantSpeciesId) {
         List<SeedPackage> seedPackages = seedPackageRepository.findByNameAndPlantSpeciesId(seedPackageName, plantSpeciesId);
         if (seedPackages.size() > 1) {
+            //todo use entity related exceptions
             throw new RuntimeException("Multiple SeedPackages found with name: %s and plant species id: %d"
                                                .formatted(seedPackageName, plantSpeciesId));
         }
 
         if (seedPackages.isEmpty()) {
-            // use createSeedPackage(SeedPackageDTO) and SeedPackageDTO.builder to create a new SeedPackage
             SeedPackageDTO seedPackageDTO = SeedPackageDTO.builder()
                     .name(seedPackageName)
                     .plantSpeciesId(plantSpeciesId)

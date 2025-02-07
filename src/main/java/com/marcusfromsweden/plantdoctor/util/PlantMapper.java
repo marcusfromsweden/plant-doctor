@@ -36,6 +36,7 @@ public class PlantMapper {
         Plant plant = new Plant();
         plant.setId(plantDTO.id());
 
+        //todo use entity related exceptions
         SeedPackage seedPackage = seedPackageRepository.findById(plantDTO.seedPackageId())
                 .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + plantDTO.seedPackageId()));
         plant.setSeedPackage(seedPackage);
