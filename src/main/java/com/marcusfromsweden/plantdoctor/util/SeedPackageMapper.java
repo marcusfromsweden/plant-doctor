@@ -30,8 +30,13 @@ public class SeedPackageMapper {
         return toEntity(seedPackage, seedPackageDTO);
     }
 
-    public SeedPackage toEntity(SeedPackage seedPackage,
-                                SeedPackageDTO seedPackageDTO) {
+    public void updateEntityUsingDTO(SeedPackage seedPackage,
+                                     SeedPackageDTO seedPackageDTO) {
+        toEntity(seedPackage, seedPackageDTO);
+    }
+
+    private SeedPackage toEntity(SeedPackage seedPackage,
+                                 SeedPackageDTO seedPackageDTO) {
         BotanicalSpecies botanicalSpecies =
                 botanicalSpeciesService.getBotanicalSpeciesEntityByIdOrThrow(seedPackageDTO.botanicalSpeciesId());
 

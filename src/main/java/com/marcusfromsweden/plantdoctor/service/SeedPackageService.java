@@ -6,6 +6,7 @@ import com.marcusfromsweden.plantdoctor.exception.MultipleSeedPackageFoundExcept
 import com.marcusfromsweden.plantdoctor.exception.SeedPackageNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.SeedPackageRepository;
 import com.marcusfromsweden.plantdoctor.util.SeedPackageMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +40,12 @@ public class SeedPackageService {
         return seedPackageMapper.toDTO(seedPackage);
     }
 
+    @Transactional
     public SeedPackageDTO updateSeedPackage(Long id,
                                             SeedPackageDTO seedPackageDetails) {
         SeedPackage seedPackage = getSeedPackageEntityByIdOrThrow(id);
-        SeedPackage updatedSeedPackage = seedPackageMapper.toEntity(seedPackage, seedPackageDetails);
-        //todo verify that we can remove the save below
-        seedPackageRepository.save(updatedSeedPackage);
-        return seedPackageMapper.toDTO(updatedSeedPackage);
+        seedPackageMapper.updateEntityUsingDTO(seedPackage, seedPackageDetails);
+        return seedPackageMapper.toDTO(seedPackage);
     }
 
     public void deleteSeedPackage(Long id) {

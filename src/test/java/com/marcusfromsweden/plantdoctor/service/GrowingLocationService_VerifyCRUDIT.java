@@ -67,6 +67,8 @@ public class GrowingLocationService_VerifyCRUDIT extends PostgresTestContainerTe
                 .occupied(false)
                 .build();
 
+        assertEquals(0, growingLocationService.getAllGrowingLocations().size());
+
         GrowingLocationDTO growingLocation = growingLocationService.createGrowingLocation(growingLocationDTOForCreateAndUpdate);
         assertEquals(1, growingLocationService.getAllGrowingLocations().size());
 
