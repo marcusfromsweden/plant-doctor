@@ -13,7 +13,7 @@ public class GrowingLocation {
     @NotNull
     @Column(unique = true)
     private String name;
-    //todo remove occupied
+    //todo remove occupied after Flyway is added
     private boolean occupied;
 
     // Getters and Setters

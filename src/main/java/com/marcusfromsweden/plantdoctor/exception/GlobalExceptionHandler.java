@@ -23,7 +23,6 @@ public class GlobalExceptionHandler {
         return errors;
     }
 
-    //todo add more exceptions for conflict responses
     @ExceptionHandler({
             DuplicateGrowingLocationNameException.class,
             DuplicateBotanicalSpeciesNameException.class,
@@ -33,7 +32,6 @@ public class GlobalExceptionHandler {
         return Map.of("error", ex.getMessage());
     }
 
-    //todo add exception handler for not found responses
     @ExceptionHandler({
             SeedPackageNotFoundByIdException.class,
             PlantNotFoundByIdException.class,

@@ -6,6 +6,7 @@ import com.marcusfromsweden.plantdoctor.exception.BotanicalSpeciesNotFoundByIdEx
 import com.marcusfromsweden.plantdoctor.exception.DuplicateBotanicalSpeciesNameException;
 import com.marcusfromsweden.plantdoctor.repository.BotanicalSpeciesRepository;
 import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesMapper;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -45,22 +46,20 @@ public class BotanicalSpeciesService {
         return botanicalSpeciesMapper.toDTO(createdBotanicalSpecies);
     }
 
+    @Transactional
     public BotanicalSpeciesDTO updateBotanicalSpecies(Long id,
                                                       BotanicalSpeciesDTO botanicalSpeciesDTO) {
-        BotanicalSpecies existingBotanicalSpecies = getBotanicalSpeciesEntityByIdOrThrow(botanicalSpeciesDTO.id());
-        existingBotanicalSpecies.setName(botanicalSpeciesDTO.name());
-        BotanicalSpecies updatedBotanicalSpecies;
+        BotanicalSpecies botanicalSpecies = getBotanicalSpeciesEntityByIdOrThrow(id);
+        botanicalSpecies.setName(botanicalSpeciesDTO.name());
         try {
-            updatedBotanicalSpecies = botanicalSpeciesRepository.save(existingBotanicalSpecies);
+            botanicalSpeciesRepository.save(botanicalSpecies);
         } catch (DataIntegrityViolationException e) {
-            throw new DuplicateBotanicalSpeciesNameException(existingBotanicalSpecies.getName());
+            throw new DuplicateBotanicalSpeciesNameException(botanicalSpecies.getName());
         }
 
-        updatedBotanicalSpecies.setDescription(botanicalSpeciesDTO.description());
-        updatedBotanicalSpecies.setEstimatedDaysToGermination(botanicalSpeciesDTO.estimatedDaysToGermination());
-        //todo verify that we don't need to save the updated entity again
-        BotanicalSpecies finalBotanicalSpecies = botanicalSpeciesRepository.save(updatedBotanicalSpecies);
-        return botanicalSpeciesMapper.toDTO(finalBotanicalSpecies);
+        botanicalSpecies.setDescription(botanicalSpeciesDTO.description());
+        botanicalSpecies.setEstimatedDaysToGermination(botanicalSpeciesDTO.estimatedDaysToGermination());
+        return botanicalSpeciesMapper.toDTO(botanicalSpecies);
     }
 
     public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesByName(String name) {
