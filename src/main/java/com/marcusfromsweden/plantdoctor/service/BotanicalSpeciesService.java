@@ -2,9 +2,10 @@ package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
+import com.marcusfromsweden.plantdoctor.exception.BotanicalSpeciesNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.exception.DuplicateBotanicalSpeciesNameException;
 import com.marcusfromsweden.plantdoctor.repository.BotanicalSpeciesRepository;
-import com.marcusfromsweden.plantdoctor.util.PBotanicalSpeciesMapper;
+import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,49 +27,41 @@ public class BotanicalSpeciesService {
 
     public List<BotanicalSpeciesDTO> getAllBotanicalSpecies() {
         return botanicalSpeciesRepository.findAll().stream()
-                .map(PBotanicalSpeciesMapper::toDTO)
+                .map(BotanicalSpeciesMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesById(Long id) {
         return botanicalSpeciesRepository.findById(id)
-                .map(PBotanicalSpeciesMapper::toDTO);
+                .map(BotanicalSpeciesMapper::toDTO);
     }
 
     public BotanicalSpeciesDTO createBotanicalSpecies(BotanicalSpeciesDTO botanicalSpeciesDTO) {
-        BotanicalSpecies botanicalSpecies = PBotanicalSpeciesMapper.toEntity(botanicalSpeciesDTO);
-        try {
-            BotanicalSpecies createdBotanicalSpecies = botanicalSpeciesRepository.save(botanicalSpecies);
-            return PBotanicalSpeciesMapper.toDTO(createdBotanicalSpecies);
-        } catch (DataIntegrityViolationException e) {
-            throw new DuplicateBotanicalSpeciesNameException("Plant species name already exists: " + botanicalSpecies.getName());
-        }
+        BotanicalSpecies botanicalSpecies = BotanicalSpeciesMapper.toEntity(botanicalSpeciesDTO);
+        BotanicalSpecies createdBotanicalSpecies = botanicalSpeciesRepository.save(botanicalSpecies);
+        return BotanicalSpeciesMapper.toDTO(createdBotanicalSpecies);
     }
 
     public BotanicalSpeciesDTO updateBotanicalSpecies(Long id,
                                                       BotanicalSpeciesDTO botanicalSpeciesDTO) {
-        //todo add entity specific exception
-        //todo change to ...orElseThrow
-        Optional<BotanicalSpecies> optionalBotanicalSpecies = botanicalSpeciesRepository.findById(id);
-        if (optionalBotanicalSpecies.isPresent()) {
-            BotanicalSpecies existingBotanicalSpecies = optionalBotanicalSpecies.get();
-            existingBotanicalSpecies.setName(botanicalSpeciesDTO.name());
-            existingBotanicalSpecies.setDescription(botanicalSpeciesDTO.description());
-            existingBotanicalSpecies.setEstimatedDaysToGermination(botanicalSpeciesDTO.estimatedDaysToGermination());
-            try {
-                BotanicalSpecies updatedBotanicalSpecies = botanicalSpeciesRepository.save(existingBotanicalSpecies);
-                return PBotanicalSpeciesMapper.toDTO(updatedBotanicalSpecies);
-            } catch (DataIntegrityViolationException e) {
-                throw new DuplicateBotanicalSpeciesNameException("Plant species name already exists: " + existingBotanicalSpecies.getName());
-            }
-        } else {
-            throw new RuntimeException("BotanicalSpecies not found with id " + id);
+        BotanicalSpecies existingBotanicalSpecies = getBotanicalSpeciesEntityByIdOrThrow(botanicalSpeciesDTO.id());
+        existingBotanicalSpecies.setName(botanicalSpeciesDTO.name());
+        BotanicalSpecies updatedBotanicalSpecies;
+        try {
+            updatedBotanicalSpecies = botanicalSpeciesRepository.save(existingBotanicalSpecies);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateBotanicalSpeciesNameException(existingBotanicalSpecies.getName());
         }
+
+        updatedBotanicalSpecies.setDescription(botanicalSpeciesDTO.description());
+        updatedBotanicalSpecies.setEstimatedDaysToGermination(botanicalSpeciesDTO.estimatedDaysToGermination());
+        BotanicalSpecies finalBotanicalSpecies = botanicalSpeciesRepository.save(updatedBotanicalSpecies);
+        return BotanicalSpeciesMapper.toDTO(finalBotanicalSpecies);
     }
 
     public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesByName(String name) {
         return botanicalSpeciesRepository.findByName(name)
-                .map(PBotanicalSpeciesMapper::toDTO);
+                .map(BotanicalSpeciesMapper::toDTO);
     }
 
     public void deleteBotanicalSpecies(Long id) {
@@ -92,8 +85,13 @@ public class BotanicalSpeciesService {
     }
 
     public BotanicalSpecies getBotanicalSpeciesEntityByIdOrThrow(Long botanicalSpeciesId) {
-        //todo update when entity specific exception is added
         return botanicalSpeciesRepository.findById(botanicalSpeciesId)
-                .orElseThrow(() -> new RuntimeException("BotanicalSpecies not found with id " + botanicalSpeciesId));
+                .orElseThrow(() -> new BotanicalSpeciesNotFoundByIdException(botanicalSpeciesId));
     }
+
+    private BotanicalSpeciesDTO getBotanicalSpeciesByIdOrThrow(Long id) {
+        return BotanicalSpeciesMapper.toDTO(getBotanicalSpeciesEntityByIdOrThrow(id));
+    }
+
+
 }

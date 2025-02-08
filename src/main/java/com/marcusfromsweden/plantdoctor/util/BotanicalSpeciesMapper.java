@@ -4,7 +4,7 @@ import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
 
 //todo change to @Component and make static methods non-static
-public class PBotanicalSpeciesMapper {
+public class BotanicalSpeciesMapper {
 
     public static BotanicalSpeciesDTO toDTO(BotanicalSpecies botanicalSpecies) {
         return new BotanicalSpeciesDTO(

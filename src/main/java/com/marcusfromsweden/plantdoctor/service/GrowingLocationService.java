@@ -49,6 +49,8 @@ public class GrowingLocationService {
                                                     GrowingLocationDTO growingLocationDTO) {
         //todo add entity specific exception
         //todo change to ....orElseThrow
+
+
         Optional<GrowingLocation> optionalGrowingLocation = growingLocationRepository.findById(id);
         if (optionalGrowingLocation.isPresent()) {
             GrowingLocation existingGrowingLocation = optionalGrowingLocation.get();
