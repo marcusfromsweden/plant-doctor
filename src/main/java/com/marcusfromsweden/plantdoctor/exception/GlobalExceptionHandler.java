@@ -25,7 +25,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             DuplicateGrowingLocationNameException.class,
-            DuplicateBotanicalSpeciesNameException.class,
             MultipleSeedPackageFoundException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleDuplicateNameException(RuntimeException ex) {

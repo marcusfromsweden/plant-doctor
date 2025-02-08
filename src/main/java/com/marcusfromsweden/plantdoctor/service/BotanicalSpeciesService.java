@@ -4,12 +4,10 @@ import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.dto.mapper.BotanicalSpeciesMapper;
 import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
 import com.marcusfromsweden.plantdoctor.exception.BotanicalSpeciesNotFoundByIdException;
-import com.marcusfromsweden.plantdoctor.exception.DuplicateBotanicalSpeciesNameException;
 import com.marcusfromsweden.plantdoctor.repository.BotanicalSpeciesRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,12 +49,6 @@ public class BotanicalSpeciesService {
                                                       BotanicalSpeciesDTO botanicalSpeciesDTO) {
         BotanicalSpecies botanicalSpecies = getBotanicalSpeciesEntityByIdOrThrow(id);
         botanicalSpecies.setName(botanicalSpeciesDTO.name());
-        try {
-            botanicalSpeciesRepository.save(botanicalSpecies);
-        } catch (DataIntegrityViolationException e) {
-            throw new DuplicateBotanicalSpeciesNameException(botanicalSpecies.getName());
-        }
-
         botanicalSpecies.setDescription(botanicalSpeciesDTO.description());
         botanicalSpecies.setEstimatedDaysToGermination(botanicalSpeciesDTO.estimatedDaysToGermination());
         return botanicalSpeciesMapper.toDTO(botanicalSpecies);
