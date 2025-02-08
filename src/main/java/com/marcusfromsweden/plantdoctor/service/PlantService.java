@@ -40,8 +40,7 @@ public class PlantService {
     }
 
     public PlantDTO createPlant(PlantDTO plantDTO) {
-        Plant plant = new Plant();
-        plantMapper.updateEntityUsingDTO(plant, plantDTO);
+        Plant plant = plantMapper.toEntity(plantDTO);
         return plantMapper.toDTO(plantRepository.save(plant));
     }
 
