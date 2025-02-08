@@ -54,7 +54,7 @@ public class SeedPackageService {
     }
 
     public void deleteSeedPackage(Long id) {
-        //todo use entity related exceptions
+        //todo add entity specific exception
         SeedPackage seedPackage = seedPackageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + id));
         seedPackageRepository.delete(seedPackage);
@@ -64,7 +64,7 @@ public class SeedPackageService {
                                                                         Long plantSpeciesId) {
         List<SeedPackage> seedPackages = seedPackageRepository.findByNameAndPlantSpeciesId(seedPackageName, plantSpeciesId);
         if (seedPackages.size() > 1) {
-            //todo use entity related exceptions
+            //todo add entity specific exception
             throw new RuntimeException("Multiple SeedPackages found with name: %s and plant species id: %d"
                                                .formatted(seedPackageName, plantSpeciesId));
         }

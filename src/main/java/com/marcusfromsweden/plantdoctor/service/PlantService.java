@@ -48,14 +48,14 @@ public class PlantService {
     public PlantDTO createPlant(PlantDTO plantDTO) {
         Plant plant = new Plant();
 
-        //todo: add validation of DTOs
-
-        //todo: add entity specific exception and update below
+        //todo add validation of DTOs
+        //todo use PlantMapper.toEntity
+        //todo add entity specific exception
         SeedPackage seedPackage = seedPackageRepository.findById(plantDTO.seedPackageId())
                 .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + plantDTO.seedPackageId()));
         plant.setSeedPackage(seedPackage);
 
-        //todo use entity related exceptions
+        //todo add entity specific exception
         //todo create a service method getGrowingLocationByIdOrThrow
         GrowingLocation growingLocation = growingLocationRepository.findById(plantDTO.growingLocationId())
                 .orElseThrow(() -> new RuntimeException("GrowingLocation not found with ID: " + plantDTO.growingLocationId()));
@@ -73,12 +73,13 @@ public class PlantService {
                                 PlantDTO plantDTO) {
         Plant plant = plantRepository.findById(plantId).orElseThrow(() -> new RuntimeException("Plant not found with id " + plantId));
 
-        //todo use entity related exceptions
+        //todo use PlantMapper.toEntity
+        //todo add entity specific exception
         SeedPackage seedPackage = seedPackageRepository.findById(plantDTO.seedPackageId())
                 .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + plantDTO.seedPackageId()));
         plant.setSeedPackage(seedPackage);
 
-        //todo use entity related exceptions
+        //todo add entity specific exception
         //todo create a service method getGrowingLocationByIdOrThrow
         GrowingLocation growingLocation = growingLocationRepository.findById(plantDTO.growingLocationId())
                 .orElseThrow(() -> new RuntimeException("GrowingLocation not found with ID: " + plantDTO.growingLocationId()));
@@ -93,7 +94,7 @@ public class PlantService {
     }
 
     public Plant getPlantEntityByIdOrThrow(Long id) {
-        //todo use entity related exceptions
+        //todo add entity specific exception
         return plantRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Plant not found with id " + id));
     }

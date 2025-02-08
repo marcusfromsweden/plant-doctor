@@ -47,7 +47,7 @@ public class GrowingLocationService {
 
     public GrowingLocationDTO updateGrowingLocation(Long id,
                                                     GrowingLocationDTO growingLocationDTO) {
-        //todo use entity related exceptions
+        //todo add entity specific exception
         //todo change to ....orElseThrow
         Optional<GrowingLocation> optionalGrowingLocation = growingLocationRepository.findById(id);
         if (optionalGrowingLocation.isPresent()) {

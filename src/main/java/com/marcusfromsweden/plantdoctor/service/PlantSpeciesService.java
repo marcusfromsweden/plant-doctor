@@ -47,7 +47,7 @@ public class PlantSpeciesService {
 
     public PlantSpeciesDTO updatePlantSpecies(Long id,
                                               PlantSpeciesDTO plantSpeciesDTO) {
-        //todo use entity related exceptions
+        //todo add entity specific exception
         //todo change to ...orElseThrow
         Optional<PlantSpecies> optionalPlantSpecies = plantSpeciesRepository.findById(id);
         if (optionalPlantSpecies.isPresent()) {
