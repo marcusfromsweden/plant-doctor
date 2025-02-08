@@ -1,10 +1,10 @@
 package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
+import com.marcusfromsweden.plantdoctor.dto.mapper.PlantMapper;
 import com.marcusfromsweden.plantdoctor.entity.Plant;
 import com.marcusfromsweden.plantdoctor.exception.PlantNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
-import com.marcusfromsweden.plantdoctor.util.PlantMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

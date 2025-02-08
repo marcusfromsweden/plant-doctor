@@ -1,11 +1,11 @@
 package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
+import com.marcusfromsweden.plantdoctor.dto.mapper.BotanicalSpeciesMapper;
 import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
 import com.marcusfromsweden.plantdoctor.exception.BotanicalSpeciesNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.exception.DuplicateBotanicalSpeciesNameException;
 import com.marcusfromsweden.plantdoctor.repository.BotanicalSpeciesRepository;
-import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesMapper;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.marcusfromsweden.plantdoctor.util;
+package com.marcusfromsweden.plantdoctor.dto.mapper;
 
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;

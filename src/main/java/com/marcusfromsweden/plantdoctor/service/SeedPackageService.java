@@ -1,11 +1,11 @@
 package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
+import com.marcusfromsweden.plantdoctor.dto.mapper.SeedPackageMapper;
 import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
 import com.marcusfromsweden.plantdoctor.exception.MultipleSeedPackageFoundException;
 import com.marcusfromsweden.plantdoctor.exception.SeedPackageNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.SeedPackageRepository;
-import com.marcusfromsweden.plantdoctor.util.SeedPackageMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

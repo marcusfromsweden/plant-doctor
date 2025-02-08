@@ -1,11 +1,11 @@
 package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
+import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.exception.DuplicateGrowingLocationNameException;
 import com.marcusfromsweden.plantdoctor.exception.GrowingLocationNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
-import com.marcusfromsweden.plantdoctor.util.GrowingLocationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
