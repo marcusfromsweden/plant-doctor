@@ -30,15 +30,19 @@ public class PlantMapper {
         );
     }
 
+    public void updateEntityUsingDTO(Plant plant,
+                                     PlantDTO plantDTO) {
+        toEntity(plant, plantDTO);
+    }
+
     public Plant toEntity(PlantDTO plantDTO) {
         Plant plant = new Plant();
         plant.setId(plantDTO.id());
         return toEntity(plant, plantDTO);
     }
 
-    //todo consider using this from PlantService
-    public Plant toEntity(Plant plant,
-                          PlantDTO plantDTO) {
+    private Plant toEntity(Plant plant,
+                           PlantDTO plantDTO) {
         SeedPackage seedPackage = seedPackageService.getSeedPackageEntityByIdOrThrow(plantDTO.seedPackageId());
         plant.setSeedPackage(seedPackage);
 

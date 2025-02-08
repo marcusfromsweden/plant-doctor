@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
 
-    //todo add tests for SeedPackageService
     @Autowired
     private SeedPackageService seedPackageService;
     @Autowired

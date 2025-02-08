@@ -5,6 +5,7 @@ import com.marcusfromsweden.plantdoctor.entity.Plant;
 import com.marcusfromsweden.plantdoctor.exception.PlantNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
 import com.marcusfromsweden.plantdoctor.util.PlantMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,18 +20,12 @@ public class PlantService {
 
     private final PlantRepository plantRepository;
     private final PlantMapper plantMapper;
-    private final GrowingLocationService growingLocationService;
-    private final SeedPackageService seedPackageService;
 
     @Autowired
     public PlantService(PlantRepository plantRepository,
-                        PlantMapper plantMapper,
-                        GrowingLocationService growingLocationService,
-                        SeedPackageService seedPackageService) {
+                        PlantMapper plantMapper) {
         this.plantRepository = plantRepository;
         this.plantMapper = plantMapper;
-        this.growingLocationService = growingLocationService;
-        this.seedPackageService = seedPackageService;
     }
 
     public List<PlantDTO> getAllPlants() {
@@ -46,27 +41,16 @@ public class PlantService {
 
     public PlantDTO createPlant(PlantDTO plantDTO) {
         Plant plant = new Plant();
-        updatePlantUsingDTO(plant, plantDTO);
+        plantMapper.updateEntityUsingDTO(plant, plantDTO);
         return plantMapper.toDTO(plantRepository.save(plant));
     }
 
+    @Transactional
     public PlantDTO updatePlant(Long plantId,
                                 PlantDTO plantDTO) {
         Plant plant = getPlantEntityByIdOrThrow(plantId);
-        updatePlantUsingDTO(plant, plantDTO);
-        Plant updatedPlant = plantRepository.save(plant);
-        return plantMapper.toDTO(updatedPlant);
-    }
-
-    private void updatePlantUsingDTO(Plant plant,
-                                     PlantDTO plantDTO) {
-        //todo use PlantMapper.toEntity ..?
-
-        plant.setSeedPackage(seedPackageService.getSeedPackageEntityByIdOrThrow(plantDTO.seedPackageId()));
-        plant.setGrowingLocation(growingLocationService.getGrowingLocationEntityByIdOrThrow(plantDTO.growingLocationId()));
-
-        plant.setPlantingDate(plantDTO.plantingDate());
-        plant.setGerminationDate(plantDTO.germinationDate());
+        plantMapper.updateEntityUsingDTO(plant, plantDTO);
+        return plantMapper.toDTO(plant);
     }
 
     public Plant getPlantEntityByIdOrThrow(Long id) {
