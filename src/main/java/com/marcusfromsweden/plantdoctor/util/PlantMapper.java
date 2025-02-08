@@ -4,21 +4,20 @@ import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.entity.Plant;
 import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
-import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
-import com.marcusfromsweden.plantdoctor.repository.SeedPackageRepository;
+import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
+import com.marcusfromsweden.plantdoctor.service.SeedPackageService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PlantMapper {
 
-    //TODO change from using repositories to services
-    private final GrowingLocationRepository growingLocationRepository;
-    private final SeedPackageRepository seedPackageRepository;
+    private final GrowingLocationService growingLocationService;
+    private final SeedPackageService seedPackageService;
 
-    public PlantMapper(GrowingLocationRepository growingLocationRepository,
-                       SeedPackageRepository seedPackageRepository) {
-        this.growingLocationRepository = growingLocationRepository;
-        this.seedPackageRepository = seedPackageRepository;
+    public PlantMapper(GrowingLocationService growingLocationService,
+                       SeedPackageService seedPackageService) {
+        this.growingLocationService = growingLocationService;
+        this.seedPackageService = seedPackageService;
     }
 
     public PlantDTO toDTO(Plant plant) {
@@ -31,22 +30,19 @@ public class PlantMapper {
         );
     }
 
-    //todo consider using this from PlantService
     public Plant toEntity(PlantDTO plantDTO) {
         Plant plant = new Plant();
         plant.setId(plantDTO.id());
+        return toEntity(plant, plantDTO);
+    }
 
-        //todo use PlantMapper.toEntity
-        //todo add entity specific exception
-        //todo create a service method getSeedPackageByIdOrThrow
-        SeedPackage seedPackage = seedPackageRepository.findById(plantDTO.seedPackageId())
-                .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + plantDTO.seedPackageId()));
+    //todo consider using this from PlantService
+    public Plant toEntity(Plant plant,
+                          PlantDTO plantDTO) {
+        SeedPackage seedPackage = seedPackageService.getSeedPackageEntityByIdOrThrow(plantDTO.seedPackageId());
         plant.setSeedPackage(seedPackage);
 
-        //todo add entity specific exception
-        //todo create a service method getGrowingLocationByIdOrThrow
-        GrowingLocation growingLocation = growingLocationRepository.findById(plantDTO.growingLocationId())
-                .orElseThrow(() -> new RuntimeException("GrowingLocation not found with ID: " + plantDTO.growingLocationId()));
+        GrowingLocation growingLocation = growingLocationService.getGrowingLocationEntityByIdOrThrow(plantDTO.growingLocationId());
         plant.setGrowingLocation(growingLocation);
 
         plant.setPlantingDate(plantDTO.plantingDate());

@@ -3,6 +3,7 @@ package com.marcusfromsweden.plantdoctor.service;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.exception.DuplicateGrowingLocationNameException;
+import com.marcusfromsweden.plantdoctor.exception.GrowingLocationNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationMapper;
 import org.slf4j.Logger;
@@ -47,23 +48,15 @@ public class GrowingLocationService {
 
     public GrowingLocationDTO updateGrowingLocation(Long id,
                                                     GrowingLocationDTO growingLocationDTO) {
-        //todo add entity specific exception
-        //todo change to ....orElseThrow
+        GrowingLocation existingGrowingLocation = getGrowingLocationEntityByIdOrThrow(id);
 
-
-        Optional<GrowingLocation> optionalGrowingLocation = growingLocationRepository.findById(id);
-        if (optionalGrowingLocation.isPresent()) {
-            GrowingLocation existingGrowingLocation = optionalGrowingLocation.get();
-            existingGrowingLocation.setName(growingLocationDTO.name());
-            existingGrowingLocation.setOccupied(growingLocationDTO.occupied());
-            try {
-                GrowingLocation updatedGrowingLocation = growingLocationRepository.save(existingGrowingLocation);
-                return GrowingLocationMapper.toDTO(updatedGrowingLocation);
-            } catch (DataIntegrityViolationException e) {
-                throw new DuplicateGrowingLocationNameException("Growing location name already exists: " + growingLocationDTO.name());
-            }
-        } else {
-            throw new RuntimeException("GrowingLocation not found with id " + id);
+        existingGrowingLocation.setName(growingLocationDTO.name());
+        existingGrowingLocation.setOccupied(growingLocationDTO.occupied());
+        try {
+            GrowingLocation updatedGrowingLocation = growingLocationRepository.save(existingGrowingLocation);
+            return GrowingLocationMapper.toDTO(updatedGrowingLocation);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateGrowingLocationNameException("Growing location name already exists: " + growingLocationDTO.name());
         }
     }
 
@@ -86,6 +79,11 @@ public class GrowingLocationService {
         log.debug("Created growing location {}", growingLocationDTO);
 
         return growingLocationDTO;
+    }
+
+    public GrowingLocation getGrowingLocationEntityByIdOrThrow(Long id) {
+        return growingLocationRepository.findById(id)
+                .orElseThrow(() -> new GrowingLocationNotFoundByIdException(id));
     }
 
     public void deleteGrowingLocation(Long id) {

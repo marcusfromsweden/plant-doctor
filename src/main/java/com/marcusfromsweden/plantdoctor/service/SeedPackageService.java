@@ -2,6 +2,8 @@ package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
+import com.marcusfromsweden.plantdoctor.exception.MultipleSeedPackageFoundException;
+import com.marcusfromsweden.plantdoctor.exception.SeedPackageNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.SeedPackageRepository;
 import com.marcusfromsweden.plantdoctor.util.SeedPackageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,34 +41,23 @@ public class SeedPackageService {
 
     public SeedPackageDTO updateSeedPackage(Long id,
                                             SeedPackageDTO seedPackageDetails) {
-        //todo use SeedPackage exceptions instead of RuntimeException
-        //todo create a service method getSeedPackageByIdOrThrow
-        SeedPackage seedPackage = seedPackageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + id));
-
-        SeedPackageDTO seedPackageDTO = SeedPackageDTO.builder()
-                .id(seedPackage.getId())
-                .botanicalSpeciesId(seedPackageDetails.botanicalSpeciesId())
-                .name(seedPackageDetails.name())
-                .build();
-
-        return seedPackageMapper.toDTO(seedPackageRepository.save(seedPackageMapper.toEntity(seedPackageDTO)));
+        SeedPackage seedPackage = getSeedPackageEntityByIdOrThrow(id);
+        SeedPackage updatedSeedPackage = seedPackageMapper.toEntity(seedPackage, seedPackageDetails);
+        //todo verify that we can remove the save below
+        seedPackageRepository.save(updatedSeedPackage);
+        return seedPackageMapper.toDTO(updatedSeedPackage);
     }
 
     public void deleteSeedPackage(Long id) {
-        //todo add entity specific exception
-        SeedPackage seedPackage = seedPackageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("SeedPackage not found with ID: " + id));
-        seedPackageRepository.delete(seedPackage);
+        seedPackageRepository.delete(getSeedPackageEntityByIdOrThrow(id));
     }
 
     public SeedPackageDTO getOrCreateSeedPackageByNameAndBotanicalSpeciesId(String seedPackageName,
                                                                             Long botanicalSpeciesId) {
         List<SeedPackage> seedPackages = seedPackageRepository.findByNameAndBotanicalSpeciesId(seedPackageName, botanicalSpeciesId);
         if (seedPackages.size() > 1) {
-            //todo add entity specific exception
-            throw new RuntimeException("Multiple SeedPackages found with name: %s and plant species id: %d"
-                                               .formatted(seedPackageName, botanicalSpeciesId));
+            throw new MultipleSeedPackageFoundException("Multiple SeedPackages found with name: %s and plant species id: %d"
+                                                                .formatted(seedPackageName, botanicalSpeciesId));
         }
 
         if (seedPackages.isEmpty()) {
@@ -79,5 +70,10 @@ public class SeedPackageService {
         }
 
         return seedPackageMapper.toDTO(seedPackages.get(0));
+    }
+
+    public SeedPackage getSeedPackageEntityByIdOrThrow(Long id) {
+        return seedPackageRepository.findById(id)
+                .orElseThrow(() -> new SeedPackageNotFoundByIdException(id));
     }
 }

@@ -13,6 +13,7 @@ public class GrowingLocation {
     @NotNull
     @Column(unique = true)
     private String name;
+    //todo remove occupied
     private boolean occupied;
 
     // Getters and Setters

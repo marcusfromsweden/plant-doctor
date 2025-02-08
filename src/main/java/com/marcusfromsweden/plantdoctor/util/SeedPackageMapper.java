@@ -25,10 +25,16 @@ public class SeedPackageMapper {
     }
 
     public SeedPackage toEntity(SeedPackageDTO seedPackageDTO) {
-        BotanicalSpecies botanicalSpecies = botanicalSpeciesService.getBotanicalSpeciesEntityByIdOrThrow(seedPackageDTO.botanicalSpeciesId());
-
         SeedPackage seedPackage = new SeedPackage();
         seedPackage.setId(seedPackageDTO.id());
+        return toEntity(seedPackage, seedPackageDTO);
+    }
+
+    public SeedPackage toEntity(SeedPackage seedPackage,
+                                SeedPackageDTO seedPackageDTO) {
+        BotanicalSpecies botanicalSpecies =
+                botanicalSpeciesService.getBotanicalSpeciesEntityByIdOrThrow(seedPackageDTO.botanicalSpeciesId());
+
         seedPackage.setName(seedPackageDTO.name());
         seedPackage.setNumberOfSeeds(seedPackageDTO.numberOfSeeds());
         seedPackage.setBotanicalSpecies(botanicalSpecies);
