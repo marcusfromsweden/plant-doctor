@@ -26,11 +26,21 @@ public class GlobalExceptionHandler {
     //todo add more exceptions for conflict responses
     @ExceptionHandler({
             DuplicateGrowingLocationNameException.class,
-            DuplicateBotanicalSpeciesNameException.class})
+            DuplicateBotanicalSpeciesNameException.class,
+            MultipleSeedPackageFoundException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleDuplicateNameException(RuntimeException ex) {
         return Map.of("error", ex.getMessage());
     }
 
     //todo add exception handler for not found responses
+    @ExceptionHandler({
+            SeedPackageNotFoundByIdException.class,
+            PlantNotFoundByIdException.class,
+            BotanicalSpeciesNotFoundByIdException.class,
+            GrowingLocationNotFoundByIdException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleNotFoundException(RuntimeException ex) {
+        return Map.of("error", ex.getMessage());
+    }
 }
