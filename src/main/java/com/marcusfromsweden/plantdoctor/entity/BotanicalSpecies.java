@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-public class PlantSpecies {
+public class BotanicalSpecies {
 
     private static final int GENERAL_DAYS_TO_GERMINATION = 10;
 

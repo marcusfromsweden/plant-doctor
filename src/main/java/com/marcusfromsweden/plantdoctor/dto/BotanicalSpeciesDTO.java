@@ -1,13 +1,13 @@
 package com.marcusfromsweden.plantdoctor.dto;
 
-public record PlantSpeciesDTO(
+public record BotanicalSpeciesDTO(
         Long id,
         String name,
         String description,
         Integer estimatedDaysToGermination
 ) {
-    public static PlantSpeciesDTO.Builder builder() {
-        return new PlantSpeciesDTO.Builder();
+    public static BotanicalSpeciesDTO.Builder builder() {
+        return new BotanicalSpeciesDTO.Builder();
     }
 
     public static class Builder {
@@ -36,8 +36,8 @@ public record PlantSpeciesDTO(
             return this;
         }
 
-        public PlantSpeciesDTO build() {
-            return new PlantSpeciesDTO(id, name, description, estimatedDaysToGermination);
+        public BotanicalSpeciesDTO build() {
+            return new BotanicalSpeciesDTO(id, name, description, estimatedDaysToGermination);
         }
     }
 }

@@ -39,8 +39,8 @@ public class Plant {
         return seedPackage;
     }
 
-    public void setSeedPackage(SeedPackage plantSpecies) {
-        this.seedPackage = plantSpecies;
+    public void setSeedPackage(SeedPackage botanicalSpecies) {
+        this.seedPackage = botanicalSpecies;
     }
 
     public GrowingLocation getGrowingLocation() {

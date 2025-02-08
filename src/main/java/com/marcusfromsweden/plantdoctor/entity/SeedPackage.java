@@ -13,7 +13,7 @@ public class SeedPackage {
 
     @ManyToOne
     @NotNull
-    private PlantSpecies plantSpecies;
+    private BotanicalSpecies botanicalSpecies;
 
     @NotNull
     private String name;
@@ -30,12 +30,12 @@ public class SeedPackage {
         this.id = id;
     }
 
-    public PlantSpecies getPlantSpecies() {
-        return plantSpecies;
+    public BotanicalSpecies getBotanicalSpecies() {
+        return botanicalSpecies;
     }
 
-    public void setPlantSpecies(PlantSpecies plantSpecies) {
-        this.plantSpecies = plantSpecies;
+    public void setBotanicalSpecies(BotanicalSpecies botanicalSpecies) {
+        this.botanicalSpecies = botanicalSpecies;
     }
 
     public String getName() {

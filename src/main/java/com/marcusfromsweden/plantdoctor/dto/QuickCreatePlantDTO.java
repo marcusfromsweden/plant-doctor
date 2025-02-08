@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public record QuickCreatePlantDTO(
         LocalDate plantingDate,
-        String plantSpeciesName,
+        String botanicalSpeciesName,
         String seedPackageName,
         String growingLocationName,
         String plantComment

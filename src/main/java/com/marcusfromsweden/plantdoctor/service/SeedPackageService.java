@@ -46,7 +46,7 @@ public class SeedPackageService {
 
         SeedPackageDTO seedPackageDTO = SeedPackageDTO.builder()
                 .id(seedPackage.getId())
-                .plantSpeciesId(seedPackageDetails.plantSpeciesId())
+                .botanicalSpeciesId(seedPackageDetails.botanicalSpeciesId())
                 .name(seedPackageDetails.name())
                 .build();
 
@@ -60,19 +60,19 @@ public class SeedPackageService {
         seedPackageRepository.delete(seedPackage);
     }
 
-    public SeedPackageDTO getOrCreateSeedPackageByNameAndPlantSpeciesId(String seedPackageName,
-                                                                        Long plantSpeciesId) {
-        List<SeedPackage> seedPackages = seedPackageRepository.findByNameAndPlantSpeciesId(seedPackageName, plantSpeciesId);
+    public SeedPackageDTO getOrCreateSeedPackageByNameAndBotanicalSpeciesId(String seedPackageName,
+                                                                            Long botanicalSpeciesId) {
+        List<SeedPackage> seedPackages = seedPackageRepository.findByNameAndBotanicalSpeciesId(seedPackageName, botanicalSpeciesId);
         if (seedPackages.size() > 1) {
             //todo add entity specific exception
             throw new RuntimeException("Multiple SeedPackages found with name: %s and plant species id: %d"
-                                               .formatted(seedPackageName, plantSpeciesId));
+                                               .formatted(seedPackageName, botanicalSpeciesId));
         }
 
         if (seedPackages.isEmpty()) {
             SeedPackageDTO seedPackageDTO = SeedPackageDTO.builder()
                     .name(seedPackageName)
-                    .plantSpeciesId(plantSpeciesId)
+                    .botanicalSpeciesId(botanicalSpeciesId)
                     .numberOfSeeds(null)
                     .build();
             return createSeedPackage(seedPackageDTO);

@@ -1,14 +1,14 @@
 package com.marcusfromsweden.plantdoctor.config;
 
+import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.entity.Plant;
 import com.marcusfromsweden.plantdoctor.entity.PlantComment;
-import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
 import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
+import com.marcusfromsweden.plantdoctor.repository.BotanicalSpeciesRepository;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
 import com.marcusfromsweden.plantdoctor.repository.PlantCommentRepository;
 import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
-import com.marcusfromsweden.plantdoctor.repository.PlantSpeciesRepository;
 import com.marcusfromsweden.plantdoctor.repository.SeedPackageRepository;
 import com.marcusfromsweden.plantdoctor.util.CustomProperties;
 import org.slf4j.Logger;
@@ -25,20 +25,20 @@ public class DataInitializerConfig {
 
     private static final Logger log = LoggerFactory.getLogger(DataInitializerConfig.class);
 
-    private final PlantSpeciesRepository plantSpeciesRepository;
+    private final BotanicalSpeciesRepository botanicalSpeciesRepository;
     private final GrowingLocationRepository growingLocationRepository;
     private final PlantRepository plantRepository;
     private final PlantCommentRepository plantCommentRepository;
     private final SeedPackageRepository seedPackageRepository;
     private final CustomProperties customProperties;
 
-    public DataInitializerConfig(PlantSpeciesRepository plantSpeciesRepository,
+    public DataInitializerConfig(BotanicalSpeciesRepository botanicalSpeciesRepository,
                                  GrowingLocationRepository growingLocationRepository,
                                  PlantRepository plantRepository,
                                  PlantCommentRepository plantCommentRepository,
                                  SeedPackageRepository seedPackageRepository,
                                  CustomProperties customProperties) {
-        this.plantSpeciesRepository = plantSpeciesRepository;
+        this.botanicalSpeciesRepository = botanicalSpeciesRepository;
         this.growingLocationRepository = growingLocationRepository;
         this.plantRepository = plantRepository;
         this.plantCommentRepository = plantCommentRepository;
@@ -63,7 +63,7 @@ public class DataInitializerConfig {
         plantCommentRepository.deleteAll();
         plantRepository.deleteAll();
         seedPackageRepository.deleteAll();
-        plantSpeciesRepository.deleteAll();
+        botanicalSpeciesRepository.deleteAll();
         growingLocationRepository.deleteAll();
         log.info("All data deleted.");
     }
@@ -71,21 +71,21 @@ public class DataInitializerConfig {
     private void populateTableData() {
         //todo update to use more realistic data
 
-        log.info("Adding PlantSpecies");
-        PlantSpecies regularBasil = new PlantSpecies();
+        log.info("Adding BotanicalSpecies");
+        BotanicalSpecies regularBasil = new BotanicalSpecies();
         regularBasil.setName("Ocimum basilicum");
         regularBasil.setDescription("Regular basil of the mint family.");
 
-        PlantSpecies favouriteRadish = new PlantSpecies();
+        BotanicalSpecies favouriteRadish = new BotanicalSpecies();
         favouriteRadish.setName("Raphanus sativus");
         favouriteRadish.setDescription("A root vegetable of the Brassicaceae family.");
 
-        plantSpeciesRepository.save(regularBasil);
-        plantSpeciesRepository.save(favouriteRadish);
+        botanicalSpeciesRepository.save(regularBasil);
+        botanicalSpeciesRepository.save(favouriteRadish);
 
         log.info("Adding SeedPackages");
         SeedPackage basilSeedPackage = new SeedPackage();
-        basilSeedPackage.setPlantSpecies(regularBasil);
+        basilSeedPackage.setBotanicalSpecies(regularBasil);
         basilSeedPackage.setName("Basil seeds from the local store");
         basilSeedPackage.setNumberOfSeeds(100);
 

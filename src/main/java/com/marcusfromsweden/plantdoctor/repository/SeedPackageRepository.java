@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface SeedPackageRepository extends JpaRepository<SeedPackage, Long> {
-    List<SeedPackage> findByNameAndPlantSpeciesId(String seedPackageName,
-                                                  Long plantSpeciesId);
+    List<SeedPackage> findByNameAndBotanicalSpeciesId(String seedPackageName,
+                                                      Long botanicalSpeciesId);
 }

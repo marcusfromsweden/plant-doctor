@@ -29,8 +29,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(DuplicatePlantSpeciesNameException.class)
-    public ResponseEntity<String> handleDuplicatePlantSpeciesNameException(DuplicatePlantSpeciesNameException ex) {
+    @ExceptionHandler(DuplicateBotanicalSpeciesNameException.class)
+    public ResponseEntity<String> handleDuplicateBotanicalSpeciesNameException(DuplicateBotanicalSpeciesNameException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }

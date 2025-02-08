@@ -2,7 +2,7 @@ package com.marcusfromsweden.plantdoctor.dto;
 
 public record SeedPackageDTO(
         Long id,
-        Long plantSpeciesId,
+        Long botanicalSpeciesId,
         String name,
         Integer numberOfSeeds
 ) {
@@ -12,7 +12,7 @@ public record SeedPackageDTO(
 
     public static class Builder {
         private Long id;
-        private Long plantSpeciesId;
+        private Long botanicalSpeciesId;
         private String name;
         private Integer numberOfSeeds;
 
@@ -21,8 +21,8 @@ public record SeedPackageDTO(
             return this;
         }
 
-        public Builder plantSpeciesId(Long plantSpeciesId) {
-            this.plantSpeciesId = plantSpeciesId;
+        public Builder botanicalSpeciesId(Long botanicalSpeciesId) {
+            this.botanicalSpeciesId = botanicalSpeciesId;
             return this;
         }
 
@@ -37,7 +37,7 @@ public record SeedPackageDTO(
         }
 
         public SeedPackageDTO build() {
-            return new SeedPackageDTO(id, plantSpeciesId, name, numberOfSeeds);
+            return new SeedPackageDTO(id, botanicalSpeciesId, name, numberOfSeeds);
         }
     }
 }

@@ -1,37 +1,37 @@
 package com.marcusfromsweden.plantdoctor.util;
 
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
-import com.marcusfromsweden.plantdoctor.entity.PlantSpecies;
+import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
 import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
-import com.marcusfromsweden.plantdoctor.service.PlantSpeciesService;
+import com.marcusfromsweden.plantdoctor.service.BotanicalSpeciesService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SeedPackageMapper {
 
-    private final PlantSpeciesService plantSpeciesService;
+    private final BotanicalSpeciesService botanicalSpeciesService;
 
-    public SeedPackageMapper(PlantSpeciesService plantSpeciesService) {
-        this.plantSpeciesService = plantSpeciesService;
+    public SeedPackageMapper(BotanicalSpeciesService botanicalSpeciesService) {
+        this.botanicalSpeciesService = botanicalSpeciesService;
     }
 
     public SeedPackageDTO toDTO(SeedPackage seedPackage) {
         return new SeedPackageDTO(
                 seedPackage.getId(),
-                seedPackage.getPlantSpecies().getId(),
+                seedPackage.getBotanicalSpecies().getId(),
                 seedPackage.getName(),
                 seedPackage.getNumberOfSeeds()
         );
     }
 
     public SeedPackage toEntity(SeedPackageDTO seedPackageDTO) {
-        PlantSpecies plantSpecies = plantSpeciesService.getPlantSpeciesEntityByIdOrThrow(seedPackageDTO.plantSpeciesId());
+        BotanicalSpecies botanicalSpecies = botanicalSpeciesService.getBotanicalSpeciesEntityByIdOrThrow(seedPackageDTO.botanicalSpeciesId());
 
         SeedPackage seedPackage = new SeedPackage();
         seedPackage.setId(seedPackageDTO.id());
         seedPackage.setName(seedPackageDTO.name());
         seedPackage.setNumberOfSeeds(seedPackageDTO.numberOfSeeds());
-        seedPackage.setPlantSpecies(plantSpecies);
+        seedPackage.setBotanicalSpecies(botanicalSpecies);
 
         return seedPackage;
     }
