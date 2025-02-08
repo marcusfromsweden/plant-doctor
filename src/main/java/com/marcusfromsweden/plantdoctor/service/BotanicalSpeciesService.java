@@ -20,26 +20,29 @@ public class BotanicalSpeciesService {
 
     private final Logger log = LoggerFactory.getLogger(BotanicalSpeciesService.class);
     private final BotanicalSpeciesRepository botanicalSpeciesRepository;
+    private final BotanicalSpeciesMapper botanicalSpeciesMapper;
 
-    public BotanicalSpeciesService(BotanicalSpeciesRepository botanicalSpeciesRepository) {
+    public BotanicalSpeciesService(BotanicalSpeciesRepository botanicalSpeciesRepository,
+                                   BotanicalSpeciesMapper botanicalSpeciesMapper) {
         this.botanicalSpeciesRepository = botanicalSpeciesRepository;
+        this.botanicalSpeciesMapper = botanicalSpeciesMapper;
     }
 
     public List<BotanicalSpeciesDTO> getAllBotanicalSpecies() {
         return botanicalSpeciesRepository.findAll().stream()
-                .map(BotanicalSpeciesMapper::toDTO)
+                .map(botanicalSpeciesMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesById(Long id) {
         return botanicalSpeciesRepository.findById(id)
-                .map(BotanicalSpeciesMapper::toDTO);
+                .map(botanicalSpeciesMapper::toDTO);
     }
 
     public BotanicalSpeciesDTO createBotanicalSpecies(BotanicalSpeciesDTO botanicalSpeciesDTO) {
-        BotanicalSpecies botanicalSpecies = BotanicalSpeciesMapper.toEntity(botanicalSpeciesDTO);
+        BotanicalSpecies botanicalSpecies = botanicalSpeciesMapper.toEntity(botanicalSpeciesDTO);
         BotanicalSpecies createdBotanicalSpecies = botanicalSpeciesRepository.save(botanicalSpecies);
-        return BotanicalSpeciesMapper.toDTO(createdBotanicalSpecies);
+        return botanicalSpeciesMapper.toDTO(createdBotanicalSpecies);
     }
 
     public BotanicalSpeciesDTO updateBotanicalSpecies(Long id,
@@ -55,13 +58,14 @@ public class BotanicalSpeciesService {
 
         updatedBotanicalSpecies.setDescription(botanicalSpeciesDTO.description());
         updatedBotanicalSpecies.setEstimatedDaysToGermination(botanicalSpeciesDTO.estimatedDaysToGermination());
+        //todo verify that we don't need to save the updated entity again
         BotanicalSpecies finalBotanicalSpecies = botanicalSpeciesRepository.save(updatedBotanicalSpecies);
-        return BotanicalSpeciesMapper.toDTO(finalBotanicalSpecies);
+        return botanicalSpeciesMapper.toDTO(finalBotanicalSpecies);
     }
 
     public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesByName(String name) {
         return botanicalSpeciesRepository.findByName(name)
-                .map(BotanicalSpeciesMapper::toDTO);
+                .map(botanicalSpeciesMapper::toDTO);
     }
 
     public void deleteBotanicalSpecies(Long id) {
@@ -90,7 +94,7 @@ public class BotanicalSpeciesService {
     }
 
     private BotanicalSpeciesDTO getBotanicalSpeciesByIdOrThrow(Long id) {
-        return BotanicalSpeciesMapper.toDTO(getBotanicalSpeciesEntityByIdOrThrow(id));
+        return botanicalSpeciesMapper.toDTO(getBotanicalSpeciesEntityByIdOrThrow(id));
     }
 
 

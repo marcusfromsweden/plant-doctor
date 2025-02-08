@@ -2,11 +2,12 @@ package com.marcusfromsweden.plantdoctor.util;
 
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
+import org.springframework.stereotype.Component;
 
-//todo change to @Component and make static methods non-static
+@Component
 public class BotanicalSpeciesMapper {
 
-    public static BotanicalSpeciesDTO toDTO(BotanicalSpecies botanicalSpecies) {
+    public BotanicalSpeciesDTO toDTO(BotanicalSpecies botanicalSpecies) {
         return new BotanicalSpeciesDTO(
                 botanicalSpecies.getId(),
                 botanicalSpecies.getName(),
@@ -15,7 +16,7 @@ public class BotanicalSpeciesMapper {
         );
     }
 
-    public static BotanicalSpecies toEntity(BotanicalSpeciesDTO botanicalSpeciesDTO) {
+    public BotanicalSpecies toEntity(BotanicalSpeciesDTO botanicalSpeciesDTO) {
         BotanicalSpecies botanicalSpecies = new BotanicalSpecies();
         botanicalSpecies.setId(botanicalSpeciesDTO.id());
         botanicalSpecies.setName(botanicalSpeciesDTO.name());
