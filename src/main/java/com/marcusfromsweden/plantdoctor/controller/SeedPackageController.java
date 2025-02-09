@@ -2,6 +2,7 @@ package com.marcusfromsweden.plantdoctor.controller;
 
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.service.SeedPackageService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,9 @@ public class SeedPackageController {
     }
 
     @PostMapping
-    public SeedPackageDTO createSeedPackage(@RequestBody SeedPackageDTO seedPackageDTO) {
-        return seedPackageService.createSeedPackage(seedPackageDTO);
+    public ResponseEntity<SeedPackageDTO> createSeedPackage(@RequestBody SeedPackageDTO seedPackageDTO) {
+        SeedPackageDTO seedPackage = seedPackageService.createSeedPackage(seedPackageDTO);
+        return new ResponseEntity<>(seedPackage, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

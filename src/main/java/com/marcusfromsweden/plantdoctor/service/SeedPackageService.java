@@ -36,7 +36,8 @@ public class SeedPackageService {
     }
 
     public SeedPackageDTO createSeedPackage(SeedPackageDTO seedPackageDTO) {
-        SeedPackage seedPackage = seedPackageRepository.save(seedPackageMapper.toEntity(seedPackageDTO));
+        SeedPackage seedPackage = seedPackageMapper.toEntity(seedPackageDTO);
+        seedPackageRepository.save(seedPackage);
         return seedPackageMapper.toDTO(seedPackage);
     }
 
