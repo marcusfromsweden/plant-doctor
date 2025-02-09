@@ -43,7 +43,7 @@ public class PlantControllerTests {
     @BeforeEach
     public void setup() {
         seedPackageDTO = new SeedPackageDTO(1L, 1L, "Some seeds", 10);
-        growingLocationDTO = new GrowingLocationDTO(1L, "Clay pot nbr 1", true);
+        growingLocationDTO = new GrowingLocationDTO(1L, "Clay pot nbr 1");
         plantDTO = new PlantDTO(
                 1L,
                 seedPackageDTO.id(),

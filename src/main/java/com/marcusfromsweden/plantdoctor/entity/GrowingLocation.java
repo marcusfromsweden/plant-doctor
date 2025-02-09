@@ -13,8 +13,6 @@ public class GrowingLocation {
     @NotNull
     @Column(unique = true)
     private String name;
-    //todo remove occupied after Flyway is added
-    private boolean occupied;
 
     // Getters and Setters
     public Long getId() {
@@ -33,11 +31,4 @@ public class GrowingLocation {
         this.name = locationName;
     }
 
-    public boolean isOccupied() {
-        return occupied;
-    }
-
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
-    }
 }

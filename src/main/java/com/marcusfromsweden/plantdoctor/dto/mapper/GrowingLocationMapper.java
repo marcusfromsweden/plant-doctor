@@ -10,8 +10,7 @@ public class GrowingLocationMapper {
     public GrowingLocationDTO toDTO(GrowingLocation growingLocation) {
         return new GrowingLocationDTO(
                 growingLocation.getId(),
-                growingLocation.getName(),
-                growingLocation.isOccupied()
+                growingLocation.getName()
         );
     }
 
@@ -29,7 +28,6 @@ public class GrowingLocationMapper {
     private GrowingLocation toEntity(GrowingLocation growingLocation,
                                      GrowingLocationDTO growingLocationDTO) {
         growingLocation.setName(growingLocationDTO.name());
-        growingLocation.setOccupied(growingLocationDTO.occupied());
         return growingLocation;
     }
 }

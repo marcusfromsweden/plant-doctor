@@ -94,11 +94,9 @@ public class DataInitializerConfig {
         log.info("Adding GrowingLocations");
         GrowingLocation pot1 = new GrowingLocation();
         pot1.setName("Pot 1");
-        pot1.setOccupied(false);
 
         GrowingLocation pot2 = new GrowingLocation();
         pot2.setName("Pot 2");
-        pot2.setOccupied(false);
 
         growingLocationRepository.save(pot1);
         growingLocationRepository.save(pot2);

@@ -29,7 +29,6 @@ public class GrowingLocationService_VerifyCRUDIT extends PostgresTestContainerTe
     public void testCreateAndRead() {
         GrowingLocationDTO growingLocationDTOForCreateAndRead = GrowingLocationDTO.builder()
                 .name(GROWING_LOCATION_1_NAME)
-                .occupied(false)
                 .build();
 
         GrowingLocationDTO growingLocation = growingLocationService.createGrowingLocation(growingLocationDTOForCreateAndRead);
@@ -44,14 +43,12 @@ public class GrowingLocationService_VerifyCRUDIT extends PostgresTestContainerTe
     public void testCreateAndUpdate() {
         GrowingLocationDTO growingLocationDTOForCreateAndUpdate = GrowingLocationDTO.builder()
                 .name(GROWING_LOCATION_2_NAME)
-                .occupied(false)
                 .build();
 
         GrowingLocationDTO growingLocation = growingLocationService.createGrowingLocation(growingLocationDTOForCreateAndUpdate);
 
         GrowingLocationDTO updatedGrowingLocation = growingLocationService.updateGrowingLocation(growingLocation.id(), GrowingLocationDTO.builder()
                 .name(GROWING_LOCATION_1_NAME_UPDATE)
-                .occupied(false)
                 .build());
 
         assertEquals(GROWING_LOCATION_1_NAME_UPDATE, updatedGrowingLocation.name());
@@ -64,7 +61,6 @@ public class GrowingLocationService_VerifyCRUDIT extends PostgresTestContainerTe
 
         GrowingLocationDTO growingLocationDTOForCreateAndUpdate = GrowingLocationDTO.builder()
                 .name(GROWING_LOCATION_3_NAME)
-                .occupied(false)
                 .build();
 
         assertEquals(0, growingLocationService.getAllGrowingLocations().size());
