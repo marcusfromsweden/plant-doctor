@@ -35,6 +35,7 @@ public class PlantControllerTests {
     @MockBean
     private PlantService plantService;
     @MockBean
+    @SuppressWarnings("unused")
     private PlantCommentService plantCommentService;
 
     private PlantDTO plantDTO;
