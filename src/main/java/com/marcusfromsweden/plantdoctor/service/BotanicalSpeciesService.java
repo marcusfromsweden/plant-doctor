@@ -65,14 +65,11 @@ public class BotanicalSpeciesService {
         Optional<BotanicalSpeciesDTO> botanicalSpecies = getBotanicalSpeciesByName(botanicalSpeciesName);
 
         if (botanicalSpecies.isPresent()) {
-            log.debug("Plant species {} found", botanicalSpeciesName);
             return botanicalSpecies.get();
         }
 
-        log.debug("Plant species {} not found, creating a new one", botanicalSpeciesName);
+        log.debug("Botanical species {} not found, creating a new one", botanicalSpeciesName);
         BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesDTO.builder().name(botanicalSpeciesName).build();
-
-        log.debug("Created plant species {}", botanicalSpeciesDTO);
 
         return createBotanicalSpecies(botanicalSpeciesDTO);
     }
