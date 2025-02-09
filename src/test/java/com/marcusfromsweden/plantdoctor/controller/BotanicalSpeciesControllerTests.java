@@ -71,14 +71,17 @@ public class BotanicalSpeciesControllerTests {
 
     @Test
     public void testCreateBotanicalSpecies() throws Exception {
-        Mockito.when(botanicalSpeciesService.createBotanicalSpecies(Mockito.any(BotanicalSpeciesDTO.class)))
+        Mockito
+                .when(botanicalSpeciesService.createBotanicalSpecies(Mockito.any(BotanicalSpeciesDTO.class)))
                 .thenReturn(botanicalSpeciesDTO);
 
         String botanicalSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
                 .formatted(botanicalSpeciesDTO.name(), botanicalSpeciesDTO.description(), botanicalSpeciesDTO.estimatedDaysToGermination());
 
-        mockMvc.perform(post(API_PATH_PLANT_SPECIES).contentType(MediaType.APPLICATION_JSON)
-                                .content(botanicalSpeciesJson)).andExpect(status().isCreated())
+        mockMvc.perform(post(API_PATH_PLANT_SPECIES)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(botanicalSpeciesJson))
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(botanicalSpeciesDTO.name())))
                 .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
@@ -87,8 +90,10 @@ public class BotanicalSpeciesControllerTests {
 
     @Test
     public void testUpdateBotanicalSpecies() throws Exception {
-        Mockito.when(botanicalSpeciesService.updateBotanicalSpecies(Mockito.eq(botanicalSpeciesDTO.id()),
-                                                                    Mockito.any(BotanicalSpeciesDTO.class))).thenReturn(botanicalSpeciesDTO);
+        Mockito
+                .when(botanicalSpeciesService.updateBotanicalSpecies(Mockito.eq(botanicalSpeciesDTO.id()),
+                                                                     Mockito.any(BotanicalSpeciesDTO.class)))
+                .thenReturn(botanicalSpeciesDTO);
 
         String botanicalSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
                 .formatted(botanicalSpeciesDTO.name(), botanicalSpeciesDTO.description(), botanicalSpeciesDTO.estimatedDaysToGermination());

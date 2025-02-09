@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PlantControllerTests {
 
     public static final String API_PATH = "/api/plants";
+
     @Autowired
     private MockMvc mockMvc;
 
