@@ -2,10 +2,10 @@ package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
+import com.marcusfromsweden.plantdoctor.dto.PlantCommentDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.QuickCreatePlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
-import com.marcusfromsweden.plantdoctor.entity.PlantComment;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +54,7 @@ public class PlantDoctorService {
                                                           .build());
 
         if (StringUtils.hasText(quickCreatePlantDTO.plantComment())) {
-            PlantComment plantComment = plantCommentService.addComment(plant.id(), quickCreatePlantDTO.plantComment());
+            PlantCommentDTO plantComment = plantCommentService.createComment(plant.id(), quickCreatePlantDTO.plantComment());
             log.debug("Added a comment to the plant: {}", plantComment);
         }
 

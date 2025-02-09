@@ -52,7 +52,7 @@ public class PlantController {
     @PostMapping("/{id}/comments")
     public ResponseEntity<Void> addComment(@PathVariable Long id,
                                            @RequestParam String comment) {
-        plantCommentService.addComment(id, comment);
+        plantCommentService.createComment(id, comment);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -1,9 +1,7 @@
 package com.marcusfromsweden.plantdoctor.dto.mapper;
 
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
-import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.entity.Plant;
-import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
 import com.marcusfromsweden.plantdoctor.service.SeedPackageService;
 import org.springframework.stereotype.Component;
@@ -43,12 +41,8 @@ public class PlantMapper {
 
     private Plant toEntity(Plant plant,
                            PlantDTO plantDTO) {
-        SeedPackage seedPackage = seedPackageService.getSeedPackageEntityByIdOrThrow(plantDTO.seedPackageId());
-        plant.setSeedPackage(seedPackage);
-
-        GrowingLocation growingLocation = growingLocationService.getGrowingLocationEntityByIdOrThrow(plantDTO.growingLocationId());
-        plant.setGrowingLocation(growingLocation);
-
+        plant.setSeedPackage(seedPackageService.getSeedPackageEntityByIdOrThrow(plantDTO.seedPackageId()));
+        plant.setGrowingLocation(growingLocationService.getGrowingLocationEntityByIdOrThrow(plantDTO.growingLocationId()));
         plant.setPlantingDate(plantDTO.plantingDate());
         plant.setGerminationDate(plantDTO.germinationDate());
         return plant;
