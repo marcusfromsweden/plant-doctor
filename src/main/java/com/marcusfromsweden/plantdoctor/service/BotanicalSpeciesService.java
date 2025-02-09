@@ -82,9 +82,4 @@ public class BotanicalSpeciesService {
                 .orElseThrow(() -> new BotanicalSpeciesNotFoundByIdException(botanicalSpeciesId));
     }
 
-    private BotanicalSpeciesDTO getBotanicalSpeciesByIdOrThrow(Long id) {
-        return botanicalSpeciesMapper.toDTO(getBotanicalSpeciesEntityByIdOrThrow(id));
-    }
-
-
 }

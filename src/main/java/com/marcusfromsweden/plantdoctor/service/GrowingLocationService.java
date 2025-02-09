@@ -3,12 +3,11 @@ package com.marcusfromsweden.plantdoctor.service;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
-import com.marcusfromsweden.plantdoctor.exception.DuplicateGrowingLocationNameException;
 import com.marcusfromsweden.plantdoctor.exception.GrowingLocationNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,49 +19,44 @@ public class GrowingLocationService {
 
     private final Logger log = LoggerFactory.getLogger(GrowingLocationService.class);
     private final GrowingLocationRepository growingLocationRepository;
+    private final GrowingLocationMapper growingLocationMapper;
 
-    public GrowingLocationService(GrowingLocationRepository growingLocationRepository) {
+    public GrowingLocationService(GrowingLocationRepository growingLocationRepository,
+                                  GrowingLocationMapper growingLocationMapper) {
         this.growingLocationRepository = growingLocationRepository;
+        this.growingLocationMapper = growingLocationMapper;
     }
 
     public List<GrowingLocationDTO> getAllGrowingLocations() {
         return growingLocationRepository.findAll().stream()
-                .map(GrowingLocationMapper::toDTO)
+                .map(growingLocationMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public Optional<GrowingLocationDTO> getGrowingLocationById(Long id) {
         return growingLocationRepository.findById(id)
-                .map(GrowingLocationMapper::toDTO);
+                .map(growingLocationMapper::toDTO);
     }
 
     public GrowingLocationDTO createGrowingLocation(GrowingLocationDTO growingLocationDTO) {
-        try {
-            GrowingLocation growingLocation = GrowingLocationMapper.toEntity(growingLocationDTO);
-            GrowingLocation createdGrowingLocation = growingLocationRepository.save(growingLocation);
-            return GrowingLocationMapper.toDTO(createdGrowingLocation);
-        } catch (DataIntegrityViolationException e) {
-            throw new DuplicateGrowingLocationNameException("Growing location name already exists: " + growingLocationDTO.name());
-        }
+        //todo add check for duplicate name and use DuplicateGrowingLocationNameException
+        GrowingLocation growingLocation = growingLocationMapper.toEntity(growingLocationDTO);
+        growingLocationRepository.save(growingLocation);
+        return growingLocationMapper.toDTO(growingLocation);
     }
 
+    @Transactional
     public GrowingLocationDTO updateGrowingLocation(Long id,
                                                     GrowingLocationDTO growingLocationDTO) {
-        GrowingLocation existingGrowingLocation = getGrowingLocationEntityByIdOrThrow(id);
-
-        existingGrowingLocation.setName(growingLocationDTO.name());
-        existingGrowingLocation.setOccupied(growingLocationDTO.occupied());
-        try {
-            GrowingLocation updatedGrowingLocation = growingLocationRepository.save(existingGrowingLocation);
-            return GrowingLocationMapper.toDTO(updatedGrowingLocation);
-        } catch (DataIntegrityViolationException e) {
-            throw new DuplicateGrowingLocationNameException("Growing location name already exists: " + growingLocationDTO.name());
-        }
+        GrowingLocation growingLocation = getGrowingLocationEntityByIdOrThrow(id);
+        //todo add check for duplicate name and use DuplicateGrowingLocationNameException
+        growingLocationMapper.updateEntityUsingDTO(growingLocation, growingLocationDTO);
+        return growingLocationMapper.toDTO(growingLocation);
     }
 
     public Optional<GrowingLocationDTO> getGrowingLocationByName(String name) {
         return growingLocationRepository.findByName(name)
-                .map(GrowingLocationMapper::toDTO);
+                .map(growingLocationMapper::toDTO);
     }
 
     public GrowingLocationDTO getOrCreateGrowingLocationByName(String growingLocationName) {
