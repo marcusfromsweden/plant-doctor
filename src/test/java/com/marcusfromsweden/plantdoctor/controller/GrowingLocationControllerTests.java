@@ -3,7 +3,6 @@ package com.marcusfromsweden.plantdoctor.controller;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -85,7 +84,6 @@ public class GrowingLocationControllerTests {
     }
 
     @Test
-    @Disabled
     public void testUpdateGrowingLocation() throws Exception {
         Mockito.when(growingLocationService.updateGrowingLocation(
                 Mockito.eq(growingLocationDTO.id()),
