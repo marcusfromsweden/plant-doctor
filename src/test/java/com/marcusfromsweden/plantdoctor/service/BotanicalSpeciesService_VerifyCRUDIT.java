@@ -3,6 +3,7 @@ package com.marcusfromsweden.plantdoctor.service;
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
 import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,10 +30,13 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
     @Autowired
     private RepositoryTestHelper repositoryTestHelper;
 
+    @BeforeEach
+    public void setUp() {
+        repositoryTestHelper.deleteAllData();
+    }
+
     @Test
     public void testCreateAndReadAndDelete() {
-        repositoryTestHelper.deleteAllData();
-
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
                 .name(BOTANICAL_SPECIES_1_NAME)
                 .description(BOTANICAL_SPECIES_1_DESCRIPTION)
@@ -59,8 +63,6 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
 
     @Test
     public void testCreateAndUpdate() {
-        repositoryTestHelper.deleteAllData();
-
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
                 .name(BOTANICAL_SPECIES_2_NAME)
                 .description(BOTANICAL_SPECIES_2_DESCRIPTION)

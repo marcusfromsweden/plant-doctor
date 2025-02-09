@@ -4,6 +4,8 @@ import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
+import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +19,16 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
     private SeedPackageService seedPackageService;
     @Autowired
     private BotanicalSpeciesService botanicalSpeciesService;
+    @Autowired
+    private RepositoryTestHelper repositoryTestHelper;
 
+    @BeforeEach
+    public void setUp() {
+        repositoryTestHelper.deleteAllData();
+    }
+
+    //todo create constants for tests values
+    
     @Test
     public void testCreateAndUpdate() {
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
@@ -46,4 +57,6 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
         SeedPackage updatedSeedPackage = seedPackageService.getSeedPackageEntityByIdOrThrow(seedPackage.id());
         assertEquals(newSeedPackageDetails.name(), updatedSeedPackage.getName());
     }
+
+    //todo add testCreateAndReadAndDelete
 }
