@@ -40,17 +40,15 @@ public class BotanicalSpeciesService {
 
     public BotanicalSpeciesDTO createBotanicalSpecies(BotanicalSpeciesDTO botanicalSpeciesDTO) {
         BotanicalSpecies botanicalSpecies = botanicalSpeciesMapper.toEntity(botanicalSpeciesDTO);
-        BotanicalSpecies createdBotanicalSpecies = botanicalSpeciesRepository.save(botanicalSpecies);
-        return botanicalSpeciesMapper.toDTO(createdBotanicalSpecies);
+        botanicalSpeciesRepository.save(botanicalSpecies);
+        return botanicalSpeciesMapper.toDTO(botanicalSpecies);
     }
 
     @Transactional
     public BotanicalSpeciesDTO updateBotanicalSpecies(Long id,
                                                       BotanicalSpeciesDTO botanicalSpeciesDTO) {
         BotanicalSpecies botanicalSpecies = getBotanicalSpeciesEntityByIdOrThrow(id);
-        botanicalSpecies.setName(botanicalSpeciesDTO.name());
-        botanicalSpecies.setDescription(botanicalSpeciesDTO.description());
-        botanicalSpecies.setEstimatedDaysToGermination(botanicalSpeciesDTO.estimatedDaysToGermination());
+        botanicalSpeciesMapper.updateEntityUsingDTO(botanicalSpecies, botanicalSpeciesDTO);
         return botanicalSpeciesMapper.toDTO(botanicalSpecies);
     }
 
