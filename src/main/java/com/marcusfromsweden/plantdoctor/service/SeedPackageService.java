@@ -57,7 +57,7 @@ public class SeedPackageService {
                                                                             Long botanicalSpeciesId) {
         List<SeedPackage> seedPackages = seedPackageRepository.findByNameAndBotanicalSpeciesId(seedPackageName, botanicalSpeciesId);
         if (seedPackages.size() > 1) {
-            throw new MultipleSeedPackageFoundException("Multiple SeedPackages found with name: %s and plant species id: %d"
+            throw new MultipleSeedPackageFoundException("Multiple SeedPackages found with name: %s and botanical species id: %d"
                                                                 .formatted(seedPackageName, botanicalSpeciesId));
         }
 

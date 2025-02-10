@@ -38,7 +38,7 @@ public class RepositoryTestHelper {
         log.info("  Plant count:            {}", plantRepository.count());
         log.info("  Plant comment count:    {}", plantCommentRepository.count());
         log.info("  Growing location count: {}", growingLocationRepository.count());
-        log.info("  Plant species count:    {}", botanicalSpeciesRepository.count());
+        log.info("  Botanical species count:    {}", botanicalSpeciesRepository.count());
         log.info("  Seed package count:     {}", seedPackageRepository.count());
     }
 
