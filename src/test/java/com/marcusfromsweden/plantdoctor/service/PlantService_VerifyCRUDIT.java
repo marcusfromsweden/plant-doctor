@@ -26,9 +26,11 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
     public static final LocalDate PLANT_2_GERMINATION_DATE = LocalDate.of(2025, 2, 15);
     public static final LocalDate PLANT_2_PLANTING_DATE_UPDATED = LocalDate.of(2025, 2, 2);
     public static final LocalDate PLANT_2_GERMINATION_DATE_UPDATED = LocalDate.of(2025, 2, 16);
+
     public static final String BOTANICAL_SPECIES_LATIN_NAME = "Botanical Species 1";
     public static final String BOTANICAL_SPECIES_DESCRIPTION = "Some description";
     public static final int BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 7;
+
     public static final String SEED_PACK_NAME = "Seed Pack 1";
     public static final int SEED_PACK_NUMBER_OF_SEEDS = 100;
 
