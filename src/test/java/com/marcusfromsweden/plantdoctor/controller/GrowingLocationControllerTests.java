@@ -89,6 +89,7 @@ public class GrowingLocationControllerTests {
                 Mockito.eq(growingLocationDTO.id()),
                 Mockito.any(GrowingLocationDTO.class))).thenReturn(growingLocationDTO);
 
+        //todo change to better way of creating json
         String growingLocationJson =
                 "{\"id\":\"%s\",\"name\":\"%s\"}".formatted(
                         growingLocationDTO.id(),
