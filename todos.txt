@@ -5,9 +5,6 @@ Tests
  - Add tests for called services
     a la Mockito.verify(growingLocationService, Mockito.times(1))
                     .getAllGrowingLocations();
-    - BotanicalSpeciesControllerTests
-    - PlantControllerTests
-    - SeedPackageControllerTests
-    - ...
+    - IT service tests
  - update tests to use assertj instead of junit
  - add tests for invalid input/edge cases

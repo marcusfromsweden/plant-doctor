@@ -74,6 +74,8 @@ public class BotanicalSpeciesControllerTests {
                 .andExpect(jsonPath("$[0].latinName", is(existingBotanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$[0].description", is(existingBotanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$[0].estimatedDaysToGermination", is(existingBotanicalSpeciesDTO.estimatedDaysToGermination())));
+
+        Mockito.verify(botanicalSpeciesService, Mockito.times(1)).getAllBotanicalSpecies();
     }
 
     @Test
@@ -87,6 +89,9 @@ public class BotanicalSpeciesControllerTests {
                 .andExpect(jsonPath("$.latinName", is(existingBotanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$.description", is(existingBotanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$.estimatedDaysToGermination", is(existingBotanicalSpeciesDTO.estimatedDaysToGermination())));
+
+        Mockito.verify(botanicalSpeciesService, Mockito.times(1))
+                .getBotanicalSpeciesById(existingBotanicalSpeciesDTO.id());
     }
 
     @Test
@@ -103,6 +108,9 @@ public class BotanicalSpeciesControllerTests {
                 .andExpect(jsonPath("$.latinName", is(existingBotanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$.description", is(existingBotanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$.estimatedDaysToGermination", is(existingBotanicalSpeciesDTO.estimatedDaysToGermination())));
+
+        Mockito.verify(botanicalSpeciesService, Mockito.times(1))
+                .createBotanicalSpecies(Mockito.any(BotanicalSpeciesDTO.class));
     }
 
     @Test
@@ -121,6 +129,11 @@ public class BotanicalSpeciesControllerTests {
                 .andExpect(jsonPath("$.latinName", is(updatedBotanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$.description", is(updatedBotanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$.estimatedDaysToGermination", is(updatedBotanicalSpeciesDTO.estimatedDaysToGermination())));
+
+        Mockito.verify(botanicalSpeciesService, Mockito.times(1))
+                .updateBotanicalSpecies(
+                        Mockito.eq(existingBotanicalSpeciesDTO.id()),
+                        Mockito.any(BotanicalSpeciesDTO.class));
     }
 
     @Test
@@ -136,6 +149,9 @@ public class BotanicalSpeciesControllerTests {
                 .andExpect(jsonPath("$.latinName", is(existingBotanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$.description", is(existingBotanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$.estimatedDaysToGermination", is(existingBotanicalSpeciesDTO.estimatedDaysToGermination())));
+
+        Mockito.verify(botanicalSpeciesService, Mockito.times(1))
+                .getBotanicalSpeciesByLatinName(speciesName);
     }
 
     @Test
@@ -144,5 +160,8 @@ public class BotanicalSpeciesControllerTests {
 
         mockMvc.perform(delete(API_PATH_PLANT_SPECIES + "/{id}", existingBotanicalSpeciesDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
+
+        Mockito.verify(botanicalSpeciesService, Mockito.times(1))
+                .deleteBotanicalSpecies(existingBotanicalSpeciesDTO.id());
     }
 }

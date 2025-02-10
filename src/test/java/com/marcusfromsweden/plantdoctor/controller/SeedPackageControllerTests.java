@@ -74,6 +74,8 @@ public class SeedPackageControllerTests {
                 .andExpect(jsonPath("$[0].botanicalSpeciesId", is(existingSeedPackageDTO.botanicalSpeciesId().intValue())))
                 .andExpect(jsonPath("$[0].name", is(existingSeedPackageDTO.name())))
                 .andExpect(jsonPath("$[0].numberOfSeeds", is(existingSeedPackageDTO.numberOfSeeds())));
+
+        Mockito.verify(seedPackageService, Mockito.times(1)).getAllSeedPackages();
     }
 
     @Test
@@ -88,6 +90,9 @@ public class SeedPackageControllerTests {
                 .andExpect(jsonPath("$.botanicalSpeciesId", is(existingSeedPackageDTO.botanicalSpeciesId().intValue())))
                 .andExpect(jsonPath("$.name", is(existingSeedPackageDTO.name())))
                 .andExpect(jsonPath("$.numberOfSeeds", is(existingSeedPackageDTO.numberOfSeeds())));
+
+        Mockito.verify(seedPackageService, Mockito.times(1))
+                .getSeedPackageById(existingSeedPackageDTO.id());
     }
 
     @Test
@@ -104,6 +109,9 @@ public class SeedPackageControllerTests {
                 .andExpect(jsonPath("$.botanicalSpeciesId", is(existingSeedPackageDTO.botanicalSpeciesId().intValue())))
                 .andExpect(jsonPath("$.name", is(existingSeedPackageDTO.name())))
                 .andExpect(jsonPath("$.numberOfSeeds", is(existingSeedPackageDTO.numberOfSeeds())));
+
+        Mockito.verify(seedPackageService, Mockito.times(1))
+                .createSeedPackage(Mockito.any(SeedPackageDTO.class));
     }
 
     @Test
@@ -122,6 +130,10 @@ public class SeedPackageControllerTests {
                 .andExpect(jsonPath("$.botanicalSpeciesId", is(updatedSeedPackageDTO.botanicalSpeciesId().intValue())))
                 .andExpect(jsonPath("$.name", is(updatedSeedPackageDTO.name())))
                 .andExpect(jsonPath("$.numberOfSeeds", is(updatedSeedPackageDTO.numberOfSeeds())));
+
+        Mockito.verify(seedPackageService, Mockito.times(1))
+                .updateSeedPackage(Mockito.eq(existingSeedPackageDTO.id()),
+                                   Mockito.any(SeedPackageDTO.class));
     }
 
     @Test
@@ -131,5 +143,8 @@ public class SeedPackageControllerTests {
         mockMvc.perform(delete(API_PATH_SEED_PACKAGES + "/{id}", existingSeedPackageDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+
+        Mockito.verify(seedPackageService, Mockito.times(1))
+                .deleteSeedPackage(existingSeedPackageDTO.id());
     }
 }

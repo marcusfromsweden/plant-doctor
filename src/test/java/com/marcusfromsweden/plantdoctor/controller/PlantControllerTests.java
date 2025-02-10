@@ -69,6 +69,8 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$[0].growingLocationId", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$[0].plantingDate", is(plantDTO.plantingDate().toString())))
                 .andExpect(jsonPath("$[0].germinationDate", is(plantDTO.germinationDate().toString())));
+
+        Mockito.verify(plantService, Mockito.times(1)).getAllPlants();
     }
 
     @Test
@@ -83,6 +85,9 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
                 .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())));
+
+        Mockito.verify(plantService, Mockito.times(1))
+                .getPlantById(plantDTO.id());
     }
 
     @Test
@@ -100,6 +105,9 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
                 .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())));
+
+        Mockito.verify(plantService, Mockito.times(1))
+                .createPlant(Mockito.any(PlantDTO.class));
     }
 
     @Test
@@ -107,6 +115,7 @@ public class PlantControllerTests {
         Mockito.when(plantService.updatePlant(plantDTO.id(), plantDTO)).thenReturn(plantDTO);
         String plantJson = objectMapper.writeValueAsString(plantDTO);
 
+        //todo create a new plantDTO for the update
         mockMvc.perform(put(API_PATH + "/{id}", plantDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(plantJson))
@@ -116,6 +125,9 @@ public class PlantControllerTests {
                 .andExpect(jsonPath("$.growingLocationId", is(growingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.plantingDate", is(plantDTO.plantingDate().toString())))
                 .andExpect(jsonPath("$.germinationDate", is(plantDTO.germinationDate().toString())));
+
+        Mockito.verify(plantService, Mockito.times(1))
+                .updatePlant(plantDTO.id(), plantDTO);
     }
 
     @Test
@@ -125,5 +137,8 @@ public class PlantControllerTests {
         mockMvc.perform(delete(API_PATH + "/{id}", plantDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+
+        Mockito.verify(plantService, Mockito.times(1))
+                .deletePlant(plantDTO.id());
     }
 }
