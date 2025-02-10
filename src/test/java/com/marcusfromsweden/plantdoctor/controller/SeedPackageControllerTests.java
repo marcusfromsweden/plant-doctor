@@ -1,5 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.service.SeedPackageService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,95 +24,111 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class SeedPackageControllerTests {
 
-    public static final String API_PATH_SEED_PACKAGES = "/api/seed-packages";
+    private static final String API_PATH_SEED_PACKAGES = "/api/seed-packages";
+
+    public static final long EXISTING_SEED_PACKAGE_ID = 1L;
+    public static final long EXISTING_SEED_PACKAGE_BOTANICAL_SPECIES_ID = 15L;
+    public static final String EXISTING_SEED_PACKAGE_NAME = "Tomato Seeds";
+    public static final int EXISTING_SEED_PACKAGE_NUMBER_OF_SEEDS = 100;
+    public static final long UPDATED_SEED_PACKAGE_ID = 2L;
+    public static final long UPDATED_SEED_PACKAGE_BOTANICAL_SPECIES_ID = 22L;
+    public static final String UPDATED_SEED_PACKAGE_NAME = "Tomato Seeds Ver 2";
+    public static final int UPDATED_SEED_PACKAGE_NUMBER_OF_SEEDS = 200;
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private SeedPackageService seedPackageService;
 
-    private SeedPackageDTO seedPackageDTO;
+    private SeedPackageDTO existingSeedPackageDTO;
+    private SeedPackageDTO updatedSeedPackageDTO;
 
     @BeforeEach
     public void setup() {
-        seedPackageDTO = SeedPackageDTO.builder()
-                .id(1L)
-                .botanicalSpeciesId(15L)
-                .name("Tomato Seeds")
-                .numberOfSeeds(100)
+        existingSeedPackageDTO = SeedPackageDTO.builder()
+                .id(EXISTING_SEED_PACKAGE_ID)
+                .botanicalSpeciesId(EXISTING_SEED_PACKAGE_BOTANICAL_SPECIES_ID)
+                .name(EXISTING_SEED_PACKAGE_NAME)
+                .numberOfSeeds(EXISTING_SEED_PACKAGE_NUMBER_OF_SEEDS)
+                .build();
+
+        updatedSeedPackageDTO = SeedPackageDTO.builder()
+                .id(UPDATED_SEED_PACKAGE_ID)
+                .botanicalSpeciesId(UPDATED_SEED_PACKAGE_BOTANICAL_SPECIES_ID)
+                .name(UPDATED_SEED_PACKAGE_NAME)
+                .numberOfSeeds(UPDATED_SEED_PACKAGE_NUMBER_OF_SEEDS)
                 .build();
     }
 
     @Test
     public void testGetAllSeedPackages() throws Exception {
         Mockito.when(seedPackageService.getAllSeedPackages())
-                .thenReturn(Collections.singletonList(seedPackageDTO));
+                .thenReturn(Collections.singletonList(existingSeedPackageDTO));
 
         mockMvc.perform(get(API_PATH_SEED_PACKAGES).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(seedPackageDTO.id().intValue())))
-                .andExpect(jsonPath("$[0].botanicalSpeciesId", is(seedPackageDTO.botanicalSpeciesId().intValue())))
-                .andExpect(jsonPath("$[0].name", is(seedPackageDTO.name())))
-                .andExpect(jsonPath("$[0].numberOfSeeds", is(seedPackageDTO.numberOfSeeds())));
+                .andExpect(jsonPath("$[0].id", is(existingSeedPackageDTO.id().intValue())))
+                .andExpect(jsonPath("$[0].botanicalSpeciesId", is(existingSeedPackageDTO.botanicalSpeciesId().intValue())))
+                .andExpect(jsonPath("$[0].name", is(existingSeedPackageDTO.name())))
+                .andExpect(jsonPath("$[0].numberOfSeeds", is(existingSeedPackageDTO.numberOfSeeds())));
     }
 
     @Test
     public void testGetSeedPackageById() throws Exception {
-        Mockito.when(seedPackageService.getSeedPackageById(seedPackageDTO.id()))
-                .thenReturn(Optional.of(seedPackageDTO));
+        Mockito.when(seedPackageService.getSeedPackageById(existingSeedPackageDTO.id()))
+                .thenReturn(Optional.of(existingSeedPackageDTO));
 
-        mockMvc.perform(get(API_PATH_SEED_PACKAGES + "/{id}", seedPackageDTO.id())
+        mockMvc.perform(get(API_PATH_SEED_PACKAGES + "/{id}", existingSeedPackageDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(seedPackageDTO.id().intValue())))
-                .andExpect(jsonPath("$.botanicalSpeciesId", is(seedPackageDTO.botanicalSpeciesId().intValue())))
-                .andExpect(jsonPath("$.name", is(seedPackageDTO.name())))
-                .andExpect(jsonPath("$.numberOfSeeds", is(seedPackageDTO.numberOfSeeds())));
+                .andExpect(jsonPath("$.id", is(existingSeedPackageDTO.id().intValue())))
+                .andExpect(jsonPath("$.botanicalSpeciesId", is(existingSeedPackageDTO.botanicalSpeciesId().intValue())))
+                .andExpect(jsonPath("$.name", is(existingSeedPackageDTO.name())))
+                .andExpect(jsonPath("$.numberOfSeeds", is(existingSeedPackageDTO.numberOfSeeds())));
     }
 
     @Test
     public void testCreateSeedPackage() throws Exception {
         Mockito.when(seedPackageService.createSeedPackage(Mockito.any(SeedPackageDTO.class)))
-                .thenReturn(seedPackageDTO);
-
-        String seedPackageJson = "{\"botanicalSpeciesId\":%d,\"name\":\"%s\",\"numberOfSeeds\":%d}"
-                .formatted(seedPackageDTO.botanicalSpeciesId(), seedPackageDTO.name(), seedPackageDTO.numberOfSeeds());
+                .thenReturn(existingSeedPackageDTO);
+        String seedPackageJson = objectMapper.writeValueAsString(existingSeedPackageDTO);
 
         mockMvc.perform(post(API_PATH_SEED_PACKAGES)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(seedPackageJson))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(seedPackageDTO.id().intValue())))
-                .andExpect(jsonPath("$.botanicalSpeciesId", is(seedPackageDTO.botanicalSpeciesId().intValue())))
-                .andExpect(jsonPath("$.name", is(seedPackageDTO.name())))
-                .andExpect(jsonPath("$.numberOfSeeds", is(seedPackageDTO.numberOfSeeds())));
+                .andExpect(jsonPath("$.id", is(existingSeedPackageDTO.id().intValue())))
+                .andExpect(jsonPath("$.botanicalSpeciesId", is(existingSeedPackageDTO.botanicalSpeciesId().intValue())))
+                .andExpect(jsonPath("$.name", is(existingSeedPackageDTO.name())))
+                .andExpect(jsonPath("$.numberOfSeeds", is(existingSeedPackageDTO.numberOfSeeds())));
     }
 
     @Test
     public void testUpdateSeedPackage() throws Exception {
-        Mockito.when(seedPackageService.updateSeedPackage(Mockito.eq(seedPackageDTO.id()), Mockito.any(SeedPackageDTO.class)))
-                .thenReturn(seedPackageDTO);
+        Mockito.when(seedPackageService.updateSeedPackage(Mockito.eq(existingSeedPackageDTO.id()),
+                                                          Mockito.any(SeedPackageDTO.class)))
+                .thenReturn(updatedSeedPackageDTO);
 
-        //todo use objectMapper instead of String.format + create another DTO for the update
-        String seedPackageJson = "{\"botanicalSpeciesId\":%d,\"name\":\"%s\",\"numberOfSeeds\":%d}"
-                .formatted(seedPackageDTO.botanicalSpeciesId(), seedPackageDTO.name(), seedPackageDTO.numberOfSeeds());
+        String updatedSeedPackageJson = objectMapper.writeValueAsString(updatedSeedPackageDTO);
 
-        mockMvc.perform(put(API_PATH_SEED_PACKAGES + "/{id}", seedPackageDTO.id())
+        mockMvc.perform(put(API_PATH_SEED_PACKAGES + "/{id}", existingSeedPackageDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(seedPackageJson))
+                                .content(updatedSeedPackageJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(seedPackageDTO.id().intValue())))
-                .andExpect(jsonPath("$.botanicalSpeciesId", is(seedPackageDTO.botanicalSpeciesId().intValue())))
-                .andExpect(jsonPath("$.name", is(seedPackageDTO.name())))
-                .andExpect(jsonPath("$.numberOfSeeds", is(seedPackageDTO.numberOfSeeds())));
+                .andExpect(jsonPath("$.id", is(updatedSeedPackageDTO.id().intValue())))
+                .andExpect(jsonPath("$.botanicalSpeciesId", is(updatedSeedPackageDTO.botanicalSpeciesId().intValue())))
+                .andExpect(jsonPath("$.name", is(updatedSeedPackageDTO.name())))
+                .andExpect(jsonPath("$.numberOfSeeds", is(updatedSeedPackageDTO.numberOfSeeds())));
     }
 
     @Test
     public void testDeleteSeedPackage() throws Exception {
-        Mockito.doNothing().when(seedPackageService).deleteSeedPackage(seedPackageDTO.id());
+        Mockito.doNothing().when(seedPackageService).deleteSeedPackage(existingSeedPackageDTO.id());
 
-        mockMvc.perform(delete(API_PATH_SEED_PACKAGES + "/{id}", seedPackageDTO.id())
+        mockMvc.perform(delete(API_PATH_SEED_PACKAGES + "/{id}", existingSeedPackageDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }

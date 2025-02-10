@@ -22,6 +22,7 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
     public static final int SEED_PACKAGE_1_NUMBER_OF_SEEDS = 100;
     public static final String SEED_PACKAGE_1_NAME_UPDATED = "SP 2";
     public static final int SEED_PACKAGE_1_NUMBER_OF_SEEDS_UPDATED = 200;
+
     @Autowired
     private SeedPackageService seedPackageService;
     @Autowired
@@ -33,8 +34,6 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
     public void setUp() {
         repositoryTestHelper.deleteAllData();
     }
-
-    //todo create constants for tests values
 
     @Test
     public void testCreateAndUpdate() {
@@ -65,5 +64,5 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
         assertEquals(newSeedPackageDTO.name(), updatedSeedPackage.getName());
     }
 
-    //todo add testCreateAndReadAndDelete
+    //FIXME add testCreateAndReadAndDelete
 }

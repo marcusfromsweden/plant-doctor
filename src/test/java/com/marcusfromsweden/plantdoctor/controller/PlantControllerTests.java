@@ -1,5 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
@@ -27,10 +28,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PlantControllerTests {
 
-    public static final String API_PATH = "/api/plants";
+    private static final String API_PATH = "/api/plants";
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private PlantService plantService;
@@ -86,13 +89,7 @@ public class PlantControllerTests {
     public void testCreatePlant() throws Exception {
         Mockito.when(plantService.createPlant(Mockito.any(PlantDTO.class)))
                 .thenReturn(plantDTO);
-
-        String plantJson = "{\"seedPackageId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\"}".formatted(
-                plantDTO.seedPackageId(),
-                plantDTO.growingLocationId(),
-                plantDTO.plantingDate().toString(),
-                plantDTO.germinationDate().toString()
-        );
+        String plantJson = objectMapper.writeValueAsString(plantDTO);
 
         mockMvc.perform(post(API_PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,15 +105,7 @@ public class PlantControllerTests {
     @Test
     public void testUpdatePlant() throws Exception {
         Mockito.when(plantService.updatePlant(plantDTO.id(), plantDTO)).thenReturn(plantDTO);
-
-        //todo use objectMapper instead of string formatting + create another DTO for the update
-        String plantJson = "{\"id\":\"%s\",\"seedPackageId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\"}".formatted(
-                plantDTO.id(),
-                plantDTO.seedPackageId(),
-                plantDTO.growingLocationId(),
-                plantDTO.plantingDate().toString(),
-                plantDTO.germinationDate().toString()
-        );
+        String plantJson = objectMapper.writeValueAsString(plantDTO);
 
         mockMvc.perform(put(API_PATH + "/{id}", plantDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)

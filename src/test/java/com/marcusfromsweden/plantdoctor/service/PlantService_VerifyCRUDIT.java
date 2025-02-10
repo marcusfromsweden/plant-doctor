@@ -26,6 +26,11 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
     public static final LocalDate PLANT_2_GERMINATION_DATE = LocalDate.of(2025, 2, 15);
     public static final LocalDate PLANT_2_PLANTING_DATE_UPDATED = LocalDate.of(2025, 2, 2);
     public static final LocalDate PLANT_2_GERMINATION_DATE_UPDATED = LocalDate.of(2025, 2, 16);
+    public static final String BOTANICAL_SPECIES_LATIN_NAME = "Botanical Species 1";
+    public static final String BOTANICAL_SPECIES_DESCRIPTION = "Some description";
+    public static final int BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 7;
+    public static final String SEED_PACK_NAME = "Seed Pack 1";
+    public static final int SEED_PACK_NUMBER_OF_SEEDS = 100;
 
     @Autowired
     private PlantService plantService;
@@ -46,16 +51,16 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
         repositoryTestHelper.deleteAllData();
 
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .latinName("Botanical Species 1")
-                .description("Some description")
-                .estimatedDaysToGermination(7)
+                .latinName(BOTANICAL_SPECIES_LATIN_NAME)
+                .description(BOTANICAL_SPECIES_DESCRIPTION)
+                .estimatedDaysToGermination(BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION)
                 .build();
         BotanicalSpeciesDTO botanicalSpeciesDTO = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDetails);
 
         SeedPackageDTO seedPackageDetails = SeedPackageDTO.builder()
-                .name("SP 1")
+                .name(SEED_PACK_NAME)
                 .botanicalSpeciesId(botanicalSpeciesDTO.id())
-                .numberOfSeeds(100)
+                .numberOfSeeds(SEED_PACK_NUMBER_OF_SEEDS)
                 .build();
         seedPackage = seedPackageService.createSeedPackage(seedPackageDetails);
 
@@ -100,6 +105,7 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
                 .germinationDate(PLANT_2_GERMINATION_DATE)
                 .build();
 
+        //FIXME add checks for modified seed package and growing location
         PlantDTO plant = plantService.createPlant(plantDetails);
 
         PlantDTO updatedPlantDetails = PlantDTO.builder()

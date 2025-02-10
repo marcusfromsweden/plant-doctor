@@ -6,8 +6,6 @@ import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,8 +24,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class GrowingLocationControllerTests {
 
-    private static final Logger log = LoggerFactory.getLogger(GrowingLocationControllerTests.class);
-    public static final String API_PATH_GROWING_LOCATIONS = "/api/growing-locations";
+    private static final String API_PATH_GROWING_LOCATIONS = "/api/growing-locations";
+    public static final long EXISTING_GROWING_LOCATION_ID = 1L;
+    public static final String EXISTING_GROWING_LOCATION_NAME = "Pot 1";
+    public static final long UPDATED_GROWING_LOCATION_ID = 2L;
+    public static final String UPDATED_GROWING_LOCATION_NAME = "Updated Pot";
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,14 +44,13 @@ public class GrowingLocationControllerTests {
     @BeforeEach
     public void setup() {
         existingGrowingLocationDTO = GrowingLocationDTO.builder()
-                .id(1L)
-                .name("Pot 1")
+                .id(EXISTING_GROWING_LOCATION_ID)
+                .name(EXISTING_GROWING_LOCATION_NAME)
                 .build();
 
-        // Separate DTO with modified data for update
         updatedGrowingLocation = GrowingLocationDTO.builder()
-                .id(1L)
-                .name("Updated Pot")
+                .id(UPDATED_GROWING_LOCATION_ID)
+                .name(UPDATED_GROWING_LOCATION_NAME)
                 .build();
     }
 
@@ -100,9 +100,9 @@ public class GrowingLocationControllerTests {
 
     @Test
     public void testUpdateGrowingLocation() throws Exception {
-        Mockito.when(growingLocationService.updateGrowingLocation(
-                Mockito.eq(existingGrowingLocationDTO.id()),
-                Mockito.any(GrowingLocationDTO.class))).thenReturn(updatedGrowingLocation);
+        Mockito.when(growingLocationService.updateGrowingLocation(Mockito.eq(existingGrowingLocationDTO.id()),
+                                                                  Mockito.any(GrowingLocationDTO.class)))
+                .thenReturn(updatedGrowingLocation);
         String growingLocationJson = objectMapper.writeValueAsString(updatedGrowingLocation);
 
         mockMvc.perform(put(API_PATH_GROWING_LOCATIONS + "/{id}", existingGrowingLocationDTO.id())

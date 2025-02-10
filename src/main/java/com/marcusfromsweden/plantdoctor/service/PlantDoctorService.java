@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 @Service
 public class PlantDoctorService {
 
-    private final Logger log = LoggerFactory.getLogger(PlantDoctorService.class);
+    private static final Logger log = LoggerFactory.getLogger(PlantDoctorService.class);
 
     private final PlantService plantService;
     private final BotanicalSpeciesService botanicalSpeciesService;

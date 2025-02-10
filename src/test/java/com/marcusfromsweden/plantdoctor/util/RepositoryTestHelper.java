@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RepositoryTestHelper {
 
-    private final Logger log = LoggerFactory.getLogger(RepositoryTestHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(RepositoryTestHelper.class);
 
     private final PlantRepository plantRepository;
     private final PlantCommentRepository plantCommentRepository;

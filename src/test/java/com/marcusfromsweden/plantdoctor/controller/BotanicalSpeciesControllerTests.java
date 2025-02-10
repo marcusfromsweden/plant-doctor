@@ -1,5 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.BotanicalSpeciesService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,109 +25,124 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class BotanicalSpeciesControllerTests {
 
-    public static final String API_PATH_PLANT_SPECIES = "/api/plant-species";
+    private static final String API_PATH_PLANT_SPECIES = "/api/plant-species";
+    public static final long EXISTING_BOTANICAL_SPECIES_ID = 1L;
+    public static final String EXISTING_BOTANICAL_SPECIES_LATIN_NAME = "tametoe talacum";
+    public static final String EXISTING_BOTANICAL_SPECIES_DESCRIPTION = "A tasty treat";
+    public static final int EXISTING_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 7;
+    private static final Long UPDATED_BOTANICAL_SPECIES_ID = 2L;
+    private static final String UPDATED_BOTANICAL_SPECIES_LATIN_NAME = "tometoe silucum";
+    private static final String UPDATED_BOTANICAL_SPECIES_DESCRIPTION = "A tasty treat as well";
+    private static final Integer UPDATED_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 11;
+
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private BotanicalSpeciesService botanicalSpeciesService;
 
-    private BotanicalSpeciesDTO botanicalSpeciesDTO;
+    private BotanicalSpeciesDTO existingBotanicalSpeciesDTO;
+    private BotanicalSpeciesDTO updatedBotanicalSpeciesDTO;
 
     @BeforeEach
     public void setup() {
-        botanicalSpeciesDTO = BotanicalSpeciesDTO.builder()
-                .id(1L)
-                .latinName("Tomato")
-                .description("A tasty treat")
-                .estimatedDaysToGermination(7)
+        existingBotanicalSpeciesDTO = BotanicalSpeciesDTO.builder()
+                .id(EXISTING_BOTANICAL_SPECIES_ID)
+                .latinName(EXISTING_BOTANICAL_SPECIES_LATIN_NAME)
+                .description(EXISTING_BOTANICAL_SPECIES_DESCRIPTION)
+                .estimatedDaysToGermination(EXISTING_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION)
+                .build();
+
+        updatedBotanicalSpeciesDTO = BotanicalSpeciesDTO.builder()
+                .id(UPDATED_BOTANICAL_SPECIES_ID)
+                .latinName(UPDATED_BOTANICAL_SPECIES_LATIN_NAME)
+                .description(UPDATED_BOTANICAL_SPECIES_DESCRIPTION)
+                .estimatedDaysToGermination(UPDATED_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION)
                 .build();
     }
 
     @Test
     public void testGetAllBotanicalSpecies() throws Exception {
         Mockito.when(botanicalSpeciesService.getAllBotanicalSpecies())
-                .thenReturn(Collections.singletonList(botanicalSpeciesDTO));
+                .thenReturn(Collections.singletonList(existingBotanicalSpeciesDTO));
 
         mockMvc.perform(get(API_PATH_PLANT_SPECIES).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$[0].latinName", is(botanicalSpeciesDTO.latinName())))
-                .andExpect(jsonPath("$[0].description", is(botanicalSpeciesDTO.description())))
-                .andExpect(jsonPath("$[0].estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
+                .andExpect(jsonPath("$[0].id", is(existingBotanicalSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$[0].latinName", is(existingBotanicalSpeciesDTO.latinName())))
+                .andExpect(jsonPath("$[0].description", is(existingBotanicalSpeciesDTO.description())))
+                .andExpect(jsonPath("$[0].estimatedDaysToGermination", is(existingBotanicalSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testGetBotanicalSpeciesById() throws Exception {
-        Mockito.when(botanicalSpeciesService.getBotanicalSpeciesById(botanicalSpeciesDTO.id()))
-                .thenReturn(Optional.of(botanicalSpeciesDTO));
+        Mockito.when(botanicalSpeciesService.getBotanicalSpeciesById(existingBotanicalSpeciesDTO.id()))
+                .thenReturn(Optional.of(existingBotanicalSpeciesDTO));
 
-        mockMvc.perform(get(API_PATH_PLANT_SPECIES + "/{id}", botanicalSpeciesDTO.id())
+        mockMvc.perform(get(API_PATH_PLANT_SPECIES + "/{id}", existingBotanicalSpeciesDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$.latinName", is(botanicalSpeciesDTO.latinName())))
-                .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
-                .andExpect(jsonPath("$.estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
+                .andExpect(jsonPath("$.id", is(existingBotanicalSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.latinName", is(existingBotanicalSpeciesDTO.latinName())))
+                .andExpect(jsonPath("$.description", is(existingBotanicalSpeciesDTO.description())))
+                .andExpect(jsonPath("$.estimatedDaysToGermination", is(existingBotanicalSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testCreateBotanicalSpecies() throws Exception {
-        Mockito
-                .when(botanicalSpeciesService.createBotanicalSpecies(Mockito.any(BotanicalSpeciesDTO.class)))
-                .thenReturn(botanicalSpeciesDTO);
-
-        String botanicalSpeciesJson = "{\"latinName\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
-                .formatted(botanicalSpeciesDTO.latinName(), botanicalSpeciesDTO.description(), botanicalSpeciesDTO.estimatedDaysToGermination());
+        Mockito.when(botanicalSpeciesService.createBotanicalSpecies(Mockito.any(BotanicalSpeciesDTO.class)))
+                .thenReturn(existingBotanicalSpeciesDTO);
+        String botanicalSpeciesJson = objectMapper.writeValueAsString(existingBotanicalSpeciesDTO);
 
         mockMvc.perform(post(API_PATH_PLANT_SPECIES)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(botanicalSpeciesJson))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$.latinName", is(botanicalSpeciesDTO.latinName())))
-                .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
-                .andExpect(jsonPath("$.estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
+                .andExpect(jsonPath("$.id", is(existingBotanicalSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.latinName", is(existingBotanicalSpeciesDTO.latinName())))
+                .andExpect(jsonPath("$.description", is(existingBotanicalSpeciesDTO.description())))
+                .andExpect(jsonPath("$.estimatedDaysToGermination", is(existingBotanicalSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testUpdateBotanicalSpecies() throws Exception {
         Mockito
-                .when(botanicalSpeciesService.updateBotanicalSpecies(Mockito.eq(botanicalSpeciesDTO.id()),
+                .when(botanicalSpeciesService.updateBotanicalSpecies(Mockito.eq(existingBotanicalSpeciesDTO.id()),
                                                                      Mockito.any(BotanicalSpeciesDTO.class)))
-                .thenReturn(botanicalSpeciesDTO);
+                .thenReturn(updatedBotanicalSpeciesDTO);
+        //todo use another DTO for the update
+        String botanicalSpeciesJson = objectMapper.writeValueAsString(updatedBotanicalSpeciesDTO);
 
-        String botanicalSpeciesJson = "{\"latinName\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
-                .formatted(botanicalSpeciesDTO.latinName(), botanicalSpeciesDTO.description(), botanicalSpeciesDTO.estimatedDaysToGermination());
-
-        mockMvc.perform(put(API_PATH_PLANT_SPECIES + "/{id}", botanicalSpeciesDTO.id())
+        mockMvc.perform(put(API_PATH_PLANT_SPECIES + "/{id}", existingBotanicalSpeciesDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON).content(botanicalSpeciesJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$.latinName", is(botanicalSpeciesDTO.latinName())))
-                .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
-                .andExpect(jsonPath("$.estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
+                .andExpect(jsonPath("$.id", is(updatedBotanicalSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.latinName", is(updatedBotanicalSpeciesDTO.latinName())))
+                .andExpect(jsonPath("$.description", is(updatedBotanicalSpeciesDTO.description())))
+                .andExpect(jsonPath("$.estimatedDaysToGermination", is(updatedBotanicalSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testGetBotanicalSpeciesByName() throws Exception {
         String speciesName = "Tomato";
         Mockito.when(botanicalSpeciesService.getBotanicalSpeciesByLatinName(speciesName))
-                .thenReturn(Optional.of(botanicalSpeciesDTO));
+                .thenReturn(Optional.of(existingBotanicalSpeciesDTO));
 
         mockMvc.perform(get(API_PATH_PLANT_SPECIES + "/name/{name}", speciesName)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$.latinName", is(botanicalSpeciesDTO.latinName())))
-                .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
-                .andExpect(jsonPath("$.estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
+                .andExpect(jsonPath("$.id", is(existingBotanicalSpeciesDTO.id().intValue())))
+                .andExpect(jsonPath("$.latinName", is(existingBotanicalSpeciesDTO.latinName())))
+                .andExpect(jsonPath("$.description", is(existingBotanicalSpeciesDTO.description())))
+                .andExpect(jsonPath("$.estimatedDaysToGermination", is(existingBotanicalSpeciesDTO.estimatedDaysToGermination())));
     }
 
     @Test
     public void testDeleteBotanicalSpecies() throws Exception {
-        Mockito.doNothing().when(botanicalSpeciesService).deleteBotanicalSpecies(botanicalSpeciesDTO.id());
+        Mockito.doNothing().when(botanicalSpeciesService).deleteBotanicalSpecies(existingBotanicalSpeciesDTO.id());
 
-        mockMvc.perform(delete(API_PATH_PLANT_SPECIES + "/{id}", botanicalSpeciesDTO.id())
+        mockMvc.perform(delete(API_PATH_PLANT_SPECIES + "/{id}", existingBotanicalSpeciesDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
     }
 }

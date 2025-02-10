@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class BotanicalSpeciesService {
 
-    private final Logger log = LoggerFactory.getLogger(BotanicalSpeciesService.class);
+    private static final Logger log = LoggerFactory.getLogger(BotanicalSpeciesService.class);
     private final BotanicalSpeciesRepository botanicalSpeciesRepository;
     private final BotanicalSpeciesMapper botanicalSpeciesMapper;
 
