@@ -38,7 +38,7 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
     @Test
     public void testCreateAndReadAndDelete() {
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .name(BOTANICAL_SPECIES_1_NAME)
+                .latinName(BOTANICAL_SPECIES_1_NAME)
                 .description(BOTANICAL_SPECIES_1_DESCRIPTION)
                 .estimatedDaysToGermination(BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION)
                 .build();
@@ -50,8 +50,8 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
         assertNotNull(botanicalSpecies.id());
         assertNotNull(botanicalSpeciesService.getBotanicalSpeciesById(botanicalSpecies.id()));
         assertEquals(1, botanicalSpeciesService.getAllBotanicalSpecies().size());
-        assertEquals(botanicalSpeciesDetails.name(),
-                     botanicalSpecies.name());
+        assertEquals(botanicalSpeciesDetails.latinName(),
+                     botanicalSpecies.latinName());
         assertEquals(botanicalSpeciesDetails.description(),
                      botanicalSpecies.description());
         assertEquals(botanicalSpeciesDetails.estimatedDaysToGermination(),
@@ -64,7 +64,7 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
     @Test
     public void testCreateAndUpdate() {
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .name(BOTANICAL_SPECIES_2_NAME)
+                .latinName(BOTANICAL_SPECIES_2_NAME)
                 .description(BOTANICAL_SPECIES_2_DESCRIPTION)
                 .estimatedDaysToGermination(BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION)
                 .build();
@@ -73,14 +73,14 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
                 botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDetails);
 
         BotanicalSpeciesDTO updatedBotanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .name(BOTANICAL_SPECIES_2_NAME_UPDATED)
+                .latinName(BOTANICAL_SPECIES_2_NAME_UPDATED)
                 .description(BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED)
                 .estimatedDaysToGermination(BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED)
                 .build();
         BotanicalSpeciesDTO updatedBotanicalSpecies = botanicalSpeciesService.updateBotanicalSpecies(botanicalSpecies.id(), updatedBotanicalSpeciesDetails);
 
-        assertEquals(updatedBotanicalSpeciesDetails.name(),
-                     updatedBotanicalSpecies.name());
+        assertEquals(updatedBotanicalSpeciesDetails.latinName(),
+                     updatedBotanicalSpecies.latinName());
         assertEquals(updatedBotanicalSpeciesDetails.description(),
                      updatedBotanicalSpecies.description());
         assertEquals(updatedBotanicalSpeciesDetails.estimatedDaysToGermination(),

@@ -49,7 +49,7 @@ public class BotanicalSpeciesController {
 
     @GetMapping("/name/{name}")
     public ResponseEntity<BotanicalSpeciesDTO> getBotanicalSpeciesByName(@PathVariable String name) {
-        Optional<BotanicalSpeciesDTO> botanicalSpeciesDTO = botanicalSpeciesService.getBotanicalSpeciesByName(name);
+        Optional<BotanicalSpeciesDTO> botanicalSpeciesDTO = botanicalSpeciesService.getBotanicalSpeciesByLatinName(name);
         return botanicalSpeciesDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

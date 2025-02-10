@@ -16,7 +16,7 @@ public class BotanicalSpecies {
     @Size(min = 3, max = 50)
     @NotNull
     @Column(unique = true)
-    private String name;
+    private String latinName;
     private String description;
     private Integer estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION;
 
@@ -29,12 +29,12 @@ public class BotanicalSpecies {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLatinName() {
+        return latinName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLatinName(String latinName) {
+        this.latinName = latinName;
     }
 
     public String getDescription() {

@@ -28,11 +28,11 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
     }
 
     //todo create constants for tests values
-    
+
     @Test
     public void testCreateAndUpdate() {
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .name("Botanical Species 1")
+                .latinName("Botanical Species 1")
                 .description("Some description")
                 .estimatedDaysToGermination(7)
                 .build();

@@ -2,7 +2,7 @@ package com.marcusfromsweden.plantdoctor.dto;
 
 public record BotanicalSpeciesDTO(
         Long id,
-        String name,
+        String latinName,
         String description,
         Integer estimatedDaysToGermination
 ) {
@@ -12,7 +12,7 @@ public record BotanicalSpeciesDTO(
 
     public static class Builder {
         private Long id;
-        private String name;
+        private String latinName;
         private String description;
         private Integer estimatedDaysToGermination;
 
@@ -21,8 +21,8 @@ public record BotanicalSpeciesDTO(
             return this;
         }
 
-        public Builder name(String name) {
-            this.name = name;
+        public Builder latinName(String name) {
+            this.latinName = name;
             return this;
         }
 
@@ -37,7 +37,7 @@ public record BotanicalSpeciesDTO(
         }
 
         public BotanicalSpeciesDTO build() {
-            return new BotanicalSpeciesDTO(id, name, description, estimatedDaysToGermination);
+            return new BotanicalSpeciesDTO(id, latinName, description, estimatedDaysToGermination);
         }
     }
 }

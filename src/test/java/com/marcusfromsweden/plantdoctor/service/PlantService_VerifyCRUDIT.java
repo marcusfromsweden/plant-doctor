@@ -46,7 +46,7 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
         repositoryTestHelper.deleteAllData();
 
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .name("Botanical Species 1")
+                .latinName("Botanical Species 1")
                 .description("Some description")
                 .estimatedDaysToGermination(7)
                 .build();

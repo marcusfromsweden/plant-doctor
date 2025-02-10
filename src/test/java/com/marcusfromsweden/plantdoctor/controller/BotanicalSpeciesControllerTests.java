@@ -37,7 +37,7 @@ public class BotanicalSpeciesControllerTests {
     public void setup() {
         botanicalSpeciesDTO = BotanicalSpeciesDTO.builder()
                 .id(1L)
-                .name("Tomato")
+                .latinName("Tomato")
                 .description("A tasty treat")
                 .estimatedDaysToGermination(7)
                 .build();
@@ -51,7 +51,7 @@ public class BotanicalSpeciesControllerTests {
         mockMvc.perform(get(API_PATH_PLANT_SPECIES).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$[0].name", is(botanicalSpeciesDTO.name())))
+                .andExpect(jsonPath("$[0].latinName", is(botanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$[0].description", is(botanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$[0].estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
     }
@@ -64,7 +64,7 @@ public class BotanicalSpeciesControllerTests {
         mockMvc.perform(get(API_PATH_PLANT_SPECIES + "/{id}", botanicalSpeciesDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$.name", is(botanicalSpeciesDTO.name())))
+                .andExpect(jsonPath("$.latinName", is(botanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$.estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
     }
@@ -75,15 +75,15 @@ public class BotanicalSpeciesControllerTests {
                 .when(botanicalSpeciesService.createBotanicalSpecies(Mockito.any(BotanicalSpeciesDTO.class)))
                 .thenReturn(botanicalSpeciesDTO);
 
-        String botanicalSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
-                .formatted(botanicalSpeciesDTO.name(), botanicalSpeciesDTO.description(), botanicalSpeciesDTO.estimatedDaysToGermination());
+        String botanicalSpeciesJson = "{\"latinName\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
+                .formatted(botanicalSpeciesDTO.latinName(), botanicalSpeciesDTO.description(), botanicalSpeciesDTO.estimatedDaysToGermination());
 
         mockMvc.perform(post(API_PATH_PLANT_SPECIES)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(botanicalSpeciesJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$.name", is(botanicalSpeciesDTO.name())))
+                .andExpect(jsonPath("$.latinName", is(botanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$.estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
     }
@@ -95,14 +95,14 @@ public class BotanicalSpeciesControllerTests {
                                                                      Mockito.any(BotanicalSpeciesDTO.class)))
                 .thenReturn(botanicalSpeciesDTO);
 
-        String botanicalSpeciesJson = "{\"name\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
-                .formatted(botanicalSpeciesDTO.name(), botanicalSpeciesDTO.description(), botanicalSpeciesDTO.estimatedDaysToGermination());
+        String botanicalSpeciesJson = "{\"latinName\":\"%s\",\"description\":\"%s\",\"estimatedDaysToGermination\":%d}"
+                .formatted(botanicalSpeciesDTO.latinName(), botanicalSpeciesDTO.description(), botanicalSpeciesDTO.estimatedDaysToGermination());
 
         mockMvc.perform(put(API_PATH_PLANT_SPECIES + "/{id}", botanicalSpeciesDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON).content(botanicalSpeciesJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$.name", is(botanicalSpeciesDTO.name())))
+                .andExpect(jsonPath("$.latinName", is(botanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$.estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
     }
@@ -110,14 +110,14 @@ public class BotanicalSpeciesControllerTests {
     @Test
     public void testGetBotanicalSpeciesByName() throws Exception {
         String speciesName = "Tomato";
-        Mockito.when(botanicalSpeciesService.getBotanicalSpeciesByName(speciesName))
+        Mockito.when(botanicalSpeciesService.getBotanicalSpeciesByLatinName(speciesName))
                 .thenReturn(Optional.of(botanicalSpeciesDTO));
 
         mockMvc.perform(get(API_PATH_PLANT_SPECIES + "/name/{name}", speciesName)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(botanicalSpeciesDTO.id().intValue())))
-                .andExpect(jsonPath("$.name", is(botanicalSpeciesDTO.name())))
+                .andExpect(jsonPath("$.latinName", is(botanicalSpeciesDTO.latinName())))
                 .andExpect(jsonPath("$.description", is(botanicalSpeciesDTO.description())))
                 .andExpect(jsonPath("$.estimatedDaysToGermination", is(botanicalSpeciesDTO.estimatedDaysToGermination())));
     }

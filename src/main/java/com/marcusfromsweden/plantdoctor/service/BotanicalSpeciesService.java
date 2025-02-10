@@ -52,8 +52,8 @@ public class BotanicalSpeciesService {
         return botanicalSpeciesMapper.toDTO(botanicalSpecies);
     }
 
-    public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesByName(String name) {
-        return botanicalSpeciesRepository.findByName(name)
+    public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesByLatinName(String latinName) {
+        return botanicalSpeciesRepository.findByLatinName(latinName)
                 .map(botanicalSpeciesMapper::toDTO);
     }
 
@@ -62,14 +62,14 @@ public class BotanicalSpeciesService {
     }
 
     public BotanicalSpeciesDTO getOrCreateBotanicalSpeciesByName(String botanicalSpeciesName) {
-        Optional<BotanicalSpeciesDTO> botanicalSpecies = getBotanicalSpeciesByName(botanicalSpeciesName);
+        Optional<BotanicalSpeciesDTO> botanicalSpecies = getBotanicalSpeciesByLatinName(botanicalSpeciesName);
 
         if (botanicalSpecies.isPresent()) {
             return botanicalSpecies.get();
         }
 
         log.debug("Botanical species {} not found, creating a new one", botanicalSpeciesName);
-        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesDTO.builder().name(botanicalSpeciesName).build();
+        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesDTO.builder().latinName(botanicalSpeciesName).build();
 
         return createBotanicalSpecies(botanicalSpeciesDTO);
     }
