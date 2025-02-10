@@ -25,7 +25,7 @@ public class PlantDoctorService_TestQuickCreateIT extends PostgresTestContainerT
     public static final String TEST_PLANT_SEED_PACKAGE = "Test Seed Package";
     public static final String TEST_PLANT_LOCATION = "Test Location";
     public static final String THIS_PLANT_COMMENT = "This is a test comment";
-    
+
     @Autowired
     private PlantDoctorService plantDoctorService;
     @Autowired
@@ -42,7 +42,7 @@ public class PlantDoctorService_TestQuickCreateIT extends PostgresTestContainerT
     private RepositoryTestHelper repositoryTestHelper;
 
     @Test
-    public void testQuickCreatePlant() {
+    public void testQuickCreatePlantFromEmptyDatabase() {
         repositoryTestHelper.deleteAllData();
 
         QuickCreatePlantDTO quickCreatePlantDTO = new QuickCreatePlantDTO(

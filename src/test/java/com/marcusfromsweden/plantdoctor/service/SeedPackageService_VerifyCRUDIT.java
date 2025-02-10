@@ -15,6 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
 
+    public static final String BOTANICAL_SPECIES_1_LATIN_NAME = "Botanical Species 1";
+    public static final String BOTANICAL_SPECIES_1_DESCRIPTION = "Some description";
+    public static final int BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION = 7;
+    public static final String SEED_PACKAGE_1_NAME = "Some seed pack 1";
+    public static final int SEED_PACKAGE_1_NUMBER_OF_SEEDS = 100;
+    public static final String SEED_PACKAGE_1_NAME_UPDATED = "SP 2";
+    public static final int SEED_PACKAGE_1_NUMBER_OF_SEEDS_UPDATED = 200;
     @Autowired
     private SeedPackageService seedPackageService;
     @Autowired
@@ -31,31 +38,31 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
 
     @Test
     public void testCreateAndUpdate() {
-        BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .latinName("Botanical Species 1")
-                .description("Some description")
-                .estimatedDaysToGermination(7)
+        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesDTO.builder()
+                .latinName(BOTANICAL_SPECIES_1_LATIN_NAME)
+                .description(BOTANICAL_SPECIES_1_DESCRIPTION)
+                .estimatedDaysToGermination(BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION)
                 .build();
-        BotanicalSpeciesDTO botanicalSpecies = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDetails);
+        BotanicalSpeciesDTO botanicalSpecies = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
 
-        SeedPackageDTO seedPackageDetails = SeedPackageDTO.builder()
-                .name("SP 1")
+        SeedPackageDTO seedPackageDTO = SeedPackageDTO.builder()
+                .name(SEED_PACKAGE_1_NAME)
                 .botanicalSpeciesId(botanicalSpecies.id())
-                .numberOfSeeds(100)
+                .numberOfSeeds(SEED_PACKAGE_1_NUMBER_OF_SEEDS)
                 .build();
 
-        SeedPackageDTO seedPackage = seedPackageService.createSeedPackage(seedPackageDetails);
+        SeedPackageDTO seedPackage = seedPackageService.createSeedPackage(seedPackageDTO);
 
-        SeedPackageDTO newSeedPackageDetails = SeedPackageDTO.builder()
-                .name("SP 2")
+        SeedPackageDTO newSeedPackageDTO = SeedPackageDTO.builder()
+                .name(SEED_PACKAGE_1_NAME_UPDATED)
                 .botanicalSpeciesId(botanicalSpecies.id())
-                .numberOfSeeds(200)
+                .numberOfSeeds(SEED_PACKAGE_1_NUMBER_OF_SEEDS_UPDATED)
                 .build();
 
-        seedPackageService.updateSeedPackage(seedPackage.id(), newSeedPackageDetails);
+        seedPackageService.updateSeedPackage(seedPackage.id(), newSeedPackageDTO);
 
         SeedPackage updatedSeedPackage = seedPackageService.getSeedPackageEntityByIdOrThrow(seedPackage.id());
-        assertEquals(newSeedPackageDetails.name(), updatedSeedPackage.getName());
+        assertEquals(newSeedPackageDTO.name(), updatedSeedPackage.getName());
     }
 
     //todo add testCreateAndReadAndDelete

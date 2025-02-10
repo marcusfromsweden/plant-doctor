@@ -93,6 +93,7 @@ public class SeedPackageControllerTests {
         Mockito.when(seedPackageService.updateSeedPackage(Mockito.eq(seedPackageDTO.id()), Mockito.any(SeedPackageDTO.class)))
                 .thenReturn(seedPackageDTO);
 
+        //todo use objectMapper instead of String.format + create another DTO for the update
         String seedPackageJson = "{\"botanicalSpeciesId\":%d,\"name\":\"%s\",\"numberOfSeeds\":%d}"
                 .formatted(seedPackageDTO.botanicalSpeciesId(), seedPackageDTO.name(), seedPackageDTO.numberOfSeeds());
 

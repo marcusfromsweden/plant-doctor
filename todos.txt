@@ -1,0 +1,13 @@
+Application
+ - Add validation annotations to DTOs (to provide helpful error messages/guidance)
+
+Tests
+ - Add tests for called services
+    a la Mockito.verify(growingLocationService, Mockito.times(1))
+                    .getAllGrowingLocations();
+    - BotanicalSpeciesControllerTests
+    - PlantControllerTests
+    - SeedPackageControllerTests
+    - ...
+ - update tests to use assertj instead of junit
+ - add tests for invalid input/edge cases

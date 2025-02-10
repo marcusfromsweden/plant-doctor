@@ -37,11 +37,9 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
 
     @Test
     public void testCreateAndReadAndDelete() {
-        BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .latinName(BOTANICAL_SPECIES_1_NAME)
-                .description(BOTANICAL_SPECIES_1_DESCRIPTION)
-                .estimatedDaysToGermination(BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION)
-                .build();
+        BotanicalSpeciesDTO botanicalSpeciesDetails = createDTO(BOTANICAL_SPECIES_1_NAME,
+                                                                BOTANICAL_SPECIES_1_DESCRIPTION,
+                                                                BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION);
 
         assertEquals(0, botanicalSpeciesService.getAllBotanicalSpecies().size());
 
@@ -63,27 +61,32 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
 
     @Test
     public void testCreateAndUpdate() {
-        BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .latinName(BOTANICAL_SPECIES_2_NAME)
-                .description(BOTANICAL_SPECIES_2_DESCRIPTION)
-                .estimatedDaysToGermination(BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION)
-                .build();
-
+        BotanicalSpeciesDTO botanicalSpeciesDTO = createDTO(BOTANICAL_SPECIES_2_NAME,
+                                                            BOTANICAL_SPECIES_2_DESCRIPTION,
+                                                            BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION);
         BotanicalSpeciesDTO botanicalSpecies =
-                botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDetails);
+                botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
 
-        BotanicalSpeciesDTO updatedBotanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .latinName(BOTANICAL_SPECIES_2_NAME_UPDATED)
-                .description(BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED)
-                .estimatedDaysToGermination(BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED)
-                .build();
-        BotanicalSpeciesDTO updatedBotanicalSpecies = botanicalSpeciesService.updateBotanicalSpecies(botanicalSpecies.id(), updatedBotanicalSpeciesDetails);
+        BotanicalSpeciesDTO updatedBotanicalSpeciesDTO = createDTO(BOTANICAL_SPECIES_2_NAME_UPDATED,
+                                                                   BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED,
+                                                                   BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED);
+        BotanicalSpeciesDTO updatedBotanicalSpecies = botanicalSpeciesService.updateBotanicalSpecies(botanicalSpecies.id(), updatedBotanicalSpeciesDTO);
 
-        assertEquals(updatedBotanicalSpeciesDetails.latinName(),
+        assertEquals(updatedBotanicalSpeciesDTO.latinName(),
                      updatedBotanicalSpecies.latinName());
-        assertEquals(updatedBotanicalSpeciesDetails.description(),
+        assertEquals(updatedBotanicalSpeciesDTO.description(),
                      updatedBotanicalSpecies.description());
-        assertEquals(updatedBotanicalSpeciesDetails.estimatedDaysToGermination(),
+        assertEquals(updatedBotanicalSpeciesDTO.estimatedDaysToGermination(),
                      updatedBotanicalSpecies.estimatedDaysToGermination());
+    }
+
+    private BotanicalSpeciesDTO createDTO(String latinName,
+                                          String description,
+                                          int daysToGerminate) {
+        return BotanicalSpeciesDTO.builder()
+                .latinName(latinName)
+                .description(description)
+                .estimatedDaysToGermination(daysToGerminate)
+                .build();
     }
 }

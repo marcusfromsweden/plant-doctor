@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GrowingLocationService_VerifyUniqueNameIT extends PostgresTestContainerTest {
+    
     public static final String GROWING_LOCATION_NAME_1 = "GROWING_LOCATION_NAME_1";
     public static final String GROWING_LOCATION_NAME_2 = "GROWING_LOCATION_NAME_2";
     public static final String GROWING_LOCATION_NAME_3 = "GROWING_LOCATION_NAME_3";

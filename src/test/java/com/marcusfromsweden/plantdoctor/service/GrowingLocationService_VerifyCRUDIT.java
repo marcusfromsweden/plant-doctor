@@ -21,7 +21,7 @@ public class GrowingLocationService_VerifyCRUDIT extends PostgresTestContainerTe
     private RepositoryTestHelper repositoryTestHelper;
 
     private static final String GROWING_LOCATION_1_NAME = "Pot 1";
-    private static final String GROWING_LOCATION_1_NAME_UPDATE = "Pot 11";
+    private static final String GROWING_LOCATION_1_NAME_UPDATED = "Pot 11";
     private static final String GROWING_LOCATION_2_NAME = "Pot 2";
     private static final String GROWING_LOCATION_3_NAME = "Pot 3";
 
@@ -48,15 +48,15 @@ public class GrowingLocationService_VerifyCRUDIT extends PostgresTestContainerTe
         GrowingLocationDTO growingLocation = growingLocationService.createGrowingLocation(growingLocationDTOForCreateAndUpdate);
 
         GrowingLocationDTO updatedGrowingLocation = growingLocationService.updateGrowingLocation(growingLocation.id(), GrowingLocationDTO.builder()
-                .name(GROWING_LOCATION_1_NAME_UPDATE)
+                .name(GROWING_LOCATION_1_NAME_UPDATED)
                 .build());
 
-        assertEquals(GROWING_LOCATION_1_NAME_UPDATE, updatedGrowingLocation.name());
+        assertEquals(GROWING_LOCATION_1_NAME_UPDATED, updatedGrowingLocation.name());
     }
 
     @Test
-    public void testCreateAndDelete() {
-        // delete all data in order to verify that only one record is created and after delete non remains
+    public void testCreateAndDeleteFromEmptyDatabase() {
+        // deleting all data in order to verify that only one record is created and after delete non remains
         repositoryTestHelper.deleteAllData();
 
         GrowingLocationDTO growingLocationDTOForCreateAndUpdate = GrowingLocationDTO.builder()

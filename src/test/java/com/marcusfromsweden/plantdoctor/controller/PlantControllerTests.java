@@ -109,6 +109,7 @@ public class PlantControllerTests {
     public void testUpdatePlant() throws Exception {
         Mockito.when(plantService.updatePlant(plantDTO.id(), plantDTO)).thenReturn(plantDTO);
 
+        //todo use objectMapper instead of string formatting + create another DTO for the update
         String plantJson = "{\"id\":\"%s\",\"seedPackageId\":%d,\"growingLocationId\":%d,\"plantingDate\":\"%s\",\"germinationDate\":\"%s\"}".formatted(
                 plantDTO.id(),
                 plantDTO.seedPackageId(),

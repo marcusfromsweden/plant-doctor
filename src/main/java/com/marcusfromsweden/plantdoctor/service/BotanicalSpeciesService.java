@@ -4,6 +4,7 @@ import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.dto.mapper.BotanicalSpeciesMapper;
 import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
 import com.marcusfromsweden.plantdoctor.exception.BotanicalSpeciesNotFoundByIdException;
+import com.marcusfromsweden.plantdoctor.exception.DuplicateBotanicalSpeciesLatinNameException;
 import com.marcusfromsweden.plantdoctor.repository.BotanicalSpeciesRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -39,6 +40,11 @@ public class BotanicalSpeciesService {
     }
 
     public BotanicalSpeciesDTO createBotanicalSpecies(BotanicalSpeciesDTO botanicalSpeciesDTO) {
+        Optional<BotanicalSpecies> existingBotanicalSpecies =
+                botanicalSpeciesRepository.findByLatinName(botanicalSpeciesDTO.latinName());
+        if (existingBotanicalSpecies.isPresent()) {
+            throw new DuplicateBotanicalSpeciesLatinNameException(botanicalSpeciesDTO.latinName());
+        }
         BotanicalSpecies botanicalSpecies = botanicalSpeciesMapper.toEntity(botanicalSpeciesDTO);
         botanicalSpeciesRepository.save(botanicalSpecies);
         return botanicalSpeciesMapper.toDTO(botanicalSpecies);
