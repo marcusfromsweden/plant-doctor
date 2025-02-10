@@ -69,8 +69,6 @@ public class DataInitializerConfig {
     }
 
     private void populateTableData() {
-        //todo update to use more realistic data
-
         log.info("Adding BotanicalSpecies");
         BotanicalSpecies regularBasil = new BotanicalSpecies();
         regularBasil.setLatinName("Ocimum basilicum");

@@ -1,5 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,6 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @WebMvcTest(GrowingLocationController.class)
 @AutoConfigureMockMvc
 public class GrowingLocationControllerTests {
@@ -31,97 +31,118 @@ public class GrowingLocationControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private GrowingLocationService growingLocationService;
 
-    private GrowingLocationDTO growingLocationDTO;
+    private GrowingLocationDTO existingGrowingLocationDTO;
+    private GrowingLocationDTO updatedGrowingLocation;
 
     @BeforeEach
     public void setup() {
-        growingLocationDTO = GrowingLocationDTO.builder()
+        existingGrowingLocationDTO = GrowingLocationDTO.builder()
                 .id(1L)
                 .name("Pot 1")
+                .build();
+
+        // Separate DTO with modified data for update
+        updatedGrowingLocation = GrowingLocationDTO.builder()
+                .id(1L)
+                .name("Updated Pot")
                 .build();
     }
 
     @Test
     public void testGetAllGrowingLocations() throws Exception {
-        log.info("Getting all growing locations");
         Mockito.when(growingLocationService.getAllGrowingLocations())
-                .thenReturn(Collections.singletonList(growingLocationDTO));
+                .thenReturn(Collections.singletonList(existingGrowingLocationDTO));
 
         mockMvc.perform(get(API_PATH_GROWING_LOCATIONS)
                                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(growingLocationDTO.id().intValue())))
-                .andExpect(jsonPath("$[0].name", is(growingLocationDTO.name())));
+                .andExpect(jsonPath("$[0].id", is(existingGrowingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$[0].name", is(existingGrowingLocationDTO.name())));
+
+        Mockito.verify(growingLocationService, Mockito.times(1))
+                .getAllGrowingLocations();
     }
 
     @Test
     public void testGetGrowingLocationById() throws Exception {
-        Mockito.when(growingLocationService.getGrowingLocationById(growingLocationDTO.id()))
-                .thenReturn(Optional.of(growingLocationDTO));
+        Mockito.when(growingLocationService.getGrowingLocationById(existingGrowingLocationDTO.id()))
+                .thenReturn(Optional.of(existingGrowingLocationDTO));
 
-        mockMvc.perform(get(API_PATH_GROWING_LOCATIONS + "/{id}", growingLocationDTO.id())
+        mockMvc.perform(get(API_PATH_GROWING_LOCATIONS + "/{id}", existingGrowingLocationDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
-                .andExpect(jsonPath("$.name", is(growingLocationDTO.name())));
+                .andExpect(jsonPath("$.id", is(existingGrowingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.name", is(existingGrowingLocationDTO.name())));
+
+        Mockito.verify(growingLocationService, Mockito.times(1))
+                .getGrowingLocationById(existingGrowingLocationDTO.id());
     }
 
     @Test
     public void testCreateGrowingLocation() throws Exception {
         Mockito.when(growingLocationService.createGrowingLocation(Mockito.any(GrowingLocationDTO.class)))
-                .thenReturn(growingLocationDTO);
-
-        String growingLocationJson = "{\"name\":\"%s\"}".formatted(
-                growingLocationDTO.name());
+                .thenReturn(existingGrowingLocationDTO);
+        String growingLocationJson = objectMapper.writeValueAsString(existingGrowingLocationDTO);
 
         mockMvc.perform(post(API_PATH_GROWING_LOCATIONS)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(growingLocationJson)).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
-                .andExpect(jsonPath("$.name", is(growingLocationDTO.name())));
+                .andExpect(jsonPath("$.id", is(existingGrowingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.name", is(existingGrowingLocationDTO.name())));
+
+        Mockito.verify(growingLocationService, Mockito.times(1))
+                .createGrowingLocation(Mockito.any(GrowingLocationDTO.class));
     }
 
     @Test
     public void testUpdateGrowingLocation() throws Exception {
         Mockito.when(growingLocationService.updateGrowingLocation(
-                Mockito.eq(growingLocationDTO.id()),
-                Mockito.any(GrowingLocationDTO.class))).thenReturn(growingLocationDTO);
+                Mockito.eq(existingGrowingLocationDTO.id()),
+                Mockito.any(GrowingLocationDTO.class))).thenReturn(updatedGrowingLocation);
+        String growingLocationJson = objectMapper.writeValueAsString(updatedGrowingLocation);
 
-        //todo change to better way of creating json
-        String growingLocationJson =
-                "{\"id\":\"%s\",\"name\":\"%s\"}".formatted(
-                        growingLocationDTO.id(),
-                        growingLocationDTO.name());
-
-        mockMvc.perform(put(API_PATH_GROWING_LOCATIONS + "/{id}", growingLocationDTO.id())
+        mockMvc.perform(put(API_PATH_GROWING_LOCATIONS + "/{id}", existingGrowingLocationDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(growingLocationJson)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
-                .andExpect(jsonPath("$.name", is(growingLocationDTO.name())));
+                .andExpect(jsonPath("$.id", is(updatedGrowingLocation.id().intValue())))
+                .andExpect(jsonPath("$.name", is(updatedGrowingLocation.name())));
+
+        Mockito.verify(growingLocationService, Mockito.times(1))
+                .updateGrowingLocation(
+                        Mockito.eq(existingGrowingLocationDTO.id()),
+                        Mockito.any(GrowingLocationDTO.class));
     }
 
     @Test
     public void testGetGrowingLocationByName() throws Exception {
         String name = "Pot 1";
         Mockito.when(growingLocationService.getGrowingLocationByName(name))
-                .thenReturn(Optional.of(growingLocationDTO));
+                .thenReturn(Optional.of(existingGrowingLocationDTO));
 
         mockMvc.perform(get(API_PATH_GROWING_LOCATIONS + "/name/{name}", name)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(growingLocationDTO.id().intValue())))
-                .andExpect(jsonPath("$.name", is(growingLocationDTO.name())));
+                .andExpect(jsonPath("$.id", is(existingGrowingLocationDTO.id().intValue())))
+                .andExpect(jsonPath("$.name", is(existingGrowingLocationDTO.name())));
+
+        Mockito.verify(growingLocationService, Mockito.times(1))
+                .getGrowingLocationByName(name);
     }
 
     @Test
     public void testDeleteGrowingLocation() throws Exception {
         Mockito.doNothing().when(growingLocationService)
-                .deleteGrowingLocation(growingLocationDTO.id());
+                .deleteGrowingLocation(existingGrowingLocationDTO.id());
 
-        mockMvc.perform(delete(API_PATH_GROWING_LOCATIONS + "/{id}", growingLocationDTO.id())
+        mockMvc.perform(delete(API_PATH_GROWING_LOCATIONS + "/{id}", existingGrowingLocationDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+
+        Mockito.verify(growingLocationService, Mockito.times(1))
+                .deleteGrowingLocation(existingGrowingLocationDTO.id());
     }
 }
