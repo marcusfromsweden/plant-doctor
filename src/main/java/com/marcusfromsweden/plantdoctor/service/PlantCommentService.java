@@ -1,6 +1,7 @@
 package com.marcusfromsweden.plantdoctor.service;
 
-import com.marcusfromsweden.plantdoctor.entity.Plant;
+import com.marcusfromsweden.plantdoctor.dto.PlantCommentDTO;
+import com.marcusfromsweden.plantdoctor.dto.mapper.PlantCommentMapper;
 import com.marcusfromsweden.plantdoctor.entity.PlantComment;
 import com.marcusfromsweden.plantdoctor.repository.PlantCommentRepository;
 import org.springframework.stereotype.Service;
@@ -12,20 +13,27 @@ import java.util.List;
 public class PlantCommentService {
 
     private final PlantCommentRepository plantCommentRepository;
+    private final PlantCommentMapper plantCommentMapper;
     private final PlantService plantService;
 
-    public PlantCommentService(PlantCommentRepository plantCommentRepository, PlantService plantService) {
+    public PlantCommentService(PlantCommentRepository plantCommentRepository,
+                               PlantCommentMapper plantCommentMapper,
+                               PlantService plantService) {
         this.plantCommentRepository = plantCommentRepository;
+        this.plantCommentMapper = plantCommentMapper;
         this.plantService = plantService;
     }
 
-    public PlantComment addComment(Long plantId, String text) {
-        Plant plant = plantService.getPlantEntityByIdOrThrow(plantId);
-        PlantComment comment = new PlantComment();
-        comment.setPlant(plant);
-        comment.setText(text);
-        comment.setCreatedDate(LocalDateTime.now());
-        return plantCommentRepository.save(comment);
+    public PlantCommentDTO createComment(Long plantId,
+                                         String text) {
+        PlantCommentDTO plantCommentDTO = PlantCommentDTO.builder()
+                .plantId(plantId)
+                .text(text)
+                .createdDate(LocalDateTime.now())
+                .build();
+        PlantComment plantComment = plantCommentMapper.toEntity(plantCommentDTO);
+        plantCommentRepository.save(plantComment);
+        return plantCommentMapper.toDto(plantComment);
     }
 
     public List<PlantComment> getCommentsByPlantId(Long plantId) {

@@ -1,6 +1,7 @@
 package com.marcusfromsweden.plantdoctor.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class GrowingLocation {
@@ -9,9 +10,9 @@ public class GrowingLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(unique = true)
     private String name;
-    private boolean occupied;
 
     // Getters and Setters
     public Long getId() {
@@ -30,11 +31,4 @@ public class GrowingLocation {
         this.name = locationName;
     }
 
-    public boolean isOccupied() {
-        return occupied;
-    }
-
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
-    }
 }

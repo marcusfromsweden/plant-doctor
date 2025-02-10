@@ -50,8 +50,9 @@ public class PlantController {
     }
 
     @PostMapping("/{id}/comments")
-    public ResponseEntity<Void> addComment(@PathVariable Long id, @RequestParam String comment) {
-        plantCommentService.addComment(id, comment);
+    public ResponseEntity<Void> addComment(@PathVariable Long id,
+                                           @RequestParam String comment) {
+        plantCommentService.createComment(id, comment);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -62,7 +63,8 @@ public class PlantController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PlantDTO> updatePlant(@PathVariable Long id, @Valid @RequestBody PlantDTO plantDTO) {
+    public ResponseEntity<PlantDTO> updatePlant(@PathVariable Long id,
+                                                @Valid @RequestBody PlantDTO plantDTO) {
         PlantDTO updatedPlant = plantService.updatePlant(id, plantDTO);
         return new ResponseEntity<>(updatedPlant, HttpStatus.OK);
     }

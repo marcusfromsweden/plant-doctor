@@ -1,37 +1,43 @@
 package com.marcusfromsweden.plantdoctor.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            if (error instanceof FieldError fieldError) {
+                errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
         });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        return errors;
     }
 
-    @ExceptionHandler(DuplicateGrowingLocationNameException.class)
-    public ResponseEntity<String> handleDuplicateLocationNameException(DuplicateGrowingLocationNameException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    @ExceptionHandler({
+            DuplicateGrowingLocationNameException.class,
+            MultipleSeedPackageFoundException.class})
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> handleDuplicateNameException(RuntimeException ex) {
+        return Map.of("error", ex.getMessage());
     }
 
-    @ExceptionHandler(DuplicatePlantSpeciesNameException.class)
-    public ResponseEntity<String> handleDuplicatePlantSpeciesNameException(DuplicatePlantSpeciesNameException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    @ExceptionHandler({
+            SeedPackageNotFoundByIdException.class,
+            PlantNotFoundByIdException.class,
+            BotanicalSpeciesNotFoundByIdException.class,
+            GrowingLocationNotFoundByIdException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleNotFoundException(RuntimeException ex) {
+        return Map.of("error", ex.getMessage());
     }
 }

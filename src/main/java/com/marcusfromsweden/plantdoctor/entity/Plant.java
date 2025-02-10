@@ -14,7 +14,7 @@ public class Plant {
     private Long id;
 
     @ManyToOne
-    private PlantSpecies plantSpecies;
+    private SeedPackage seedPackage;
 
     @ManyToOne
     private GrowingLocation growingLocation;
@@ -35,12 +35,12 @@ public class Plant {
         this.id = id;
     }
 
-    public PlantSpecies getPlantSpecies() {
-        return plantSpecies;
+    public SeedPackage getSeedPackage() {
+        return seedPackage;
     }
 
-    public void setPlantSpecies(PlantSpecies plantSpecies) {
-        this.plantSpecies = plantSpecies;
+    public void setSeedPackage(SeedPackage botanicalSpecies) {
+        this.seedPackage = botanicalSpecies;
     }
 
     public GrowingLocation getGrowingLocation() {
