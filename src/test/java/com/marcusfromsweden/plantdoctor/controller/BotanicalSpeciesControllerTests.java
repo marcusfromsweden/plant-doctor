@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(BotanicalSpeciesTestHelper.class)
 public class BotanicalSpeciesControllerTests {
 
-    private static final String API_PATH_PLANT_SPECIES = "/api/plant-species";
+    private static final String API_PATH_PLANT_SPECIES = "/api/botanical-species";
     private static final long EXISTING_BOTANICAL_SPECIES_ID = 1L;
     private static final String EXISTING_BOTANICAL_SPECIES_LATIN_NAME = "tametoe talacum";
     private static final String EXISTING_BOTANICAL_SPECIES_DESCRIPTION = "A tasty treat";

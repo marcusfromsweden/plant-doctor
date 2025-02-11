@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/plant-species")
+@RequestMapping("/api/botanical-species")
 public class BotanicalSpeciesController {
 
     private final BotanicalSpeciesService botanicalSpeciesService;
