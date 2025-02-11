@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,53 +23,43 @@ public class GrowingLocationServiceCRUDIT extends PostgresTestContainerTest {
     private static final String GROWING_LOCATION_1_NAME = "Pot 1";
     private static final String GROWING_LOCATION_1_NAME_UPDATED = "Pot 123";
     private static final String GROWING_LOCATION_2_NAME = "Pot 2";
-    private static final String GROWING_LOCATION_3_NAME = "Pot 3";
 
     @Test
-    public void testCreateAndRead() {
-        GrowingLocationDTO growingLocationDTOForCreateAndRead =
+    public void shouldCreateAndDelete() {
+        repositoryTestHelper.deleteAllData();
+        assertEquals(0, growingLocationService.getAllGrowingLocations().size());
+
+        GrowingLocationDTO growingLocationDTO =
                 GrowingLocationTestHelper.createDTO(null, GROWING_LOCATION_2_NAME);
-        GrowingLocationDTO growingLocation =
-                growingLocationService.createGrowingLocation(growingLocationDTOForCreateAndRead);
+        GrowingLocationDTO createdGrowingLocationDTO =
+                growingLocationService.createGrowingLocation(growingLocationDTO);
+        assertNotNull(createdGrowingLocationDTO);
+        assertNotNull(createdGrowingLocationDTO.id());
+        assertTrue(growingLocationService.getGrowingLocationById(createdGrowingLocationDTO.id()).isPresent());
+        assertEquals(1, growingLocationService.getAllGrowingLocations().size());
+        assertEquals(growingLocationDTO.name(), createdGrowingLocationDTO.name());
 
-        Optional<GrowingLocationDTO> createdGrowingLocation =
-                growingLocationService.getGrowingLocationById(growingLocation.id());
-
-        assertTrue(createdGrowingLocation.isPresent());
+        growingLocationService.deleteGrowingLocation(createdGrowingLocationDTO.id());
+        assertEquals(0, growingLocationService.getAllGrowingLocations().size());
     }
 
     @Test
-    public void testCreateAndUpdate() {
-        GrowingLocationDTO growingLocationDTOForCreateAndUpdate =
+    public void shouldCreateAndUpdate() {
+        GrowingLocationDTO growingLocationDTO =
                 GrowingLocationTestHelper.createDTO(null, GROWING_LOCATION_1_NAME);
-        GrowingLocationDTO growingLocation =
-                growingLocationService.createGrowingLocation(growingLocationDTOForCreateAndUpdate);
+        GrowingLocationDTO createdGrowingLocationDTO =
+                growingLocationService.createGrowingLocation(growingLocationDTO);
 
-        GrowingLocationDTO updatedGrowingLocationDTO = GrowingLocationTestHelper.createDTO(
-                growingLocation.id(),
+        GrowingLocationDTO growingLocationForUpdateDTO = GrowingLocationTestHelper.createDTO(
+                createdGrowingLocationDTO.id(),
                 GROWING_LOCATION_1_NAME_UPDATED
         );
-        GrowingLocationDTO updatedGrowingLocation =
-                growingLocationService.updateGrowingLocation(growingLocation.id(), updatedGrowingLocationDTO);
+        GrowingLocationDTO updatedGrowingLocationDTO =
+                growingLocationService.updateGrowingLocation(createdGrowingLocationDTO.id(), growingLocationForUpdateDTO);
 
-        assertEquals(GROWING_LOCATION_1_NAME_UPDATED, updatedGrowingLocation.name());
+        assertNotNull(updatedGrowingLocationDTO);
+        assertEquals(createdGrowingLocationDTO.id(), updatedGrowingLocationDTO.id());
+        assertEquals(GROWING_LOCATION_1_NAME_UPDATED, updatedGrowingLocationDTO.name());
     }
 
-    @Test
-    public void testCreateAndDeleteFromEmptyDatabase() {
-        // deleting all data in order to verify that only one record is created and after delete non remains
-        repositoryTestHelper.deleteAllData();
-
-        GrowingLocationDTO growingLocationDTOForCreateAndUpdate =
-                GrowingLocationTestHelper.createDTO(null, GROWING_LOCATION_3_NAME);
-
-        assertEquals(0, growingLocationService.getAllGrowingLocations().size());
-
-        GrowingLocationDTO growingLocation =
-                growingLocationService.createGrowingLocation(growingLocationDTOForCreateAndUpdate);
-        assertEquals(1, growingLocationService.getAllGrowingLocations().size());
-
-        growingLocationService.deleteGrowingLocation(growingLocation.id());
-        assertEquals(0, growingLocationService.getAllGrowingLocations().size());
-    }
 }

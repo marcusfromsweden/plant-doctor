@@ -38,7 +38,7 @@ public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
     }
 
     @Test
-    public void testCreateAndUpdate() {
+    public void shouldCreateAndUpdate() {
         BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(
                 null,
                 BOTANICAL_SPECIES_1_LATIN_NAME,
@@ -69,5 +69,5 @@ public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
         assertEquals(updatedSeedPackageDTO.name(), updatedSeedPackage.getName());
     }
 
-    //FIXME add testCreateAndReadAndDelete
+    //FIXME add shouldCreateAndDelete
 }

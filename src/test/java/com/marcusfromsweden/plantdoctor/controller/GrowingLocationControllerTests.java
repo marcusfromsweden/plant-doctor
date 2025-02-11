@@ -56,7 +56,7 @@ public class GrowingLocationControllerTests {
     }
 
     @Test
-    public void testGetAllGrowingLocations() throws Exception {
+    public void shouldGetAllGrowingLocations() throws Exception {
         Mockito.when(growingLocationService.getAllGrowingLocations())
                 .thenReturn(Collections.singletonList(existingGrowingLocationDTO));
 
@@ -70,7 +70,7 @@ public class GrowingLocationControllerTests {
     }
 
     @Test
-    public void testGetGrowingLocationById() throws Exception {
+    public void shouldGetGrowingLocationById() throws Exception {
         Mockito.when(growingLocationService.getGrowingLocationById(existingGrowingLocationDTO.id()))
                 .thenReturn(Optional.of(existingGrowingLocationDTO));
 
@@ -84,7 +84,7 @@ public class GrowingLocationControllerTests {
     }
 
     @Test
-    public void testCreateGrowingLocation() throws Exception {
+    public void shouldCreateGrowingLocation() throws Exception {
         Mockito.when(growingLocationService.createGrowingLocation(Mockito.any(GrowingLocationDTO.class)))
                 .thenReturn(existingGrowingLocationDTO);
         String growingLocationJson = objectMapper.writeValueAsString(existingGrowingLocationDTO);
@@ -100,7 +100,7 @@ public class GrowingLocationControllerTests {
     }
 
     @Test
-    public void testUpdateGrowingLocation() throws Exception {
+    public void shouldUpdateGrowingLocation() throws Exception {
         Mockito.when(growingLocationService.updateGrowingLocation(Mockito.eq(existingGrowingLocationDTO.id()),
                                                                   Mockito.any(GrowingLocationDTO.class)))
                 .thenReturn(updatedGrowingLocationDTO);
@@ -119,7 +119,7 @@ public class GrowingLocationControllerTests {
     }
 
     @Test
-    public void testGetGrowingLocationByName() throws Exception {
+    public void shouldGetGrowingLocationByName() throws Exception {
         String name = "Pot 1";
         Mockito.when(growingLocationService.getGrowingLocationByName(name))
                 .thenReturn(Optional.of(existingGrowingLocationDTO));
@@ -135,7 +135,7 @@ public class GrowingLocationControllerTests {
     }
 
     @Test
-    public void testDeleteGrowingLocation() throws Exception {
+    public void shouldDeleteGrowingLocation() throws Exception {
         Mockito.doNothing().when(growingLocationService)
                 .deleteGrowingLocation(existingGrowingLocationDTO.id());
 

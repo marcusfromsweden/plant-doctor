@@ -43,14 +43,14 @@ public class PlantCommentService_TestCommentTextSizeConstraintIT extends Postgre
     }
 
     @Test
-    public void testCreateComment_TextTooShort_ThrowsConstraintViolationException() {
+    public void shouldNotAllowCommentWithTooShortText() {
         assertThrows(ConstraintViolationException.class, () ->
                 plantCommentService.createComment(plantToComment.id(), PLANT_COMMENT_1_TOO_SHORT)
         );
     }
 
     @Test
-    public void testCreateComment_TextOkLength() {
+    public void shouldAllowCommentWithLongEnoughText() {
         assertDoesNotThrow(() -> {
             plantCommentService.createComment(plantToComment.id(), PLANT_COMMENT_2_LONG_ENOUGH);
         });

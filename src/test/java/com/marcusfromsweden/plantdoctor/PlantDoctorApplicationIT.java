@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class PlantDoctorApplicationIT extends PostgresTestContainerTest {
 
     @Test
-    void contextLoads() {
+    void shouldLoadContext() {
     }
 
 }

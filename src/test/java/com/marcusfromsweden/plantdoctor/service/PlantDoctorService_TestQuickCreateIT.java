@@ -42,7 +42,7 @@ public class PlantDoctorService_TestQuickCreateIT extends PostgresTestContainerT
     private RepositoryTestHelper repositoryTestHelper;
 
     @Test
-    public void testQuickCreatePlantFromEmptyDatabase() {
+    public void shouldQuickCreatePlant() {
         repositoryTestHelper.deleteAllData();
 
         QuickCreatePlantDTO quickCreatePlantDTO = new QuickCreatePlantDTO(

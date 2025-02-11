@@ -65,7 +65,7 @@ public class BotanicalSpeciesControllerTests {
     }
 
     @Test
-    public void testGetAllBotanicalSpecies() throws Exception {
+    public void shouldGetAllBotanicalSpecies() throws Exception {
         Mockito.when(botanicalSpeciesService.getAllBotanicalSpecies())
                 .thenReturn(Collections.singletonList(existingBotanicalSpeciesDTO));
 
@@ -80,7 +80,7 @@ public class BotanicalSpeciesControllerTests {
     }
 
     @Test
-    public void testGetBotanicalSpeciesById() throws Exception {
+    public void shouldGetBotanicalSpeciesById() throws Exception {
         Mockito.when(botanicalSpeciesService.getBotanicalSpeciesById(existingBotanicalSpeciesDTO.id()))
                 .thenReturn(Optional.of(existingBotanicalSpeciesDTO));
 
@@ -96,7 +96,7 @@ public class BotanicalSpeciesControllerTests {
     }
 
     @Test
-    public void testCreateBotanicalSpecies() throws Exception {
+    public void shouldCreateBotanicalSpecies() throws Exception {
         Mockito.when(botanicalSpeciesService.createBotanicalSpecies(Mockito.any(BotanicalSpeciesDTO.class)))
                 .thenReturn(existingBotanicalSpeciesDTO);
         String botanicalSpeciesJson = objectMapper.writeValueAsString(existingBotanicalSpeciesDTO);
@@ -115,7 +115,7 @@ public class BotanicalSpeciesControllerTests {
     }
 
     @Test
-    public void testUpdateBotanicalSpecies() throws Exception {
+    public void shouldUpdateBotanicalSpecies() throws Exception {
         Mockito
                 .when(botanicalSpeciesService.updateBotanicalSpecies(Mockito.eq(existingBotanicalSpeciesDTO.id()),
                                                                      Mockito.any(BotanicalSpeciesDTO.class)))
@@ -138,7 +138,7 @@ public class BotanicalSpeciesControllerTests {
     }
 
     @Test
-    public void testGetBotanicalSpeciesByName() throws Exception {
+    public void shouldGetBotanicalSpeciesByName() throws Exception {
         String speciesName = "Tomato";
         Mockito.when(botanicalSpeciesService.getBotanicalSpeciesByLatinName(speciesName))
                 .thenReturn(Optional.of(existingBotanicalSpeciesDTO));
@@ -156,7 +156,7 @@ public class BotanicalSpeciesControllerTests {
     }
 
     @Test
-    public void testDeleteBotanicalSpecies() throws Exception {
+    public void shouldDeleteBotanicalSpecies() throws Exception {
         Mockito.doNothing().when(botanicalSpeciesService).deleteBotanicalSpecies(existingBotanicalSpeciesDTO.id());
 
         mockMvc.perform(delete(API_PATH_PLANT_SPECIES + "/{id}", existingBotanicalSpeciesDTO.id())

@@ -65,7 +65,7 @@ public class SeedPackageControllerTests {
     }
 
     @Test
-    public void testGetAllSeedPackages() throws Exception {
+    public void shouldGetAllSeedPackages() throws Exception {
         Mockito.when(seedPackageService.getAllSeedPackages())
                 .thenReturn(Collections.singletonList(existingSeedPackageDTO));
 
@@ -80,7 +80,7 @@ public class SeedPackageControllerTests {
     }
 
     @Test
-    public void testGetSeedPackageById() throws Exception {
+    public void shouldGetSeedPackageById() throws Exception {
         Mockito.when(seedPackageService.getSeedPackageById(existingSeedPackageDTO.id()))
                 .thenReturn(Optional.of(existingSeedPackageDTO));
 
@@ -97,7 +97,7 @@ public class SeedPackageControllerTests {
     }
 
     @Test
-    public void testCreateSeedPackage() throws Exception {
+    public void shouldCreateSeedPackage() throws Exception {
         Mockito.when(seedPackageService.createSeedPackage(Mockito.any(SeedPackageDTO.class)))
                 .thenReturn(existingSeedPackageDTO);
         String seedPackageJson = objectMapper.writeValueAsString(existingSeedPackageDTO);
@@ -116,7 +116,7 @@ public class SeedPackageControllerTests {
     }
 
     @Test
-    public void testUpdateSeedPackage() throws Exception {
+    public void shouldUpdateSeedPackage() throws Exception {
         Mockito.when(seedPackageService.updateSeedPackage(Mockito.eq(existingSeedPackageDTO.id()),
                                                           Mockito.any(SeedPackageDTO.class)))
                 .thenReturn(updatedSeedPackageDTO);
@@ -138,7 +138,7 @@ public class SeedPackageControllerTests {
     }
 
     @Test
-    public void testDeleteSeedPackage() throws Exception {
+    public void shouldDeleteSeedPackage() throws Exception {
         Mockito.doNothing().when(seedPackageService).deleteSeedPackage(existingSeedPackageDTO.id());
 
         mockMvc.perform(delete(API_PATH_SEED_PACKAGES + "/{id}", existingSeedPackageDTO.id())

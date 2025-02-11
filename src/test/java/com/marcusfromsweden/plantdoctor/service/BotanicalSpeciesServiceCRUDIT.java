@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
@@ -32,20 +33,18 @@ public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
 
     @Test
     public void shouldCreateAndDelete() {
-        // deleting all data in order to verify that only one record is created and after delete non remains
         repositoryTestHelper.deleteAllData();
+        assertEquals(0, botanicalSpeciesService.getAllBotanicalSpecies().size());
 
         BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesTestHelper.createDTO(null,
                                                                                            BOTANICAL_SPECIES_1_NAME,
                                                                                            BOTANICAL_SPECIES_1_DESCRIPTION,
                                                                                            BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION);
 
-        assertEquals(0, botanicalSpeciesService.getAllBotanicalSpecies().size());
-
         BotanicalSpeciesDTO botanicalSpecies = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDetails);
         assertNotNull(botanicalSpecies);
         assertNotNull(botanicalSpecies.id());
-        assertNotNull(botanicalSpeciesService.getBotanicalSpeciesById(botanicalSpecies.id()));
+        assertTrue(botanicalSpeciesService.getBotanicalSpeciesById(botanicalSpecies.id()).isPresent());
         assertEquals(1, botanicalSpeciesService.getAllBotanicalSpecies().size());
         assertEquals(botanicalSpeciesDetails.latinName(),
                      botanicalSpecies.latinName());
@@ -60,18 +59,21 @@ public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
 
     @Test
     public void shouldCreateAndUpdate() {
-        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(null,
-                                                                                       BOTANICAL_SPECIES_2_NAME,
-                                                                                       BOTANICAL_SPECIES_2_DESCRIPTION,
-                                                                                       BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION);
+        BotanicalSpeciesDTO botanicalSpeciesDTO =
+                BotanicalSpeciesTestHelper.createDTO(null,
+                                                     BOTANICAL_SPECIES_2_NAME,
+                                                     BOTANICAL_SPECIES_2_DESCRIPTION,
+                                                     BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION);
         BotanicalSpeciesDTO botanicalSpecies =
                 botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
 
-        BotanicalSpeciesDTO updatedBotanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(null,
-                                                                                              BOTANICAL_SPECIES_2_NAME_UPDATED,
-                                                                                              BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED,
-                                                                                              BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED);
-        BotanicalSpeciesDTO updatedBotanicalSpecies = botanicalSpeciesService.updateBotanicalSpecies(botanicalSpecies.id(), updatedBotanicalSpeciesDTO);
+        BotanicalSpeciesDTO updatedBotanicalSpeciesDTO =
+                BotanicalSpeciesTestHelper.createDTO(null,
+                                                     BOTANICAL_SPECIES_2_NAME_UPDATED,
+                                                     BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED,
+                                                     BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED);
+        BotanicalSpeciesDTO updatedBotanicalSpecies =
+                botanicalSpeciesService.updateBotanicalSpecies(botanicalSpecies.id(), updatedBotanicalSpeciesDTO);
 
         assertEquals(updatedBotanicalSpeciesDTO.latinName(),
                      updatedBotanicalSpecies.latinName());

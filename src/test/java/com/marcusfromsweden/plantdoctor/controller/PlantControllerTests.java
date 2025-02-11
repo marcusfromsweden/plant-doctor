@@ -58,7 +58,7 @@ public class PlantControllerTests {
     }
 
     @Test
-    public void testGetAllPlants() throws Exception {
+    public void shouldGetAllPlants() throws Exception {
         Mockito.when(plantService.getAllPlants()).thenReturn(Collections.singletonList(plantDTO));
 
         mockMvc.perform(get(API_PATH)
@@ -74,7 +74,7 @@ public class PlantControllerTests {
     }
 
     @Test
-    public void testGetPlantById() throws Exception {
+    public void shouldGetPlantById() throws Exception {
         Mockito.when(plantService.getPlantById(plantDTO.id())).thenReturn(Optional.of(plantDTO));
 
         mockMvc.perform(get(API_PATH + "/{id}", plantDTO.id())
@@ -91,7 +91,7 @@ public class PlantControllerTests {
     }
 
     @Test
-    public void testCreatePlant() throws Exception {
+    public void shouldCreatePlant() throws Exception {
         Mockito.when(plantService.createPlant(Mockito.any(PlantDTO.class)))
                 .thenReturn(plantDTO);
         String plantJson = objectMapper.writeValueAsString(plantDTO);
@@ -111,7 +111,7 @@ public class PlantControllerTests {
     }
 
     @Test
-    public void testUpdatePlant() throws Exception {
+    public void shouldUpdatePlant() throws Exception {
         Mockito.when(plantService.updatePlant(plantDTO.id(), plantDTO)).thenReturn(plantDTO);
         String plantJson = objectMapper.writeValueAsString(plantDTO);
 
@@ -131,7 +131,7 @@ public class PlantControllerTests {
     }
 
     @Test
-    public void testDeletePlant() throws Exception {
+    public void shouldDeletePlant() throws Exception {
         Mockito.doNothing().when(plantService).deletePlant(plantDTO.id());
 
         mockMvc.perform(delete(API_PATH + "/{id}", plantDTO.id())

@@ -19,6 +19,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PlantServiceCRUDIT extends PostgresTestContainerTest {
@@ -75,7 +76,7 @@ public class PlantServiceCRUDIT extends PostgresTestContainerTest {
     }
 
     @Test
-    public void testCreateAndReadAndDelete() {
+    public void shouldCreateAndDelete() {
         PlantDTO plantDTO = PlantTestHelper.createDTO(null,
                                                       seedPackage.id(),
                                                       growingLocation.id(),
@@ -89,7 +90,7 @@ public class PlantServiceCRUDIT extends PostgresTestContainerTest {
         assertEquals(1, plantService.getAllPlants().size());
         assertNotNull(plant);
         assertNotNull(plant.id());
-        assertNotNull(plantService.getPlantById(plant.id()));
+        assertTrue(plantService.getPlantById(plant.id()).isPresent());
         assertEquals(plantDTO.plantingDate(), plant.plantingDate());
         assertEquals(plantDTO.germinationDate(), plant.germinationDate());
         assertEquals(plantDTO.seedPackageId(), plant.seedPackageId());
@@ -100,7 +101,7 @@ public class PlantServiceCRUDIT extends PostgresTestContainerTest {
     }
 
     @Test
-    public void testCreateAndUpdate() {
+    public void shouldCreateAndUpdate() {
         PlantDTO plantDTO = PlantTestHelper.createDTO(null,
                                                       seedPackage.id(),
                                                       growingLocation.id(),
