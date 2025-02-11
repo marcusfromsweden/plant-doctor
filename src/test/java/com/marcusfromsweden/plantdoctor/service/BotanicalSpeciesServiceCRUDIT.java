@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerTest {
+public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
 
     public static final String BOTANICAL_SPECIES_1_NAME = "Botanical Species 1";
     public static final String BOTANICAL_SPECIES_1_DESCRIPTION = "Some description 1";

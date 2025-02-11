@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
+public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
 
     public static final String BOTANICAL_SPECIES_1_LATIN_NAME = "Botanical Species 1";
     public static final String BOTANICAL_SPECIES_1_DESCRIPTION = "Some description";

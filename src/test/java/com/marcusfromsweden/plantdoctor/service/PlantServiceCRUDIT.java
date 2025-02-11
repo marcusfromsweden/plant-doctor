@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
+public class PlantServiceCRUDIT extends PostgresTestContainerTest {
 
     public static final LocalDate PLANT_1_PLANTING_DATE = LocalDate.of(2025, 1, 1);
     public static final LocalDate PLANT_1_GERMINATION_DATE = LocalDate.of(2025, 1, 15);

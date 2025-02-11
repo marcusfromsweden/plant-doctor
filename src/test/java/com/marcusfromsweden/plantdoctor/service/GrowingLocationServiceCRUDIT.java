@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GrowingLocationService_VerifyCRUDIT extends PostgresTestContainerTest {
+public class GrowingLocationServiceCRUDIT extends PostgresTestContainerTest {
 
     @Autowired
     private GrowingLocationService growingLocationService;
