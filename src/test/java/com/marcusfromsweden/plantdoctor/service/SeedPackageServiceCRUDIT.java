@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Import({SeedPackageTestHelper.class, BotanicalSpeciesTestHelper.class})
 public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
 
-    public static final String BOTANICAL_SPECIES_1_LATIN_NAME = "Botanical Species 1";
-    public static final String BOTANICAL_SPECIES_1_DESCRIPTION = "Some description";
-    public static final int BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION = 7;
-    public static final String SEED_PACKAGE_1_NAME = "Some seed pack 1";
-    public static final int SEED_PACKAGE_1_NUMBER_OF_SEEDS = 100;
-    public static final String SEED_PACKAGE_1_NAME_UPDATED = "SP 2";
-    public static final int SEED_PACKAGE_1_NUMBER_OF_SEEDS_UPDATED = 200;
+    private static final String BOTANICAL_SPECIES_1_LATIN_NAME = "Botanical Species 1";
+    private static final String BOTANICAL_SPECIES_1_DESCRIPTION = "Some description";
+    private static final int BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION = 7;
+    private static final String SEED_PACKAGE_1_NAME = "Some seed pack 1";
+    private static final int SEED_PACKAGE_1_NUMBER_OF_SEEDS = 100;
+    private static final String SEED_PACKAGE_1_NAME_UPDATED = "SP 2";
+    private static final int SEED_PACKAGE_1_NUMBER_OF_SEEDS_UPDATED = 200;
 
     @Autowired
     private SeedPackageService seedPackageService;

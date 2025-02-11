@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Import(GrowingLocationTestHelper.class)
 public class GrowingLocationRepository_UniqueNameConstraintIT extends PostgresTestContainerTest {
 
-    public static final String GROWING_LOCATION_NAME_1 = "GROWING_LOCATION_NAME_1";
-    public static final String GROWING_LOCATION_NAME_2 = "GROWING_LOCATION_NAME_2";
-    public static final String GROWING_LOCATION_NAME_3 = "GROWING_LOCATION_NAME_3";
+    private static final String GROWING_LOCATION_NAME_1 = "GROWING_LOCATION_NAME_1";
+    private static final String GROWING_LOCATION_NAME_2 = "GROWING_LOCATION_NAME_2";
+    private static final String GROWING_LOCATION_NAME_3 = "GROWING_LOCATION_NAME_3";
 
     @Autowired
     private GrowingLocationRepository growingLocationRepository;

@@ -26,22 +26,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Import({PlantTestHelper.class, BotanicalSpeciesTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class})
 public class PlantServiceCRUDIT extends PostgresTestContainerTest {
 
-    public static final LocalDate PLANT_1_PLANTING_DATE = LocalDate.of(2025, 1, 1);
-    public static final LocalDate PLANT_1_GERMINATION_DATE = LocalDate.of(2025, 1, 15);
+    private static final LocalDate PLANT_1_PLANTING_DATE = LocalDate.of(2025, 1, 1);
+    private static final LocalDate PLANT_1_GERMINATION_DATE = LocalDate.of(2025, 1, 15);
 
-    public static final LocalDate PLANT_2_PLANTING_DATE = LocalDate.of(2025, 2, 1);
-    public static final LocalDate PLANT_2_GERMINATION_DATE = LocalDate.of(2025, 2, 15);
-    public static final LocalDate PLANT_2_PLANTING_DATE_UPDATED = LocalDate.of(2025, 2, 2);
-    public static final LocalDate PLANT_2_GERMINATION_DATE_UPDATED = LocalDate.of(2025, 2, 16);
+    private static final LocalDate PLANT_2_PLANTING_DATE = LocalDate.of(2025, 2, 1);
+    private static final LocalDate PLANT_2_GERMINATION_DATE = LocalDate.of(2025, 2, 15);
+    private static final LocalDate PLANT_2_PLANTING_DATE_UPDATED = LocalDate.of(2025, 2, 2);
+    private static final LocalDate PLANT_2_GERMINATION_DATE_UPDATED = LocalDate.of(2025, 2, 16);
 
-    public static final String GROWING_LOCATION_NAME = "Growing Location";
+    private static final String GROWING_LOCATION_NAME = "Growing Location";
 
-    public static final String BOTANICAL_SPECIES_LATIN_NAME = "Botanical Species";
-    public static final String BOTANICAL_SPECIES_DESCRIPTION = "Some description";
-    public static final int BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 7;
+    private static final String BOTANICAL_SPECIES_LATIN_NAME = "Botanical Species";
+    private static final String BOTANICAL_SPECIES_DESCRIPTION = "Some description";
+    private static final int BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 7;
 
-    public static final String SEED_PACK_NAME = "Seed Pack 1";
-    public static final int SEED_PACK_NUMBER_OF_SEEDS = 100;
+    private static final String SEED_PACK_NAME = "Seed Pack 1";
+    private static final int SEED_PACK_NUMBER_OF_SEEDS = 100;
 
     @Autowired
     private PlantService plantService;

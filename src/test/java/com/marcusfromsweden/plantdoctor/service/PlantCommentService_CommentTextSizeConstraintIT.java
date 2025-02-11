@@ -17,12 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PlantCommentService_CommentTextSizeConstraintIT extends PostgresTestContainerTest {
 
-    public static final String PLANT_BOTANICAL_SPECIES = "Test Species";
-    public static final String PLANT_SEED_PACKAGE = "Test Seed Package";
-    public static final String PLANT_GROWING_LOCATION = "Test Location";
-    public static final String PLANT_COMMENT = "";
-    public static final String PLANT_COMMENT_1_TOO_SHORT = "Te";
-    public static final String PLANT_COMMENT_2_LONG_ENOUGH = "Tes";
+    private static final String PLANT_BOTANICAL_SPECIES = "Test Species";
+    private static final String PLANT_SEED_PACKAGE = "Test Seed Package";
+    private static final String PLANT_GROWING_LOCATION = "Test Location";
+    private static final String PLANT_COMMENT = "";
+    private static final String PLANT_COMMENT_1_TOO_SHORT = "Te";
+    private static final String PLANT_COMMENT_2_LONG_ENOUGH = "Tes";
+    
     @Autowired
     private PlantCommentService plantCommentService;
     @Autowired

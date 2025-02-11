@@ -28,15 +28,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SeedPackageControllerTests {
 
     private static final String API_PATH_SEED_PACKAGES = "/api/seed-packages";
-
-    public static final long EXISTING_SEED_PACKAGE_ID = 1L;
-    public static final long EXISTING_SEED_PACKAGE_BOTANICAL_SPECIES_ID = 15L;
-    public static final String EXISTING_SEED_PACKAGE_NAME = "Tomato Seeds";
-    public static final int EXISTING_SEED_PACKAGE_NUMBER_OF_SEEDS = 100;
-    public static final long UPDATED_SEED_PACKAGE_ID = 2L;
-    public static final long UPDATED_SEED_PACKAGE_BOTANICAL_SPECIES_ID = 22L;
-    public static final String UPDATED_SEED_PACKAGE_NAME = "Tomato Seeds Ver 2";
-    public static final int UPDATED_SEED_PACKAGE_NUMBER_OF_SEEDS = 200;
+    private static final long EXISTING_SEED_PACKAGE_ID = 1L;
+    private static final long EXISTING_SEED_PACKAGE_BOTANICAL_SPECIES_ID = 15L;
+    private static final String EXISTING_SEED_PACKAGE_NAME = "Tomato Seeds";
+    private static final int EXISTING_SEED_PACKAGE_NUMBER_OF_SEEDS = 100;
+    private static final long UPDATED_SEED_PACKAGE_ID = 2L;
+    private static final long UPDATED_SEED_PACKAGE_BOTANICAL_SPECIES_ID = 22L;
+    private static final String UPDATED_SEED_PACKAGE_NAME = "Tomato Seeds Ver 2";
+    private static final int UPDATED_SEED_PACKAGE_NUMBER_OF_SEEDS = 200;
 
     @Autowired
     private MockMvc mockMvc;

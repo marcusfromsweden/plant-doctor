@@ -17,16 +17,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Import(BotanicalSpeciesTestHelper.class)
 public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
 
-    public static final String BOTANICAL_SPECIES_1_NAME = "Botanical Species 1";
-    public static final String BOTANICAL_SPECIES_1_DESCRIPTION = "Some description 1";
-    public static final int BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION = 7;
+    private static final String BOTANICAL_SPECIES_1_NAME = "Botanical Species 1";
+    private static final String BOTANICAL_SPECIES_1_DESCRIPTION = "Some description 1";
+    private static final int BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION = 7;
 
-    public static final String BOTANICAL_SPECIES_2_NAME = "Botanical Species 2";
-    public static final String BOTANICAL_SPECIES_2_DESCRIPTION = "Some description 2";
-    public static final int BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION = 7;
-    public static final String BOTANICAL_SPECIES_2_NAME_UPDATED = "Botanical Species 2.1";
-    public static final String BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED = "Some description 2.2";
-    public static final int BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED = 11;
+    private static final String BOTANICAL_SPECIES_2_NAME = "Botanical Species 2";
+    private static final String BOTANICAL_SPECIES_2_DESCRIPTION = "Some description 2";
+    private static final int BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION = 7;
+    
+    private static final String BOTANICAL_SPECIES_2_NAME_UPDATED = "Botanical Species 2.1";
+    private static final String BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED = "Some description 2.2";
+    private static final int BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED = 11;
 
     @Autowired
     private BotanicalSpeciesService botanicalSpeciesService;

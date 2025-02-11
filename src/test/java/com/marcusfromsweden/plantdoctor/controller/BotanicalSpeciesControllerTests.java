@@ -29,10 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BotanicalSpeciesControllerTests {
 
     private static final String API_PATH_PLANT_SPECIES = "/api/plant-species";
-    public static final long EXISTING_BOTANICAL_SPECIES_ID = 1L;
-    public static final String EXISTING_BOTANICAL_SPECIES_LATIN_NAME = "tametoe talacum";
-    public static final String EXISTING_BOTANICAL_SPECIES_DESCRIPTION = "A tasty treat";
-    public static final int EXISTING_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 7;
+    private static final long EXISTING_BOTANICAL_SPECIES_ID = 1L;
+    private static final String EXISTING_BOTANICAL_SPECIES_LATIN_NAME = "tametoe talacum";
+    private static final String EXISTING_BOTANICAL_SPECIES_DESCRIPTION = "A tasty treat";
+    private static final int EXISTING_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 7;
     private static final Long UPDATED_BOTANICAL_SPECIES_ID = 2L;
     private static final String UPDATED_BOTANICAL_SPECIES_LATIN_NAME = "tometoe silucum";
     private static final String UPDATED_BOTANICAL_SPECIES_DESCRIPTION = "A tasty treat as well";

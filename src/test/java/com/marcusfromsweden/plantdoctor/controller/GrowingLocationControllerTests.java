@@ -28,10 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GrowingLocationControllerTests {
 
     private static final String API_PATH_GROWING_LOCATIONS = "/api/growing-locations";
-    public static final long EXISTING_GROWING_LOCATION_ID = 1L;
-    public static final String EXISTING_GROWING_LOCATION_NAME = "Pot 1";
-    public static final long UPDATED_GROWING_LOCATION_ID = 2L;
-    public static final String UPDATED_GROWING_LOCATION_NAME = "Updated Pot";
+    private static final long EXISTING_GROWING_LOCATION_ID = 1L;
+    private static final String EXISTING_GROWING_LOCATION_NAME = "Pot 1";
+    private static final long UPDATED_GROWING_LOCATION_ID = 2L;
+    private static final String UPDATED_GROWING_LOCATION_NAME = "Updated Pot";
 
     @Autowired
     private MockMvc mockMvc;
