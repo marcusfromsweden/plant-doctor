@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PlantDoctorService_TestQuickCreateIT extends PostgresTestContainerTest {
+public class PlantDoctorService_QuickCreatePlantIT extends PostgresTestContainerTest {
 
     public static final String TEST_PLANT_SPECIES = "Test Species";
     public static final String TEST_PLANT_SEED_PACKAGE = "Test Seed Package";

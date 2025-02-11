@@ -4,8 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
+import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.service.PlantCommentService;
 import com.marcusfromsweden.plantdoctor.service.PlantService;
+import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
+import com.marcusfromsweden.plantdoctor.util.PlantTestHelper;
+import com.marcusfromsweden.plantdoctor.util.SeedPackageTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(PlantController.class)
 @AutoConfigureMockMvc
+@Import({PlantTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class, GrowingLocationMapper.class})
 public class PlantControllerTests {
 
     private static final String API_PATH = "/api/plants";
@@ -34,6 +40,12 @@ public class PlantControllerTests {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private SeedPackageTestHelper seedPackageTestHelper;
+    @Autowired
+    private GrowingLocationTestHelper growingLocationTestHelper;
+    @Autowired
+    private PlantTestHelper plantTestHelper;
 
     @MockBean
     private PlantService plantService;
@@ -47,14 +59,14 @@ public class PlantControllerTests {
 
     @BeforeEach
     public void setup() {
-        seedPackageDTO = new SeedPackageDTO(1L, 1L, "Some seeds", 10);
-        growingLocationDTO = new GrowingLocationDTO(1L, "Clay pot nbr 1");
-        plantDTO = new PlantDTO(
-                1L,
-                seedPackageDTO.id(),
-                growingLocationDTO.id(),
-                LocalDate.of(2025, 1, 1),
-                LocalDate.of(2025, 1, 15));
+        seedPackageDTO = seedPackageTestHelper.createDTO(1L,
+                                                         "Some seeds",
+                                                         1L,
+                                                         10);
+        growingLocationDTO = growingLocationTestHelper.createDTO(1L,
+                                                                 "Clay pot nbr 1");
+        plantDTO = plantTestHelper.createDTO(1L,
+                                             seedPackageDTO.id(), growingLocationDTO.id(), LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 15));
     }
 
     @Test

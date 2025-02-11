@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PlantCommentService_TestCommentTextSizeConstraintIT extends PostgresTestContainerTest {
+public class PlantCommentService_CommentTextSizeConstraintIT extends PostgresTestContainerTest {
 
     public static final String PLANT_BOTANICAL_SPECIES = "Test Species";
     public static final String PLANT_SEED_PACKAGE = "Test Seed Package";

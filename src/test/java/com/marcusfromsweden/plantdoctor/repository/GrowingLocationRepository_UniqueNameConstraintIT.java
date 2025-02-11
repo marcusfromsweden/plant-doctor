@@ -1,7 +1,6 @@
-package com.marcusfromsweden.plantdoctor.service;
+package com.marcusfromsweden.plantdoctor.repository;
 
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
-import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
 import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
@@ -17,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(GrowingLocationTestHelper.class)
-public class GrowingLocationService_VerifyUniqueNameIT extends PostgresTestContainerTest {
+public class GrowingLocationRepository_UniqueNameConstraintIT extends PostgresTestContainerTest {
 
     public static final String GROWING_LOCATION_NAME_1 = "GROWING_LOCATION_NAME_1";
     public static final String GROWING_LOCATION_NAME_2 = "GROWING_LOCATION_NAME_2";
@@ -37,33 +36,35 @@ public class GrowingLocationService_VerifyUniqueNameIT extends PostgresTestConta
 
     @Test
     void shouldNotAcceptDuplicateName() {
-        GrowingLocation location1 = new GrowingLocation();
-        location1.setName(GROWING_LOCATION_NAME_1);
+        GrowingLocation location =
+                growingLocationTestHelper.createEntity(null,
+                                                       GROWING_LOCATION_NAME_1);
 
-        //todo Use GrowingLocationTestHelper.createEntity(null, GROWING_LOCATION_NAME_1);
+        GrowingLocation locationWithSameName =
+                growingLocationTestHelper.createEntity(null,
+                                                       GROWING_LOCATION_NAME_1);
 
-        GrowingLocation location2 = new GrowingLocation();
-        location2.setName(GROWING_LOCATION_NAME_1);
-
-        growingLocationRepository.save(location1);
+        growingLocationRepository.save(location);
 
         assertThrows(DataIntegrityViolationException.class, () ->
-                growingLocationRepository.save(location2)
+                growingLocationRepository.save(locationWithSameName)
         );
     }
 
     @Test
     void shouldAcceptNonUniqueName() {
-        GrowingLocation location1 = new GrowingLocation();
-        location1.setName(GROWING_LOCATION_NAME_2);
+        GrowingLocation location =
+                growingLocationTestHelper.createEntity(null,
+                                                       GROWING_LOCATION_NAME_2);
 
-        GrowingLocation location2 = new GrowingLocation();
-        location2.setName(GROWING_LOCATION_NAME_3);
+        GrowingLocation locationWithDifferentName =
+                growingLocationTestHelper.createEntity(null,
+                                                       GROWING_LOCATION_NAME_3);
 
-        growingLocationRepository.save(location1);
+        growingLocationRepository.save(location);
 
         assertDoesNotThrow(() -> {
-            growingLocationRepository.save(location2);
+            growingLocationRepository.save(locationWithDifferentName);
         });
     }
 }

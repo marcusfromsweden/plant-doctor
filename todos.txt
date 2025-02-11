@@ -2,6 +2,7 @@ Application
  - Add validation annotations to DTOs (to provide helpful error messages/guidance)
 
 Tests
+ - Align @BeforeEach public void testSetup() ...
  - Verify optional entities are present in asserts
  - update tests to use AssertJ
  - add tests for invalid input/edge cases
