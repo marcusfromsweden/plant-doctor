@@ -1,6 +1,7 @@
 package com.marcusfromsweden.plantdoctor.service;
 
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
+import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
 import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(GrowingLocationTestHelper.class)
+@Import({GrowingLocationTestHelper.class, GrowingLocationMapper.class})
 public class GrowingLocationServiceCRUDIT extends PostgresTestContainerTest {
 
     @Autowired

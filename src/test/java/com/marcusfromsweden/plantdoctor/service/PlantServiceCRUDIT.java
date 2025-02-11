@@ -4,6 +4,7 @@ import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
+import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesTestHelper;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
 import com.marcusfromsweden.plantdoctor.util.PlantTestHelper;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({PlantTestHelper.class, BotanicalSpeciesTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class})
+@Import({PlantTestHelper.class, BotanicalSpeciesTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class, GrowingLocationMapper.class})
 public class PlantServiceCRUDIT extends PostgresTestContainerTest {
 
     private static final LocalDate PLANT_1_PLANTING_DATE = LocalDate.of(2025, 1, 1);

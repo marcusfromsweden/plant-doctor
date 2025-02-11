@@ -1,5 +1,6 @@
 package com.marcusfromsweden.plantdoctor.repository;
 
+import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(GrowingLocationTestHelper.class)
+@Import({GrowingLocationTestHelper.class, GrowingLocationMapper.class})
 public class GrowingLocationRepository_UniqueNameConstraintIT extends PostgresTestContainerTest {
 
     private static final String GROWING_LOCATION_NAME_1 = "GROWING_LOCATION_NAME_1";
