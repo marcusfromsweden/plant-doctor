@@ -17,6 +17,7 @@ public class BotanicalSpecies {
     @NotNull
     @Column(unique = true)
     private String latinName;
+    @Column(length = 1000)
     private String description;
     private Integer estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION;
 

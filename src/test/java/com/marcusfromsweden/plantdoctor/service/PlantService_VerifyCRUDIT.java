@@ -4,6 +4,8 @@ import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
+import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesTestHelper;
+import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
 import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +29,9 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
     public static final LocalDate PLANT_2_PLANTING_DATE_UPDATED = LocalDate.of(2025, 2, 2);
     public static final LocalDate PLANT_2_GERMINATION_DATE_UPDATED = LocalDate.of(2025, 2, 16);
 
-    public static final String BOTANICAL_SPECIES_LATIN_NAME = "Botanical Species 1";
+    public static final String GROWING_LOCATION_NAME = "Growing Location";
+
+    public static final String BOTANICAL_SPECIES_LATIN_NAME = "Botanical Species";
     public static final String BOTANICAL_SPECIES_DESCRIPTION = "Some description";
     public static final int BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION = 7;
 
@@ -52,11 +56,10 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
     public void setUp() {
         repositoryTestHelper.deleteAllData();
 
-        BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesDTO.builder()
-                .latinName(BOTANICAL_SPECIES_LATIN_NAME)
-                .description(BOTANICAL_SPECIES_DESCRIPTION)
-                .estimatedDaysToGermination(BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION)
-                .build();
+        BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesTestHelper.createDTO(null,
+                                                                                           BOTANICAL_SPECIES_LATIN_NAME,
+                                                                                           BOTANICAL_SPECIES_DESCRIPTION,
+                                                                                           BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION);
         BotanicalSpeciesDTO botanicalSpeciesDTO = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDetails);
 
         SeedPackageDTO seedPackageDetails = SeedPackageDTO.builder()
@@ -66,10 +69,8 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
                 .build();
         seedPackage = seedPackageService.createSeedPackage(seedPackageDetails);
 
-        GrowingLocationDTO growingLocationDetails = GrowingLocationDTO.builder()
-                .name("Growing Location 1")
-                .build();
-        growingLocation = growingLocationService.createGrowingLocation(growingLocationDetails);
+        GrowingLocationDTO growingLocationDTO = GrowingLocationTestHelper.createDTO(null, GROWING_LOCATION_NAME);
+        growingLocation = growingLocationService.createGrowingLocation(growingLocationDTO);
     }
 
     @Test

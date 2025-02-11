@@ -3,6 +3,7 @@ package com.marcusfromsweden.plantdoctor.service;
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
+import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesTestHelper;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
 import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,11 +38,12 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
 
     @Test
     public void testCreateAndUpdate() {
-        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesDTO.builder()
-                .latinName(BOTANICAL_SPECIES_1_LATIN_NAME)
-                .description(BOTANICAL_SPECIES_1_DESCRIPTION)
-                .estimatedDaysToGermination(BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION)
-                .build();
+        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(
+                null,
+                BOTANICAL_SPECIES_1_LATIN_NAME,
+                BOTANICAL_SPECIES_1_DESCRIPTION,
+                BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION
+        );
         BotanicalSpeciesDTO botanicalSpecies = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
 
         SeedPackageDTO seedPackageDTO = SeedPackageDTO.builder()

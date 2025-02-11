@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesTestHelper.createDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -36,8 +37,9 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
     }
 
     @Test
-    public void testCreateAndReadAndDelete() {
-        BotanicalSpeciesDTO botanicalSpeciesDetails = createDTO(BOTANICAL_SPECIES_1_NAME,
+    public void createAndDeleteBotanicalSpecies_WithValidData_ShouldWorkCorrectly() {
+        BotanicalSpeciesDTO botanicalSpeciesDetails = createDTO(null,
+                                                                BOTANICAL_SPECIES_1_NAME,
                                                                 BOTANICAL_SPECIES_1_DESCRIPTION,
                                                                 BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION);
 
@@ -60,14 +62,16 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
     }
 
     @Test
-    public void testCreateAndUpdate() {
-        BotanicalSpeciesDTO botanicalSpeciesDTO = createDTO(BOTANICAL_SPECIES_2_NAME,
+    public void updateBotanicalSpecies_WithValidData_ShouldUpdateSuccessfully() {
+        BotanicalSpeciesDTO botanicalSpeciesDTO = createDTO(null,
+                                                            BOTANICAL_SPECIES_2_NAME,
                                                             BOTANICAL_SPECIES_2_DESCRIPTION,
                                                             BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION);
         BotanicalSpeciesDTO botanicalSpecies =
                 botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
 
-        BotanicalSpeciesDTO updatedBotanicalSpeciesDTO = createDTO(BOTANICAL_SPECIES_2_NAME_UPDATED,
+        BotanicalSpeciesDTO updatedBotanicalSpeciesDTO = createDTO(null,
+                                                                   BOTANICAL_SPECIES_2_NAME_UPDATED,
                                                                    BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED,
                                                                    BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED);
         BotanicalSpeciesDTO updatedBotanicalSpecies = botanicalSpeciesService.updateBotanicalSpecies(botanicalSpecies.id(), updatedBotanicalSpeciesDTO);
@@ -80,13 +84,4 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
                      updatedBotanicalSpecies.estimatedDaysToGermination());
     }
 
-    private BotanicalSpeciesDTO createDTO(String latinName,
-                                          String description,
-                                          int daysToGerminate) {
-        return BotanicalSpeciesDTO.builder()
-                .latinName(latinName)
-                .description(description)
-                .estimatedDaysToGermination(daysToGerminate)
-                .build();
-    }
 }

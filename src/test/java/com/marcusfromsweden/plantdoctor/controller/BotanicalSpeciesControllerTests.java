@@ -3,6 +3,7 @@ package com.marcusfromsweden.plantdoctor.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.BotanicalSpeciesService;
+import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -48,19 +49,19 @@ public class BotanicalSpeciesControllerTests {
 
     @BeforeEach
     public void setup() {
-        existingBotanicalSpeciesDTO = BotanicalSpeciesDTO.builder()
-                .id(EXISTING_BOTANICAL_SPECIES_ID)
-                .latinName(EXISTING_BOTANICAL_SPECIES_LATIN_NAME)
-                .description(EXISTING_BOTANICAL_SPECIES_DESCRIPTION)
-                .estimatedDaysToGermination(EXISTING_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION)
-                .build();
+        existingBotanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(
+                EXISTING_BOTANICAL_SPECIES_ID,
+                EXISTING_BOTANICAL_SPECIES_LATIN_NAME,
+                EXISTING_BOTANICAL_SPECIES_DESCRIPTION,
+                EXISTING_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION
+        );
 
-        updatedBotanicalSpeciesDTO = BotanicalSpeciesDTO.builder()
-                .id(UPDATED_BOTANICAL_SPECIES_ID)
-                .latinName(UPDATED_BOTANICAL_SPECIES_LATIN_NAME)
-                .description(UPDATED_BOTANICAL_SPECIES_DESCRIPTION)
-                .estimatedDaysToGermination(UPDATED_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION)
-                .build();
+        updatedBotanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(
+                UPDATED_BOTANICAL_SPECIES_ID,
+                UPDATED_BOTANICAL_SPECIES_LATIN_NAME,
+                UPDATED_BOTANICAL_SPECIES_DESCRIPTION,
+                UPDATED_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION
+        );
     }
 
     @Test
