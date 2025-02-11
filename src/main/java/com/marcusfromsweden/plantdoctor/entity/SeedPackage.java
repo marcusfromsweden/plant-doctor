@@ -13,9 +13,11 @@ public class SeedPackage {
 
     @ManyToOne
     @NotNull
+    @JoinColumn(name = "botanical_species_id", nullable = false)
     private BotanicalSpecies botanicalSpecies;
 
     @NotNull
+    @Column(nullable = false)
     private String name;
 
     @PositiveOrZero
