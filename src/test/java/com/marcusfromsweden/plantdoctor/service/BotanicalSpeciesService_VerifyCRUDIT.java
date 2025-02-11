@@ -3,7 +3,6 @@ package com.marcusfromsweden.plantdoctor.service;
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
 import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,13 +30,11 @@ public class BotanicalSpeciesService_VerifyCRUDIT extends PostgresTestContainerT
     @Autowired
     private RepositoryTestHelper repositoryTestHelper;
 
-    @BeforeEach
-    public void setUp() {
-        repositoryTestHelper.deleteAllData();
-    }
-
     @Test
     public void createAndDeleteBotanicalSpecies_WithValidData_ShouldWorkCorrectly() {
+        // deleting all data in order to verify that only one record is created and after delete non remains
+        repositoryTestHelper.deleteAllData();
+
         BotanicalSpeciesDTO botanicalSpeciesDetails = createDTO(null,
                                                                 BOTANICAL_SPECIES_1_NAME,
                                                                 BOTANICAL_SPECIES_1_DESCRIPTION,

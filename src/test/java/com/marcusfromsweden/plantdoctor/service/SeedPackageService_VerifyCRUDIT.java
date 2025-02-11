@@ -6,6 +6,7 @@ import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
 import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesTestHelper;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
 import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
+import com.marcusfromsweden.plantdoctor.util.SeedPackageTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,26 +45,28 @@ public class SeedPackageService_VerifyCRUDIT extends PostgresTestContainerTest {
                 BOTANICAL_SPECIES_1_DESCRIPTION,
                 BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION
         );
-        BotanicalSpeciesDTO botanicalSpecies = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
+        BotanicalSpeciesDTO botanicalSpecies =
+                botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
 
-        SeedPackageDTO seedPackageDTO = SeedPackageDTO.builder()
-                .name(SEED_PACKAGE_1_NAME)
-                .botanicalSpeciesId(botanicalSpecies.id())
-                .numberOfSeeds(SEED_PACKAGE_1_NUMBER_OF_SEEDS)
-                .build();
+        SeedPackageDTO seedPackageDTO = SeedPackageTestHelper.createDTO(
+                null,
+                SEED_PACKAGE_1_NAME,
+                botanicalSpecies.id(),
+                SEED_PACKAGE_1_NUMBER_OF_SEEDS
+        );
 
         SeedPackageDTO seedPackage = seedPackageService.createSeedPackage(seedPackageDTO);
 
-        SeedPackageDTO newSeedPackageDTO = SeedPackageDTO.builder()
-                .name(SEED_PACKAGE_1_NAME_UPDATED)
-                .botanicalSpeciesId(botanicalSpecies.id())
-                .numberOfSeeds(SEED_PACKAGE_1_NUMBER_OF_SEEDS_UPDATED)
-                .build();
+        SeedPackageDTO updatedSeedPackageDTO = SeedPackageTestHelper.createDTO(null,
+                                                                               SEED_PACKAGE_1_NAME_UPDATED,
+                                                                               botanicalSpecies.id(),
+                                                                               SEED_PACKAGE_1_NUMBER_OF_SEEDS_UPDATED
+        );
 
-        seedPackageService.updateSeedPackage(seedPackage.id(), newSeedPackageDTO);
+        seedPackageService.updateSeedPackage(seedPackage.id(), updatedSeedPackageDTO);
 
         SeedPackage updatedSeedPackage = seedPackageService.getSeedPackageEntityByIdOrThrow(seedPackage.id());
-        assertEquals(newSeedPackageDTO.name(), updatedSeedPackage.getName());
+        assertEquals(updatedSeedPackageDTO.name(), updatedSeedPackage.getName());
     }
 
     //FIXME add testCreateAndReadAndDelete

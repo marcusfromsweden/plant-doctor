@@ -6,8 +6,10 @@ import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesTestHelper;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
+import com.marcusfromsweden.plantdoctor.util.PlantTestHelper;
 import com.marcusfromsweden.plantdoctor.util.PostgresTestContainerTest;
 import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
+import com.marcusfromsweden.plantdoctor.util.SeedPackageTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +64,11 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
                                                                                            BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION);
         BotanicalSpeciesDTO botanicalSpeciesDTO = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDetails);
 
-        SeedPackageDTO seedPackageDetails = SeedPackageDTO.builder()
-                .name(SEED_PACK_NAME)
-                .botanicalSpeciesId(botanicalSpeciesDTO.id())
-                .numberOfSeeds(SEED_PACK_NUMBER_OF_SEEDS)
-                .build();
-        seedPackage = seedPackageService.createSeedPackage(seedPackageDetails);
+        SeedPackageDTO seedPackageDTO = SeedPackageTestHelper.createDTO(null,
+                                                                        SEED_PACK_NAME,
+                                                                        botanicalSpeciesDTO.id(),
+                                                                        SEED_PACK_NUMBER_OF_SEEDS);
+        seedPackage = seedPackageService.createSeedPackage(seedPackageDTO);
 
         GrowingLocationDTO growingLocationDTO = GrowingLocationTestHelper.createDTO(null, GROWING_LOCATION_NAME);
         growingLocation = growingLocationService.createGrowingLocation(growingLocationDTO);
@@ -75,25 +76,24 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
 
     @Test
     public void testCreateAndReadAndDelete() {
-        PlantDTO plantDetails = PlantDTO.builder()
-                .seedPackageId(seedPackage.id())
-                .growingLocationId(growingLocation.id())
-                .plantingDate(PLANT_1_PLANTING_DATE)
-                .germinationDate(PLANT_1_GERMINATION_DATE)
-                .build();
+        PlantDTO plantDTO = PlantTestHelper.createDTO(null,
+                                                      seedPackage.id(),
+                                                      growingLocation.id(),
+                                                      PLANT_1_PLANTING_DATE,
+                                                      PLANT_1_GERMINATION_DATE);
 
         assertEquals(0, plantService.getAllPlants().size());
 
-        PlantDTO plant = plantService.createPlant(plantDetails);
+        PlantDTO plant = plantService.createPlant(plantDTO);
 
         assertEquals(1, plantService.getAllPlants().size());
         assertNotNull(plant);
         assertNotNull(plant.id());
         assertNotNull(plantService.getPlantById(plant.id()));
-        assertEquals(plantDetails.plantingDate(), plant.plantingDate());
-        assertEquals(plantDetails.germinationDate(), plant.germinationDate());
-        assertEquals(plantDetails.seedPackageId(), plant.seedPackageId());
-        assertEquals(plantDetails.growingLocationId(), plant.growingLocationId());
+        assertEquals(plantDTO.plantingDate(), plant.plantingDate());
+        assertEquals(plantDTO.germinationDate(), plant.germinationDate());
+        assertEquals(plantDTO.seedPackageId(), plant.seedPackageId());
+        assertEquals(plantDTO.growingLocationId(), plant.growingLocationId());
 
         plantService.deletePlant(plant.id());
         assertEquals(0, plantService.getAllPlants().size());
@@ -101,25 +101,23 @@ public class PlantService_VerifyCRUDIT extends PostgresTestContainerTest {
 
     @Test
     public void testCreateAndUpdate() {
-        PlantDTO plantDetails = PlantDTO.builder()
-                .seedPackageId(seedPackage.id())
-                .growingLocationId(growingLocation.id())
-                .plantingDate(PLANT_2_PLANTING_DATE)
-                .germinationDate(PLANT_2_GERMINATION_DATE)
-                .build();
+        PlantDTO plantDTO = PlantTestHelper.createDTO(null,
+                                                      seedPackage.id(),
+                                                      growingLocation.id(),
+                                                      PLANT_2_PLANTING_DATE,
+                                                      PLANT_2_GERMINATION_DATE);
 
         //FIXME add checks for modified seed package and growing location
-        PlantDTO plant = plantService.createPlant(plantDetails);
+        PlantDTO plant = plantService.createPlant(plantDTO);
 
-        PlantDTO updatedPlantDetails = PlantDTO.builder()
-                .seedPackageId(seedPackage.id())
-                .growingLocationId(growingLocation.id())
-                .plantingDate(PLANT_2_PLANTING_DATE_UPDATED)
-                .germinationDate(PLANT_2_GERMINATION_DATE_UPDATED)
-                .build();
-        PlantDTO updatedPlant = plantService.updatePlant(plant.id(), updatedPlantDetails);
+        PlantDTO updatedPlantDTO = PlantTestHelper.createDTO(plant.id(),
+                                                             seedPackage.id(),
+                                                             growingLocation.id(),
+                                                             PLANT_2_PLANTING_DATE_UPDATED,
+                                                             PLANT_2_GERMINATION_DATE_UPDATED);
+        PlantDTO updatedPlant = plantService.updatePlant(plant.id(), updatedPlantDTO);
 
-        assertEquals(updatedPlantDetails.plantingDate(), updatedPlant.plantingDate());
-        assertEquals(updatedPlantDetails.germinationDate(), updatedPlant.germinationDate());
+        assertEquals(updatedPlantDTO.plantingDate(), updatedPlant.plantingDate());
+        assertEquals(updatedPlantDTO.germinationDate(), updatedPlant.germinationDate());
     }
 }

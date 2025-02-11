@@ -3,6 +3,7 @@ package com.marcusfromsweden.plantdoctor.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.service.SeedPackageService;
+import com.marcusfromsweden.plantdoctor.util.SeedPackageTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -48,19 +49,19 @@ public class SeedPackageControllerTests {
 
     @BeforeEach
     public void setup() {
-        existingSeedPackageDTO = SeedPackageDTO.builder()
-                .id(EXISTING_SEED_PACKAGE_ID)
-                .botanicalSpeciesId(EXISTING_SEED_PACKAGE_BOTANICAL_SPECIES_ID)
-                .name(EXISTING_SEED_PACKAGE_NAME)
-                .numberOfSeeds(EXISTING_SEED_PACKAGE_NUMBER_OF_SEEDS)
-                .build();
+        existingSeedPackageDTO = SeedPackageTestHelper.createDTO(
+                EXISTING_SEED_PACKAGE_ID,
+                EXISTING_SEED_PACKAGE_NAME,
+                EXISTING_SEED_PACKAGE_BOTANICAL_SPECIES_ID,
+                EXISTING_SEED_PACKAGE_NUMBER_OF_SEEDS
+        );
 
-        updatedSeedPackageDTO = SeedPackageDTO.builder()
-                .id(UPDATED_SEED_PACKAGE_ID)
-                .botanicalSpeciesId(UPDATED_SEED_PACKAGE_BOTANICAL_SPECIES_ID)
-                .name(UPDATED_SEED_PACKAGE_NAME)
-                .numberOfSeeds(UPDATED_SEED_PACKAGE_NUMBER_OF_SEEDS)
-                .build();
+        updatedSeedPackageDTO = SeedPackageTestHelper.createDTO(
+                UPDATED_SEED_PACKAGE_ID,
+                UPDATED_SEED_PACKAGE_NAME,
+                UPDATED_SEED_PACKAGE_BOTANICAL_SPECIES_ID,
+                UPDATED_SEED_PACKAGE_NUMBER_OF_SEEDS
+        );
     }
 
     @Test
