@@ -7,16 +7,20 @@ import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(GrowingLocationTestHelper.class)
 public class GrowingLocationServiceCRUDIT extends PostgresTestContainerTest {
 
     @Autowired
     private GrowingLocationService growingLocationService;
+    @Autowired
+    private GrowingLocationTestHelper growingLocationTestHelper;
     @Autowired
     private RepositoryTestHelper repositoryTestHelper;
 
@@ -30,7 +34,7 @@ public class GrowingLocationServiceCRUDIT extends PostgresTestContainerTest {
         assertEquals(0, growingLocationService.getAllGrowingLocations().size());
 
         GrowingLocationDTO growingLocationDTO =
-                GrowingLocationTestHelper.createDTO(null, GROWING_LOCATION_2_NAME);
+                growingLocationTestHelper.createDTO(null, GROWING_LOCATION_2_NAME);
         GrowingLocationDTO createdGrowingLocationDTO =
                 growingLocationService.createGrowingLocation(growingLocationDTO);
         assertNotNull(createdGrowingLocationDTO);
@@ -46,11 +50,11 @@ public class GrowingLocationServiceCRUDIT extends PostgresTestContainerTest {
     @Test
     public void shouldCreateAndUpdate() {
         GrowingLocationDTO growingLocationDTO =
-                GrowingLocationTestHelper.createDTO(null, GROWING_LOCATION_1_NAME);
+                growingLocationTestHelper.createDTO(null, GROWING_LOCATION_1_NAME);
         GrowingLocationDTO createdGrowingLocationDTO =
                 growingLocationService.createGrowingLocation(growingLocationDTO);
 
-        GrowingLocationDTO growingLocationForUpdateDTO = GrowingLocationTestHelper.createDTO(
+        GrowingLocationDTO growingLocationForUpdateDTO = growingLocationTestHelper.createDTO(
                 createdGrowingLocationDTO.id(),
                 GROWING_LOCATION_1_NAME_UPDATED
         );

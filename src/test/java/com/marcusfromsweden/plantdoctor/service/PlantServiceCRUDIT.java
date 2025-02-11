@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import({PlantTestHelper.class, BotanicalSpeciesTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class})
 public class PlantServiceCRUDIT extends PostgresTestContainerTest {
 
     public static final LocalDate PLANT_1_PLANTING_DATE = LocalDate.of(2025, 1, 1);
@@ -44,6 +46,14 @@ public class PlantServiceCRUDIT extends PostgresTestContainerTest {
     @Autowired
     private PlantService plantService;
     @Autowired
+    private PlantTestHelper plantTestHelper;
+    @Autowired
+    private BotanicalSpeciesTestHelper botanicalSpeciesTestHelper;
+    @Autowired
+    private SeedPackageTestHelper seedPackageTestHelper;
+    @Autowired
+    private GrowingLocationTestHelper growingLocationTestHelper;
+    @Autowired
     private RepositoryTestHelper repositoryTestHelper;
     @Autowired
     private BotanicalSpeciesService botanicalSpeciesService;
@@ -59,25 +69,25 @@ public class PlantServiceCRUDIT extends PostgresTestContainerTest {
     public void setUp() {
         repositoryTestHelper.deleteAllData();
 
-        BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesTestHelper.createDTO(null,
+        BotanicalSpeciesDTO botanicalSpeciesDetails = botanicalSpeciesTestHelper.createDTO(null,
                                                                                            BOTANICAL_SPECIES_LATIN_NAME,
                                                                                            BOTANICAL_SPECIES_DESCRIPTION,
                                                                                            BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION);
         BotanicalSpeciesDTO botanicalSpeciesDTO = botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDetails);
 
-        SeedPackageDTO seedPackageDTO = SeedPackageTestHelper.createDTO(null,
+        SeedPackageDTO seedPackageDTO = seedPackageTestHelper.createDTO(null,
                                                                         SEED_PACK_NAME,
                                                                         botanicalSpeciesDTO.id(),
                                                                         SEED_PACK_NUMBER_OF_SEEDS);
         seedPackage = seedPackageService.createSeedPackage(seedPackageDTO);
 
-        GrowingLocationDTO growingLocationDTO = GrowingLocationTestHelper.createDTO(null, GROWING_LOCATION_NAME);
+        GrowingLocationDTO growingLocationDTO = growingLocationTestHelper.createDTO(null, GROWING_LOCATION_NAME);
         growingLocation = growingLocationService.createGrowingLocation(growingLocationDTO);
     }
 
     @Test
     public void shouldCreateAndDelete() {
-        PlantDTO plantDTO = PlantTestHelper.createDTO(null,
+        PlantDTO plantDTO = plantTestHelper.createDTO(null,
                                                       seedPackage.id(),
                                                       growingLocation.id(),
                                                       PLANT_1_PLANTING_DATE,
@@ -102,7 +112,7 @@ public class PlantServiceCRUDIT extends PostgresTestContainerTest {
 
     @Test
     public void shouldCreateAndUpdate() {
-        PlantDTO plantDTO = PlantTestHelper.createDTO(null,
+        PlantDTO plantDTO = plantTestHelper.createDTO(null,
                                                       seedPackage.id(),
                                                       growingLocation.id(),
                                                       PLANT_2_PLANTING_DATE,
@@ -111,7 +121,7 @@ public class PlantServiceCRUDIT extends PostgresTestContainerTest {
         //FIXME add checks for modified seed package and growing location
         PlantDTO plant = plantService.createPlant(plantDTO);
 
-        PlantDTO updatedPlantDTO = PlantTestHelper.createDTO(plant.id(),
+        PlantDTO updatedPlantDTO = plantTestHelper.createDTO(plant.id(),
                                                              seedPackage.id(),
                                                              growingLocation.id(),
                                                              PLANT_2_PLANTING_DATE_UPDATED,

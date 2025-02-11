@@ -7,12 +7,14 @@ import com.marcusfromsweden.plantdoctor.util.RepositoryTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(BotanicalSpeciesTestHelper.class)
 public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
 
     public static final String BOTANICAL_SPECIES_1_NAME = "Botanical Species 1";
@@ -29,6 +31,8 @@ public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
     @Autowired
     private BotanicalSpeciesService botanicalSpeciesService;
     @Autowired
+    private BotanicalSpeciesTestHelper botanicalSpeciesTestHelper;
+    @Autowired
     private RepositoryTestHelper repositoryTestHelper;
 
     @Test
@@ -36,7 +40,7 @@ public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
         repositoryTestHelper.deleteAllData();
         assertEquals(0, botanicalSpeciesService.getAllBotanicalSpecies().size());
 
-        BotanicalSpeciesDTO botanicalSpeciesDetails = BotanicalSpeciesTestHelper.createDTO(null,
+        BotanicalSpeciesDTO botanicalSpeciesDetails = botanicalSpeciesTestHelper.createDTO(null,
                                                                                            BOTANICAL_SPECIES_1_NAME,
                                                                                            BOTANICAL_SPECIES_1_DESCRIPTION,
                                                                                            BOTANICAL_SPECIES_1_ESTIMATED_DAYS_TO_GERMINATION);
@@ -60,7 +64,7 @@ public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
     @Test
     public void shouldCreateAndUpdate() {
         BotanicalSpeciesDTO botanicalSpeciesDTO =
-                BotanicalSpeciesTestHelper.createDTO(null,
+                botanicalSpeciesTestHelper.createDTO(null,
                                                      BOTANICAL_SPECIES_2_NAME,
                                                      BOTANICAL_SPECIES_2_DESCRIPTION,
                                                      BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION);
@@ -68,7 +72,7 @@ public class BotanicalSpeciesServiceCRUDIT extends PostgresTestContainerTest {
                 botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
 
         BotanicalSpeciesDTO updatedBotanicalSpeciesDTO =
-                BotanicalSpeciesTestHelper.createDTO(null,
+                botanicalSpeciesTestHelper.createDTO(null,
                                                      BOTANICAL_SPECIES_2_NAME_UPDATED,
                                                      BOTANICAL_SPECIES_2_DESCRIPTION_UPDATED,
                                                      BOTANICAL_SPECIES_2_ESTIMATED_DAYS_TO_GERMINATION_UPDATED);

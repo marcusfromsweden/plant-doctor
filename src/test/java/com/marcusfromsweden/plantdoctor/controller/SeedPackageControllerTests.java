@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SeedPackageController.class)
 @AutoConfigureMockMvc
+@Import(SeedPackageTestHelper.class)
 public class SeedPackageControllerTests {
 
     private static final String API_PATH_SEED_PACKAGES = "/api/seed-packages";
@@ -40,6 +42,8 @@ public class SeedPackageControllerTests {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private SeedPackageTestHelper seedPackageTestHelper;
 
     @MockBean
     private SeedPackageService seedPackageService;
@@ -49,14 +53,14 @@ public class SeedPackageControllerTests {
 
     @BeforeEach
     public void setup() {
-        existingSeedPackageDTO = SeedPackageTestHelper.createDTO(
+        existingSeedPackageDTO = seedPackageTestHelper.createDTO(
                 EXISTING_SEED_PACKAGE_ID,
                 EXISTING_SEED_PACKAGE_NAME,
                 EXISTING_SEED_PACKAGE_BOTANICAL_SPECIES_ID,
                 EXISTING_SEED_PACKAGE_NUMBER_OF_SEEDS
         );
 
-        updatedSeedPackageDTO = SeedPackageTestHelper.createDTO(
+        updatedSeedPackageDTO = seedPackageTestHelper.createDTO(
                 UPDATED_SEED_PACKAGE_ID,
                 UPDATED_SEED_PACKAGE_NAME,
                 UPDATED_SEED_PACKAGE_BOTANICAL_SPECIES_ID,

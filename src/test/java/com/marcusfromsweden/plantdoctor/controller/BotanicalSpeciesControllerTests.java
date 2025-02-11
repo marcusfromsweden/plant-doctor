@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BotanicalSpeciesController.class)
 @AutoConfigureMockMvc
+@Import(BotanicalSpeciesTestHelper.class)
 public class BotanicalSpeciesControllerTests {
 
     private static final String API_PATH_PLANT_SPECIES = "/api/plant-species";
@@ -40,6 +42,8 @@ public class BotanicalSpeciesControllerTests {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private BotanicalSpeciesTestHelper botanicalSpeciesTestHelper;
 
     @MockBean
     private BotanicalSpeciesService botanicalSpeciesService;
@@ -49,14 +53,14 @@ public class BotanicalSpeciesControllerTests {
 
     @BeforeEach
     public void setup() {
-        existingBotanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(
+        existingBotanicalSpeciesDTO = botanicalSpeciesTestHelper.createDTO(
                 EXISTING_BOTANICAL_SPECIES_ID,
                 EXISTING_BOTANICAL_SPECIES_LATIN_NAME,
                 EXISTING_BOTANICAL_SPECIES_DESCRIPTION,
                 EXISTING_BOTANICAL_SPECIES_ESTIMATED_DAYS_TO_GERMINATION
         );
 
-        updatedBotanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(
+        updatedBotanicalSpeciesDTO = botanicalSpeciesTestHelper.createDTO(
                 UPDATED_BOTANICAL_SPECIES_ID,
                 UPDATED_BOTANICAL_SPECIES_LATIN_NAME,
                 UPDATED_BOTANICAL_SPECIES_DESCRIPTION,

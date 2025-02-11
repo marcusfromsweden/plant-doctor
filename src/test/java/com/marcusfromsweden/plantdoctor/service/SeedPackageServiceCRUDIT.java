@@ -11,10 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import({SeedPackageTestHelper.class, BotanicalSpeciesTestHelper.class})
 public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
 
     public static final String BOTANICAL_SPECIES_1_LATIN_NAME = "Botanical Species 1";
@@ -30,6 +32,10 @@ public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
     @Autowired
     private BotanicalSpeciesService botanicalSpeciesService;
     @Autowired
+    private SeedPackageTestHelper seedPackageTestHelper;
+    @Autowired
+    private BotanicalSpeciesTestHelper botanicalSpeciesTestHelper;
+    @Autowired
     private RepositoryTestHelper repositoryTestHelper;
 
     @BeforeEach
@@ -39,7 +45,7 @@ public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
 
     @Test
     public void shouldCreateAndUpdate() {
-        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesTestHelper.createDTO(
+        BotanicalSpeciesDTO botanicalSpeciesDTO = botanicalSpeciesTestHelper.createDTO(
                 null,
                 BOTANICAL_SPECIES_1_LATIN_NAME,
                 BOTANICAL_SPECIES_1_DESCRIPTION,
@@ -48,7 +54,7 @@ public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
         BotanicalSpeciesDTO botanicalSpecies =
                 botanicalSpeciesService.createBotanicalSpecies(botanicalSpeciesDTO);
 
-        SeedPackageDTO seedPackageDTO = SeedPackageTestHelper.createDTO(
+        SeedPackageDTO seedPackageDTO = seedPackageTestHelper.createDTO(
                 null,
                 SEED_PACKAGE_1_NAME,
                 botanicalSpecies.id(),
@@ -57,7 +63,7 @@ public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
 
         SeedPackageDTO seedPackage = seedPackageService.createSeedPackage(seedPackageDTO);
 
-        SeedPackageDTO updatedSeedPackageDTO = SeedPackageTestHelper.createDTO(null,
+        SeedPackageDTO updatedSeedPackageDTO = seedPackageTestHelper.createDTO(null,
                                                                                SEED_PACKAGE_1_NAME_UPDATED,
                                                                                botanicalSpecies.id(),
                                                                                SEED_PACKAGE_1_NUMBER_OF_SEEDS_UPDATED

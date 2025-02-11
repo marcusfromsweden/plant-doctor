@@ -9,12 +9,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(GrowingLocationTestHelper.class)
 public class GrowingLocationService_VerifyUniqueNameIT extends PostgresTestContainerTest {
 
     public static final String GROWING_LOCATION_NAME_1 = "GROWING_LOCATION_NAME_1";
@@ -23,7 +25,7 @@ public class GrowingLocationService_VerifyUniqueNameIT extends PostgresTestConta
 
     @Autowired
     private GrowingLocationRepository growingLocationRepository;
-
+    @Autowired
     private GrowingLocationTestHelper growingLocationTestHelper;
     @Autowired
     private RepositoryTestHelper repositoryTestHelper;

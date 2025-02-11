@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(GrowingLocationController.class)
 @AutoConfigureMockMvc
+@Import(GrowingLocationTestHelper.class)
 public class GrowingLocationControllerTests {
 
     private static final String API_PATH_GROWING_LOCATIONS = "/api/growing-locations";
@@ -35,6 +37,8 @@ public class GrowingLocationControllerTests {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private GrowingLocationTestHelper growingLocationTestHelper;
 
     @MockBean
     private GrowingLocationService growingLocationService;
@@ -44,12 +48,12 @@ public class GrowingLocationControllerTests {
 
     @BeforeEach
     public void setup() {
-        existingGrowingLocationDTO = GrowingLocationTestHelper.createDTO(
+        existingGrowingLocationDTO = growingLocationTestHelper.createDTO(
                 EXISTING_GROWING_LOCATION_ID,
                 EXISTING_GROWING_LOCATION_NAME
         );
 
-        updatedGrowingLocationDTO = GrowingLocationTestHelper.createDTO(
+        updatedGrowingLocationDTO = growingLocationTestHelper.createDTO(
                 UPDATED_GROWING_LOCATION_ID,
                 UPDATED_GROWING_LOCATION_NAME
         );
