@@ -42,7 +42,7 @@ public class GrowingLocationService {
     public GrowingLocationDTO createGrowingLocation(GrowingLocationDTO growingLocationDTO) {
         assertNonDuplicateName(growingLocationDTO);
         GrowingLocation growingLocation = growingLocationMapper.toEntity(growingLocationDTO);
-        growingLocationRepository.save(growingLocation);
+        growingLocation = growingLocationRepository.save(growingLocation);
         return growingLocationMapper.toDTO(growingLocation);
     }
 

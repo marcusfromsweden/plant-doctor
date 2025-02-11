@@ -46,7 +46,7 @@ public class BotanicalSpeciesService {
             throw new DuplicateBotanicalSpeciesLatinNameException(botanicalSpeciesDTO.latinName());
         }
         BotanicalSpecies botanicalSpecies = botanicalSpeciesMapper.toEntity(botanicalSpeciesDTO);
-        botanicalSpeciesRepository.save(botanicalSpecies);
+        botanicalSpecies = botanicalSpeciesRepository.save(botanicalSpecies);
         return botanicalSpeciesMapper.toDTO(botanicalSpecies);
     }
 
