@@ -36,6 +36,18 @@ public class PlantControllerTests {
 
     private static final String API_PATH = "/api/plants";
 
+    private static final long SEED_PACKAGE_ID = 1L;
+    private static final String SEED_PACKAGE_NAME = "Some seeds";
+    private static final long SEED_PACKAGE_BOTANICAL_SPECIES_ID = 1L;
+    private static final int SEED_PACKAGE_NUMBER_OF_SEEDS = 10;
+
+    private static final long GROWING_LOCATION_ID = 1L;
+    private static final String GROWING_LOCATION_NAME = "Clay pot nbr 1";
+
+    private static final long PLANT_ID = 1L;
+    private static final LocalDate PLANT_PLANTING_DATE = LocalDate.of(2025, 1, 1);
+    private static final LocalDate PLANT_GERMINATION_DATE = LocalDate.of(2025, 1, 15);
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -59,14 +71,17 @@ public class PlantControllerTests {
 
     @BeforeEach
     public void setup() {
-        seedPackageDTO = seedPackageTestHelper.createDTO(1L,
-                                                         "Some seeds",
-                                                         1L,
-                                                         10);
-        growingLocationDTO = growingLocationTestHelper.createDTO(1L,
-                                                                 "Clay pot nbr 1");
-        plantDTO = plantTestHelper.createDTO(1L,
-                                             seedPackageDTO.id(), growingLocationDTO.id(), LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 15));
+        seedPackageDTO = seedPackageTestHelper.createDTO(SEED_PACKAGE_ID,
+                                                         SEED_PACKAGE_NAME,
+                                                         SEED_PACKAGE_BOTANICAL_SPECIES_ID,
+                                                         SEED_PACKAGE_NUMBER_OF_SEEDS);
+        growingLocationDTO = growingLocationTestHelper.createDTO(GROWING_LOCATION_ID,
+                                                                 GROWING_LOCATION_NAME);
+        plantDTO = plantTestHelper.createDTO(PLANT_ID,
+                                             seedPackageDTO.id(),
+                                             growingLocationDTO.id(),
+                                             PLANT_PLANTING_DATE,
+                                             PLANT_GERMINATION_DATE);
     }
 
     @Test
@@ -127,7 +142,6 @@ public class PlantControllerTests {
         Mockito.when(plantService.updatePlant(plantDTO.id(), plantDTO)).thenReturn(plantDTO);
         String plantJson = objectMapper.writeValueAsString(plantDTO);
 
-        //todo create a new plantDTO for the update
         mockMvc.perform(put(API_PATH + "/{id}", plantDTO.id())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(plantJson))

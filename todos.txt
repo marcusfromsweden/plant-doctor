@@ -2,6 +2,7 @@ Application
  - Add validation annotations to DTOs (to provide helpful error messages/guidance)
 
 Tests
+ - set public static final as private for contants
  - Align @BeforeEach public void testSetup() ...
  - Verify optional entities are present in asserts
  - update tests to use AssertJ
