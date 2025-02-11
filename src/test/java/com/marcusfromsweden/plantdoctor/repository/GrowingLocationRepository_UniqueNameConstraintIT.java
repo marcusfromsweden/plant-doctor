@@ -30,7 +30,7 @@ public class GrowingLocationRepository_UniqueNameConstraintIT extends PostgresTe
     private RepositoryTestHelper repositoryTestHelper;
 
     @BeforeEach
-    public void testSetup() {
+    public void setupTest() {
         repositoryTestHelper.deleteAllData();
     }
 

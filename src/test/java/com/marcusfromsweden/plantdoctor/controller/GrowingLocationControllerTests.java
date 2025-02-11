@@ -47,7 +47,7 @@ public class GrowingLocationControllerTests {
     private GrowingLocationDTO updatedGrowingLocationDTO;
 
     @BeforeEach
-    public void setup() {
+    public void setupTest() {
         existingGrowingLocationDTO = growingLocationTestHelper.createDTO(
                 EXISTING_GROWING_LOCATION_ID,
                 EXISTING_GROWING_LOCATION_NAME

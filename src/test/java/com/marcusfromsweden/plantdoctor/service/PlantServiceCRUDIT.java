@@ -66,7 +66,7 @@ public class PlantServiceCRUDIT extends PostgresTestContainerTest {
     private GrowingLocationDTO growingLocation;
 
     @BeforeEach
-    public void setUp() {
+    public void setupTest() {
         repositoryTestHelper.deleteAllData();
 
         BotanicalSpeciesDTO botanicalSpeciesDetails = botanicalSpeciesTestHelper.createDTO(null,

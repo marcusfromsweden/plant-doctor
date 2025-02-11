@@ -39,7 +39,7 @@ public class SeedPackageServiceCRUDIT extends PostgresTestContainerTest {
     private RepositoryTestHelper repositoryTestHelper;
 
     @BeforeEach
-    public void setUp() {
+    public void setupTest() {
         repositoryTestHelper.deleteAllData();
     }
 

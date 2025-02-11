@@ -23,7 +23,7 @@ public class PlantCommentService_CommentTextSizeConstraintIT extends PostgresTes
     private static final String PLANT_COMMENT = "";
     private static final String PLANT_COMMENT_1_TOO_SHORT = "Te";
     private static final String PLANT_COMMENT_2_LONG_ENOUGH = "Tes";
-    
+
     @Autowired
     private PlantCommentService plantCommentService;
     @Autowired
@@ -32,7 +32,7 @@ public class PlantCommentService_CommentTextSizeConstraintIT extends PostgresTes
     private PlantDTO plantToComment;
 
     @BeforeEach
-    public void setUp() {
+    public void setupTest() {
         QuickCreatePlantDTO plantDTO = new QuickCreatePlantDTO(
                 LocalDate.now(),
                 PLANT_BOTANICAL_SPECIES,

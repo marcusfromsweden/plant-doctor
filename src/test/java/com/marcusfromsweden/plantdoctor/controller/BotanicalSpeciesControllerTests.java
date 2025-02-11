@@ -52,7 +52,7 @@ public class BotanicalSpeciesControllerTests {
     private BotanicalSpeciesDTO updatedBotanicalSpeciesDTO;
 
     @BeforeEach
-    public void setup() {
+    public void setupTest() {
         existingBotanicalSpeciesDTO = botanicalSpeciesTestHelper.createDTO(
                 EXISTING_BOTANICAL_SPECIES_ID,
                 EXISTING_BOTANICAL_SPECIES_LATIN_NAME,

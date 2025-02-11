@@ -70,7 +70,7 @@ public class PlantControllerTests {
     private GrowingLocationDTO growingLocationDTO;
 
     @BeforeEach
-    public void setup() {
+    public void setupTest() {
         seedPackageDTO = seedPackageTestHelper.createDTO(SEED_PACKAGE_ID,
                                                          SEED_PACKAGE_NAME,
                                                          SEED_PACKAGE_BOTANICAL_SPECIES_ID,

@@ -51,7 +51,7 @@ public class SeedPackageControllerTests {
     private SeedPackageDTO updatedSeedPackageDTO;
 
     @BeforeEach
-    public void setup() {
+    public void setupTest() {
         existingSeedPackageDTO = seedPackageTestHelper.createDTO(
                 EXISTING_SEED_PACKAGE_ID,
                 EXISTING_SEED_PACKAGE_NAME,
