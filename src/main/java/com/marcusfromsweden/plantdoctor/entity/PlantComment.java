@@ -20,6 +20,7 @@ public class PlantComment {
 
     @Size(min = 3, max = 255)
     private String text;
+    //FIXME add @ColumnDefault("now()") to createdDate in PlantComment entity and remove code that sets createdDate
     private LocalDateTime createdDate;
 
     // Getters and Setters

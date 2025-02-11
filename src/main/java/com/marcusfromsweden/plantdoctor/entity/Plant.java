@@ -14,9 +14,11 @@ public class Plant {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "seed_package_id", nullable = false)
     private SeedPackage seedPackage;
 
     @ManyToOne
+    @JoinColumn(name = "growing_location_id", nullable = false)
     private GrowingLocation growingLocation;
 
     private LocalDate plantingDate;

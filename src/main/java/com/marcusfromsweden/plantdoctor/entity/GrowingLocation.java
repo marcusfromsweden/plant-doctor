@@ -11,7 +11,7 @@ public class GrowingLocation {
     private Long id;
 
     @NotNull
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     // Getters and Setters

@@ -4,6 +4,7 @@ import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.dto.mapper.BotanicalSpeciesMapper;
 import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
 import com.marcusfromsweden.plantdoctor.exception.BotanicalSpeciesNotFoundByIdException;
+import com.marcusfromsweden.plantdoctor.exception.DuplicateBotanicalSpeciesLatinNameException;
 import com.marcusfromsweden.plantdoctor.repository.BotanicalSpeciesRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class BotanicalSpeciesService {
 
-    private final Logger log = LoggerFactory.getLogger(BotanicalSpeciesService.class);
+    private static final Logger log = LoggerFactory.getLogger(BotanicalSpeciesService.class);
     private final BotanicalSpeciesRepository botanicalSpeciesRepository;
     private final BotanicalSpeciesMapper botanicalSpeciesMapper;
 
@@ -39,8 +40,13 @@ public class BotanicalSpeciesService {
     }
 
     public BotanicalSpeciesDTO createBotanicalSpecies(BotanicalSpeciesDTO botanicalSpeciesDTO) {
+        Optional<BotanicalSpecies> existingBotanicalSpecies =
+                botanicalSpeciesRepository.findByLatinName(botanicalSpeciesDTO.latinName());
+        if (existingBotanicalSpecies.isPresent()) {
+            throw new DuplicateBotanicalSpeciesLatinNameException(botanicalSpeciesDTO.latinName());
+        }
         BotanicalSpecies botanicalSpecies = botanicalSpeciesMapper.toEntity(botanicalSpeciesDTO);
-        botanicalSpeciesRepository.save(botanicalSpecies);
+        botanicalSpecies = botanicalSpeciesRepository.save(botanicalSpecies);
         return botanicalSpeciesMapper.toDTO(botanicalSpecies);
     }
 
@@ -52,8 +58,8 @@ public class BotanicalSpeciesService {
         return botanicalSpeciesMapper.toDTO(botanicalSpecies);
     }
 
-    public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesByName(String name) {
-        return botanicalSpeciesRepository.findByName(name)
+    public Optional<BotanicalSpeciesDTO> getBotanicalSpeciesByLatinName(String latinName) {
+        return botanicalSpeciesRepository.findByLatinName(latinName)
                 .map(botanicalSpeciesMapper::toDTO);
     }
 
@@ -62,14 +68,14 @@ public class BotanicalSpeciesService {
     }
 
     public BotanicalSpeciesDTO getOrCreateBotanicalSpeciesByName(String botanicalSpeciesName) {
-        Optional<BotanicalSpeciesDTO> botanicalSpecies = getBotanicalSpeciesByName(botanicalSpeciesName);
+        Optional<BotanicalSpeciesDTO> botanicalSpecies = getBotanicalSpeciesByLatinName(botanicalSpeciesName);
 
         if (botanicalSpecies.isPresent()) {
             return botanicalSpecies.get();
         }
 
         log.debug("Botanical species {} not found, creating a new one", botanicalSpeciesName);
-        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesDTO.builder().name(botanicalSpeciesName).build();
+        BotanicalSpeciesDTO botanicalSpeciesDTO = BotanicalSpeciesDTO.builder().latinName(botanicalSpeciesName).build();
 
         return createBotanicalSpecies(botanicalSpeciesDTO);
     }

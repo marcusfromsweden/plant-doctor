@@ -10,7 +10,7 @@ public class BotanicalSpeciesMapper {
     public BotanicalSpeciesDTO toDTO(BotanicalSpecies botanicalSpecies) {
         return new BotanicalSpeciesDTO(
                 botanicalSpecies.getId(),
-                botanicalSpecies.getName(),
+                botanicalSpecies.getLatinName(),
                 botanicalSpecies.getDescription(),
                 botanicalSpecies.getEstimatedDaysToGermination()
         );
@@ -29,7 +29,7 @@ public class BotanicalSpeciesMapper {
 
     private BotanicalSpecies toEntity(BotanicalSpecies botanicalSpecies,
                                       BotanicalSpeciesDTO botanicalSpeciesDetails) {
-        botanicalSpecies.setName(botanicalSpeciesDetails.name());
+        botanicalSpecies.setLatinName(botanicalSpeciesDetails.latinName());
         botanicalSpecies.setDescription(botanicalSpeciesDetails.description());
         botanicalSpecies.setEstimatedDaysToGermination(botanicalSpeciesDetails.estimatedDaysToGermination());
         return botanicalSpecies;

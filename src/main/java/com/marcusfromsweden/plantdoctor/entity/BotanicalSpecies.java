@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class BotanicalSpecies {
 
-    private static final int GENERAL_DAYS_TO_GERMINATION = 10;
+    private static final int GENERAL_DAYS_TO_GERMINATION_DEFAULT = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +15,11 @@ public class BotanicalSpecies {
 
     @Size(min = 3, max = 50)
     @NotNull
-    @Column(unique = true)
-    private String name;
+    @Column(unique = true, nullable = false)
+    private String latinName;
+    @Column(length = 1000)
     private String description;
-    private Integer estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION;
+    private Integer estimatedDaysToGermination = GENERAL_DAYS_TO_GERMINATION_DEFAULT;
 
     // Getters and Setters
     public Long getId() {
@@ -29,12 +30,12 @@ public class BotanicalSpecies {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLatinName() {
+        return latinName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLatinName(String latinName) {
+        this.latinName = latinName;
     }
 
     public String getDescription() {

@@ -69,15 +69,13 @@ public class DataInitializerConfig {
     }
 
     private void populateTableData() {
-        //todo update to use more realistic data
-
         log.info("Adding BotanicalSpecies");
         BotanicalSpecies regularBasil = new BotanicalSpecies();
-        regularBasil.setName("Ocimum basilicum");
+        regularBasil.setLatinName("Ocimum basilicum");
         regularBasil.setDescription("Regular basil of the mint family.");
 
         BotanicalSpecies favouriteRadish = new BotanicalSpecies();
-        favouriteRadish.setName("Raphanus sativus");
+        favouriteRadish.setLatinName("Raphanus sativus");
         favouriteRadish.setDescription("A root vegetable of the Brassicaceae family.");
 
         botanicalSpeciesRepository.save(regularBasil);

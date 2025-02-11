@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 @Service
 public class PlantDoctorService {
 
-    private final Logger log = LoggerFactory.getLogger(PlantDoctorService.class);
+    private static final Logger log = LoggerFactory.getLogger(PlantDoctorService.class);
 
     private final PlantService plantService;
     private final BotanicalSpeciesService botanicalSpeciesService;
@@ -46,7 +46,7 @@ public class PlantDoctorService {
                 growingLocationService.getOrCreateGrowingLocationByName(quickCreatePlantDTO.growingLocationName());
 
         log.debug("Creating a new plant with species {}, seed package {} and location {}",
-                  botanicalSpecies.name(), seedPackage.name(), growingLocation.name());
+                  botanicalSpecies.latinName(), seedPackage.name(), growingLocation.name());
         PlantDTO plant = plantService.createPlant(PlantDTO.builder()
                                                           .plantingDate(quickCreatePlantDTO.plantingDate())
                                                           .seedPackageId(seedPackage.id())

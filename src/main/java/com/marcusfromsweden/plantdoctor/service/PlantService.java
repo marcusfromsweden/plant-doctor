@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 @Service
 public class PlantService {
 
-    //todo add validation of DTOs
-
     private final PlantRepository plantRepository;
     private final PlantMapper plantMapper;
 

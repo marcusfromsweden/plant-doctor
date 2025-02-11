@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/plant-species")
+@RequestMapping("/api/botanical-species")
 public class BotanicalSpeciesController {
 
     private final BotanicalSpeciesService botanicalSpeciesService;
@@ -49,7 +49,7 @@ public class BotanicalSpeciesController {
 
     @GetMapping("/name/{name}")
     public ResponseEntity<BotanicalSpeciesDTO> getBotanicalSpeciesByName(@PathVariable String name) {
-        Optional<BotanicalSpeciesDTO> botanicalSpeciesDTO = botanicalSpeciesService.getBotanicalSpeciesByName(name);
+        Optional<BotanicalSpeciesDTO> botanicalSpeciesDTO = botanicalSpeciesService.getBotanicalSpeciesByLatinName(name);
         return botanicalSpeciesDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

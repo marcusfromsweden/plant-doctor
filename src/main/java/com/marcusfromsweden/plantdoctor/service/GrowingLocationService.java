@@ -3,6 +3,7 @@ package com.marcusfromsweden.plantdoctor.service;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
+import com.marcusfromsweden.plantdoctor.exception.DuplicateGrowingLocationNameException;
 import com.marcusfromsweden.plantdoctor.exception.GrowingLocationNotFoundByIdException;
 import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
 import jakarta.transaction.Transactional;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class GrowingLocationService {
 
-    private final Logger log = LoggerFactory.getLogger(GrowingLocationService.class);
+    private static final Logger log = LoggerFactory.getLogger(GrowingLocationService.class);
     private final GrowingLocationRepository growingLocationRepository;
     private final GrowingLocationMapper growingLocationMapper;
 
@@ -39,17 +40,17 @@ public class GrowingLocationService {
     }
 
     public GrowingLocationDTO createGrowingLocation(GrowingLocationDTO growingLocationDTO) {
-        //todo add check for duplicate name and use DuplicateGrowingLocationNameException
+        assertNonDuplicateName(growingLocationDTO);
         GrowingLocation growingLocation = growingLocationMapper.toEntity(growingLocationDTO);
-        growingLocationRepository.save(growingLocation);
+        growingLocation = growingLocationRepository.save(growingLocation);
         return growingLocationMapper.toDTO(growingLocation);
     }
 
     @Transactional
     public GrowingLocationDTO updateGrowingLocation(Long id,
                                                     GrowingLocationDTO growingLocationDTO) {
+        assertNonDuplicateName(growingLocationDTO);
         GrowingLocation growingLocation = getGrowingLocationEntityByIdOrThrow(id);
-        //todo add check for duplicate name and use DuplicateGrowingLocationNameException
         growingLocationMapper.updateEntityUsingDTO(growingLocation, growingLocationDTO);
         return growingLocationMapper.toDTO(growingLocation);
     }
@@ -86,5 +87,11 @@ public class GrowingLocationService {
 
     public void deleteAllGrowingLocations() {
         growingLocationRepository.deleteAll();
+    }
+
+    private void assertNonDuplicateName(GrowingLocationDTO growingLocationDTO) {
+        if (growingLocationRepository.findByName(growingLocationDTO.name()).isPresent()) {
+            throw new DuplicateGrowingLocationNameException(growingLocationDTO.name());
+        }
     }
 }
