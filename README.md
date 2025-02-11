@@ -40,23 +40,28 @@ locations, plants, plant comments, and seed packages.
 
 ## Setup
 
-1. Clone the repository:
+1. Clone the repository and checkout the `spring-boot-3.2.12` branch:
     ```sh
     git clone https://github.com/marcusfromsweden/plant-doctor.git
     cd plant-doctor
+    git checkout spring-boot-3.2.12
     ```
 
 2. Configure the database:
-    - Update the `application.properties` file with your PostgreSQL database credentials.
-    - Alternatively, you can set the database URL and credentials via environment variables:
-        * SPRING_DATASOURCE_PLANTDOCTOR_URL
-        * SPRING_DATASOURCE_PLANTDOCTOR_USERNAME
-        * SPRING_DATASOURCE_PLANTDOCTOR_PASSWORD
+   - Ensure you have a PostgreSQL server running.
+   - Create a database for the application in your PostgreSQL server.
+   - Update the `application.properties` file with your PostgreSQL database credentials.
+   - Alternatively, you can set the database URL and credentials via environment variables:
+      * `SPRING_DATASOURCE_PLANTDOCTOR_URL` (include the database name in the URL)
+      * `SPRING_DATASOURCE_PLANTDOCTOR_USERNAME`
+      * `SPRING_DATASOURCE_PLANTDOCTOR_PASSWORD`
 
-3. Install dependencies:
+3. Build the Project:
     ```sh
-    mvn clean install
+    mvn clean install -DskipTests
     ```
+
+   This command will build the project without running the tests (due to -DskipTests). For information on running the tests, refer to the [Testing](#testing) section.
 
 ## Testing
 
