@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.2</version>
+        <version>3.2.12</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.marcusfromsweden</groupId>
@@ -18,15 +18,13 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <spring-boot.version>3.4.2</spring-boot.version>
+        <spring-boot.version>3.1.7</spring-boot.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-surefire-and-failsafe-plugin.version>3.1.2</maven-surefire-and-failsafe-plugin.version>
         <json-path.version>2.9.0</json-path.version>
         <springdoc-openapi.version>2.1.0</springdoc-openapi.version>
         <rest-assured.version>5.5.0</rest-assured.version>
         <maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version>
-        <org.testcontainers.postgresql.version>1.20.4</org.testcontainers.postgresql.version>
-        <org.apache.commons.commons-compress.version>1.27.0</org.apache.commons.commons-compress.version>
     </properties>
 
     <dependencies>
@@ -67,10 +65,6 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-postgresql</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
@@ -98,23 +92,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${org.testcontainers.postgresql.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Reason for commons-compress dependency: https://github.com/testcontainers/testcontainers-java/issues/8338 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>${org.apache.commons.commons-compress.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
+            <version>1.20.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -179,14 +157,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>${maven-dependency-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>analyze</id>
-                        <goals>
-                            <goal>analyze</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
