@@ -43,8 +43,8 @@ locations, plants, plant comments, and seed packages.
 1. Clone the repository:
     ```sh
     git clone https://github.com/marcusfromsweden/plant-doctor.git
-    git checkout spring-boot-3.4.2
     cd plant-doctor
+    git checkout spring-boot-3.4.2
     ```
 
 2. Configure the database:
