@@ -108,7 +108,7 @@ To run the Docker container, you must pass the environment variable SPRING_DATAS
 as there is no default value in application.properties. Use the following command:
 
 ```sh
-docker run -d --name plant-doctor -p 8080:8080 -e SPRING_DATASOURCE_PLANTDOCTOR_URL plantdoctor-app:latest
+docker run -d --name plant-doctor -p 8080:8080 -e SPRING_DATASOURCE_PLANTDOCTOR_URL plant-doctor:latest
 ```
 
 ## Docker Compose
