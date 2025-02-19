@@ -22,7 +22,7 @@
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-surefire-and-failsafe-plugin.version>3.1.2</maven-surefire-and-failsafe-plugin.version>
         <json-path.version>2.9.0</json-path.version>
-        <springdoc-openapi.version>2.1.0</springdoc-openapi.version>
+        <springdoc-openapi.version>2.7.0-RC1</springdoc-openapi.version>
         <rest-assured.version>5.5.0</rest-assured.version>
         <maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version>
         <org.testcontainers.postgresql.version>1.20.4</org.testcontainers.postgresql.version>
@@ -110,12 +110,10 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

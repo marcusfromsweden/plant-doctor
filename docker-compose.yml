@@ -3,7 +3,7 @@ services:
     image: postgres:15
     container_name: postgres
     environment:
-      POSTGRES_DB: plant_doctor
+      POSTGRES_DB: plantdoctor
       POSTGRES_USER: plantdoctoradmin
       POSTGRES_PASSWORD: plantdoctoradminpassword
     ports:
