@@ -3,7 +3,7 @@ services:
     image: postgres:15
     container_name: postgres
     environment:
-      POSTGRES_DB: plant_doctor
+      POSTGRES_DB: plantdoctor
       POSTGRES_USER: plantdoctoradmin
       POSTGRES_PASSWORD: plantdoctoradminpassword
     ports:
@@ -17,7 +17,7 @@ services:
     image: plant-doctor:latest
     container_name: spring_app
     environment:
-      SPRING_DATASOURCE_PLANTDOCTOR_URL: jdbc:postgresql://postgres:5432/plant_doctor
+      SPRING_DATASOURCE_PLANTDOCTOR_URL: jdbc:postgresql://postgres:5432/plantdoctor
       SPRING_DATASOURCE_PLANTDOCTOR_USERNAME: plantdoctoradmin
       SPRING_DATASOURCE_PLANTDOCTOR_PASSWORD: plantdoctoradminpassword
     ports:

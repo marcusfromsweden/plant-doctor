@@ -31,7 +31,6 @@ public class PlantCommentMapper {
 
     public PlantComment toEntity(PlantCommentDTO plantCommentDTO) {
         PlantComment plantComment = new PlantComment();
-        plantComment.setId(plantCommentDTO.id());
         return toEntity(plantComment, plantCommentDTO);
     }
 

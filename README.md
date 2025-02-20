@@ -82,6 +82,9 @@ To run the application, use the following command:
 mvn spring-boot:run
 ```
 
+To access the API, open a web browser and navigate to `http://localhost:8080/swagger-ui/index.html`.
+Here you can find the OpenAPI documentation for the application and try out the API.
+
 ## Docker
 
 You can run the application using Docker. A `Dockerfile` is provided to build the application image.
@@ -107,7 +110,7 @@ To run the Docker container, you must pass the environment variable SPRING_DATAS
 as there is no default value in application.properties. Use the following command:
 
 ```sh
-docker run -d --name plant-doctor -p 8080:8080 -e SPRING_DATASOURCE_PLANTDOCTOR_URL plantdoctor-app:latest
+docker run -d --name plant-doctor -p 8080:8080 -e SPRING_DATASOURCE_PLANTDOCTOR_URL plant-doctor:latest
 ```
 
 ## Docker Compose
