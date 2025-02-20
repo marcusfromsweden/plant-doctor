@@ -23,7 +23,6 @@ public class BotanicalSpeciesMapper {
 
     public BotanicalSpecies toEntity(BotanicalSpeciesDTO botanicalSpeciesDetails) {
         BotanicalSpecies botanicalSpecies = new BotanicalSpecies();
-        botanicalSpecies.setId(botanicalSpeciesDetails.id());
         return toEntity(botanicalSpecies, botanicalSpeciesDetails);
     }
 

@@ -26,7 +26,6 @@ public class SeedPackageMapper {
 
     public SeedPackage toEntity(SeedPackageDTO seedPackageDTO) {
         SeedPackage seedPackage = new SeedPackage();
-        seedPackage.setId(seedPackageDTO.id());
         return toEntity(seedPackage, seedPackageDTO);
     }
 
