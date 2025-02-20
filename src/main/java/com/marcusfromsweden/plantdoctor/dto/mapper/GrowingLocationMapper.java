@@ -21,7 +21,6 @@ public class GrowingLocationMapper {
 
     public GrowingLocation toEntity(GrowingLocationDTO growingLocationDTO) {
         GrowingLocation growingLocation = new GrowingLocation();
-        growingLocation.setId(growingLocationDTO.id());
         return toEntity(growingLocation, growingLocationDTO);
     }
 

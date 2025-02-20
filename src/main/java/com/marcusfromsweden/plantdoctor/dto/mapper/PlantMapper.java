@@ -35,7 +35,6 @@ public class PlantMapper {
 
     public Plant toEntity(PlantDTO plantDTO) {
         Plant plant = new Plant();
-        plant.setId(plantDTO.id());
         return toEntity(plant, plantDTO);
     }
 
