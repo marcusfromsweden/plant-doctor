@@ -1,0 +1,16 @@
+* Adding a new user
+  - To add a new user, call POST on http://localhost:8080/auth/addNewUser with body as follows:
+  {
+      "name": "marcus",
+      "password": "123",
+      "email": "marcus@email.com",
+      "roles": "ROLE_USER"
+  }
+* Generate token
+POST http://localhost:8080/auth/generateToken
+{
+    "username": "marcus@email.com",
+    "password": "123"
+}
+=>
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJjdXNAZW1haWwuY29tIiwiaWF0IjoxNzQwMDcyNjI4LCJleHAiOjE3NDAwNzQ0Mjh9.oYh7CstMYwZHqHyiM_lv4nwoFR6lgOr_QmiMhoVuwTY
