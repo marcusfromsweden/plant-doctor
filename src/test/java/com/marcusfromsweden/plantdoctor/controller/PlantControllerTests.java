@@ -16,9 +16,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -27,7 +27,8 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PlantController.class)
 @AutoConfigureMockMvc
@@ -59,9 +60,9 @@ public class PlantControllerTests {
     @Autowired
     private PlantTestHelper plantTestHelper;
 
-    @MockBean
+    @MockitoBean
     private PlantService plantService;
-    @MockBean
+    @MockitoBean
     @SuppressWarnings("unused")
     private PlantCommentService plantCommentService;
 
