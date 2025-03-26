@@ -20,7 +20,7 @@ public class DataSourcePropertiesLogger implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         log.info("DataSource URL: {}", dataSourceProperties.getUrl());
         log.info("DataSource Username: {}", dataSourceProperties.getUsername());
         log.info("DataSource Password: {}", dataSourceProperties.getPassword());
