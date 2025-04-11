@@ -1,8 +1,10 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marcusfromsweden.plantdoctor.config.TestSecurityConfig;
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.BotanicalSpeciesService;
+import com.marcusfromsweden.plantdoctor.service.JwtService;
 import com.marcusfromsweden.plantdoctor.util.BotanicalSpeciesTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BotanicalSpeciesController.class)
 @AutoConfigureMockMvc
-@Import(BotanicalSpeciesTestHelper.class)
+@Import({BotanicalSpeciesTestHelper.class, TestSecurityConfig.class})
 public class BotanicalSpeciesControllerTests {
 
     private static final String API_PATH_PLANT_SPECIES = "/api/botanical-species";
@@ -48,6 +50,8 @@ public class BotanicalSpeciesControllerTests {
 
     @MockitoBean
     private BotanicalSpeciesService botanicalSpeciesService;
+    @MockitoBean
+    private JwtService jwtService;
 
     private BotanicalSpeciesDTO existingBotanicalSpeciesDTO;
     private BotanicalSpeciesDTO updatedBotanicalSpeciesDTO;

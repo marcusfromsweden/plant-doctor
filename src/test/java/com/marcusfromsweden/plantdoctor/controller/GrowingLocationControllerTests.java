@@ -1,9 +1,11 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marcusfromsweden.plantdoctor.config.TestSecurityConfig;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
+import com.marcusfromsweden.plantdoctor.service.JwtService;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(GrowingLocationController.class)
 @AutoConfigureMockMvc
-@Import({GrowingLocationTestHelper.class, GrowingLocationMapper.class})
+@Import({GrowingLocationTestHelper.class, GrowingLocationMapper.class, TestSecurityConfig.class})
 public class GrowingLocationControllerTests {
 
     private static final String API_PATH_GROWING_LOCATIONS = "/api/growing-locations";
@@ -43,6 +45,8 @@ public class GrowingLocationControllerTests {
 
     @MockitoBean
     private GrowingLocationService growingLocationService;
+    @MockitoBean
+    private JwtService jwtService;
 
     private GrowingLocationDTO existingGrowingLocationDTO;
     private GrowingLocationDTO updatedGrowingLocationDTO;

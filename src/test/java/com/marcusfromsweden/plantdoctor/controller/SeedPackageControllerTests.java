@@ -1,7 +1,9 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marcusfromsweden.plantdoctor.config.TestSecurityConfig;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
+import com.marcusfromsweden.plantdoctor.service.JwtService;
 import com.marcusfromsweden.plantdoctor.service.SeedPackageService;
 import com.marcusfromsweden.plantdoctor.util.SeedPackageTestHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SeedPackageController.class)
 @AutoConfigureMockMvc
-@Import(SeedPackageTestHelper.class)
+@Import({SeedPackageTestHelper.class, TestSecurityConfig.class})
 public class SeedPackageControllerTests {
 
     private static final String API_PATH_SEED_PACKAGES = "/api/seed-packages";
@@ -47,6 +49,8 @@ public class SeedPackageControllerTests {
 
     @MockitoBean
     private SeedPackageService seedPackageService;
+    @MockitoBean
+    private JwtService jwtService;
 
     private SeedPackageDTO existingSeedPackageDTO;
     private SeedPackageDTO updatedSeedPackageDTO;

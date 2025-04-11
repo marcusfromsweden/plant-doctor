@@ -1,10 +1,12 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marcusfromsweden.plantdoctor.config.TestSecurityConfig;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
+import com.marcusfromsweden.plantdoctor.service.JwtService;
 import com.marcusfromsweden.plantdoctor.service.PlantCommentService;
 import com.marcusfromsweden.plantdoctor.service.PlantService;
 import com.marcusfromsweden.plantdoctor.util.GrowingLocationTestHelper;
@@ -32,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(PlantController.class)
 @AutoConfigureMockMvc
-@Import({PlantTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class, GrowingLocationMapper.class})
+@Import({PlantTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class, GrowingLocationMapper.class, TestSecurityConfig.class})
 public class PlantControllerTests {
 
     private static final String API_PATH = "/api/plants";
@@ -65,6 +67,8 @@ public class PlantControllerTests {
     @MockitoBean
     @SuppressWarnings("unused")
     private PlantCommentService plantCommentService;
+    @MockitoBean
+    private JwtService jwtService;
 
     private PlantDTO plantDTO;
     private SeedPackageDTO seedPackageDTO;
