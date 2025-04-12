@@ -16,6 +16,7 @@ public class SecurityTestUtil {
         var authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+    //        SecurityTestUtil.setAuthenticatedUser("testuser", List.of("ROLE_USER"));
 
     public static void clearContext() {
         SecurityContextHolder.clearContext();

@@ -1,7 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marcusfromsweden.plantdoctor.config.TestSecurityConfig;
 import com.marcusfromsweden.plantdoctor.dto.BotanicalSpeciesDTO;
 import com.marcusfromsweden.plantdoctor.service.BotanicalSpeciesService;
 import com.marcusfromsweden.plantdoctor.service.JwtService;
@@ -14,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,7 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BotanicalSpeciesController.class)
 @AutoConfigureMockMvc
-@Import({BotanicalSpeciesTestHelper.class, TestSecurityConfig.class})
+@Import({BotanicalSpeciesTestHelper.class})
+@WithMockUser(username = "testuser", roles = {"USER"})
 public class BotanicalSpeciesControllerTests {
 
     private static final String API_PATH_PLANT_SPECIES = "/api/botanical-species";
@@ -111,8 +113,9 @@ public class BotanicalSpeciesControllerTests {
         String botanicalSpeciesJson = objectMapper.writeValueAsString(existingBotanicalSpeciesDTO);
 
         mockMvc.perform(post(API_PATH_PLANT_SPECIES)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(botanicalSpeciesJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(botanicalSpeciesJson)
+                        .with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(existingBotanicalSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$.latinName", is(existingBotanicalSpeciesDTO.latinName())))
@@ -133,7 +136,9 @@ public class BotanicalSpeciesControllerTests {
         String botanicalSpeciesJson = objectMapper.writeValueAsString(updatedBotanicalSpeciesDTO);
 
         mockMvc.perform(put(API_PATH_PLANT_SPECIES + "/{id}", existingBotanicalSpeciesDTO.id())
-                                .contentType(MediaType.APPLICATION_JSON).content(botanicalSpeciesJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(botanicalSpeciesJson)
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(updatedBotanicalSpeciesDTO.id().intValue())))
                 .andExpect(jsonPath("$.latinName", is(updatedBotanicalSpeciesDTO.latinName())))
@@ -169,7 +174,9 @@ public class BotanicalSpeciesControllerTests {
         Mockito.doNothing().when(botanicalSpeciesService).deleteBotanicalSpecies(existingBotanicalSpeciesDTO.id());
 
         mockMvc.perform(delete(API_PATH_PLANT_SPECIES + "/{id}", existingBotanicalSpeciesDTO.id())
-                                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()))
+                .andExpect(status().isNoContent());
 
         Mockito.verify(botanicalSpeciesService, Mockito.times(1))
                 .deleteBotanicalSpecies(existingBotanicalSpeciesDTO.id());

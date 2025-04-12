@@ -1,7 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marcusfromsweden.plantdoctor.config.TestSecurityConfig;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
 import com.marcusfromsweden.plantdoctor.service.JwtService;
 import com.marcusfromsweden.plantdoctor.service.SeedPackageService;
@@ -14,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,13 +21,15 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SeedPackageController.class)
 @AutoConfigureMockMvc
-@Import({SeedPackageTestHelper.class, TestSecurityConfig.class})
+@Import({SeedPackageTestHelper.class})
+@WithMockUser(username = "testuser", roles = {"USER"})
 public class SeedPackageControllerTests {
 
     private static final String API_PATH_SEED_PACKAGES = "/api/seed-packages";
@@ -111,8 +113,9 @@ public class SeedPackageControllerTests {
         String seedPackageJson = objectMapper.writeValueAsString(existingSeedPackageDTO);
 
         mockMvc.perform(post(API_PATH_SEED_PACKAGES)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(seedPackageJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(seedPackageJson)
+                        .with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(existingSeedPackageDTO.id().intValue())))
                 .andExpect(jsonPath("$.botanicalSpeciesId", is(existingSeedPackageDTO.botanicalSpeciesId().intValue())))
@@ -132,8 +135,9 @@ public class SeedPackageControllerTests {
         String updatedSeedPackageJson = objectMapper.writeValueAsString(updatedSeedPackageDTO);
 
         mockMvc.perform(put(API_PATH_SEED_PACKAGES + "/{id}", existingSeedPackageDTO.id())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(updatedSeedPackageJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedSeedPackageJson)
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(updatedSeedPackageDTO.id().intValue())))
                 .andExpect(jsonPath("$.botanicalSpeciesId", is(updatedSeedPackageDTO.botanicalSpeciesId().intValue())))
@@ -150,7 +154,8 @@ public class SeedPackageControllerTests {
         Mockito.doNothing().when(seedPackageService).deleteSeedPackage(existingSeedPackageDTO.id());
 
         mockMvc.perform(delete(API_PATH_SEED_PACKAGES + "/{id}", existingSeedPackageDTO.id())
-                                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isNoContent());
 
         Mockito.verify(seedPackageService, Mockito.times(1))

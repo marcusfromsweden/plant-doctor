@@ -36,13 +36,7 @@ public class GrowingLocationRepository_UniqueNameConstraintIT extends PostgresTe
 
     @BeforeEach
     public void setupTest() {
-        //SecurityTestUtil.setAuthenticatedUser("testuser", List.of("ROLE_USER"));
         repositoryTestHelper.deleteAllData();
-    }
-
-    @AfterEach
-    void clearSecurityContext() {
-        //SecurityTestUtil.clearContext();
     }
 
     @Test

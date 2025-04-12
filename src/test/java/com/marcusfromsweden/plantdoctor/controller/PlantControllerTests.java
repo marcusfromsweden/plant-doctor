@@ -1,7 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marcusfromsweden.plantdoctor.config.TestSecurityConfig;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.PlantDTO;
 import com.marcusfromsweden.plantdoctor.dto.SeedPackageDTO;
@@ -20,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -28,13 +28,15 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PlantController.class)
 @AutoConfigureMockMvc
-@Import({PlantTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class, GrowingLocationMapper.class, TestSecurityConfig.class})
+@Import({PlantTestHelper.class, SeedPackageTestHelper.class, GrowingLocationTestHelper.class, GrowingLocationMapper.class})
+@WithMockUser(username = "testuser", roles = {"USER"})
 public class PlantControllerTests {
 
     private static final String API_PATH = "/api/plants";
@@ -129,8 +131,9 @@ public class PlantControllerTests {
         String plantJson = objectMapper.writeValueAsString(plantDTO);
 
         mockMvc.perform(post(API_PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(plantJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(plantJson)
+                        .with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
                 .andExpect(jsonPath("$.seedPackageId", is(seedPackageDTO.id().intValue())))
@@ -148,8 +151,9 @@ public class PlantControllerTests {
         String plantJson = objectMapper.writeValueAsString(plantDTO);
 
         mockMvc.perform(put(API_PATH + "/{id}", plantDTO.id())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(plantJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(plantJson)
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(plantDTO.id().intValue())))
                 .andExpect(jsonPath("$.seedPackageId", is(seedPackageDTO.id().intValue())))
@@ -166,7 +170,8 @@ public class PlantControllerTests {
         Mockito.doNothing().when(plantService).deletePlant(plantDTO.id());
 
         mockMvc.perform(delete(API_PATH + "/{id}", plantDTO.id())
-                                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isNoContent());
 
         Mockito.verify(plantService, Mockito.times(1))

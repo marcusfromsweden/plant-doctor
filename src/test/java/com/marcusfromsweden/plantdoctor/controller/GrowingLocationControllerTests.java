@@ -1,7 +1,6 @@
 package com.marcusfromsweden.plantdoctor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marcusfromsweden.plantdoctor.config.TestSecurityConfig;
 import com.marcusfromsweden.plantdoctor.dto.GrowingLocationDTO;
 import com.marcusfromsweden.plantdoctor.dto.mapper.GrowingLocationMapper;
 import com.marcusfromsweden.plantdoctor.service.GrowingLocationService;
@@ -15,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,12 +22,14 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(GrowingLocationController.class)
 @AutoConfigureMockMvc
-@Import({GrowingLocationTestHelper.class, GrowingLocationMapper.class, TestSecurityConfig.class})
+@Import({GrowingLocationTestHelper.class, GrowingLocationMapper.class})
+@WithMockUser(username = "testuser", roles = {"USER"})
 public class GrowingLocationControllerTests {
 
     private static final String API_PATH_GROWING_LOCATIONS = "/api/growing-locations";
@@ -99,8 +101,9 @@ public class GrowingLocationControllerTests {
         String growingLocationJson = objectMapper.writeValueAsString(existingGrowingLocationDTO);
 
         mockMvc.perform(post(API_PATH_GROWING_LOCATIONS)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(growingLocationJson)).andExpect(status().isCreated())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(growingLocationJson)
+                        .with(csrf())).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(existingGrowingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(existingGrowingLocationDTO.name())));
 
@@ -116,8 +119,9 @@ public class GrowingLocationControllerTests {
         String growingLocationJson = objectMapper.writeValueAsString(updatedGrowingLocationDTO);
 
         mockMvc.perform(put(API_PATH_GROWING_LOCATIONS + "/{id}", existingGrowingLocationDTO.id())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(growingLocationJson)).andExpect(status().isOk())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(growingLocationJson)
+                        .with(csrf())).andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(updatedGrowingLocationDTO.id().intValue())))
                 .andExpect(jsonPath("$.name", is(updatedGrowingLocationDTO.name())));
 
@@ -149,7 +153,7 @@ public class GrowingLocationControllerTests {
                 .deleteGrowingLocation(existingGrowingLocationDTO.id());
 
         mockMvc.perform(delete(API_PATH_GROWING_LOCATIONS + "/{id}", existingGrowingLocationDTO.id())
-                                .contentType(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON).with(csrf()))
                 .andExpect(status().isNoContent());
 
         Mockito.verify(growingLocationService, Mockito.times(1))
