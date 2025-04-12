@@ -1,24 +1,18 @@
 package com.marcusfromsweden.plantdoctor.config;
 
-import com.marcusfromsweden.plantdoctor.entity.BotanicalSpecies;
-import com.marcusfromsweden.plantdoctor.entity.GrowingLocation;
-import com.marcusfromsweden.plantdoctor.entity.Plant;
-import com.marcusfromsweden.plantdoctor.entity.PlantComment;
-import com.marcusfromsweden.plantdoctor.entity.SeedPackage;
-import com.marcusfromsweden.plantdoctor.repository.BotanicalSpeciesRepository;
-import com.marcusfromsweden.plantdoctor.repository.GrowingLocationRepository;
-import com.marcusfromsweden.plantdoctor.repository.PlantCommentRepository;
-import com.marcusfromsweden.plantdoctor.repository.PlantRepository;
-import com.marcusfromsweden.plantdoctor.repository.SeedPackageRepository;
+import com.marcusfromsweden.plantdoctor.entity.*;
+import com.marcusfromsweden.plantdoctor.repository.*;
 import com.marcusfromsweden.plantdoctor.util.CustomProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Configuration
 public class DataInitializerConfig {
@@ -31,19 +25,23 @@ public class DataInitializerConfig {
     private final PlantCommentRepository plantCommentRepository;
     private final SeedPackageRepository seedPackageRepository;
     private final CustomProperties customProperties;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DataInitializerConfig(BotanicalSpeciesRepository botanicalSpeciesRepository,
                                  GrowingLocationRepository growingLocationRepository,
                                  PlantRepository plantRepository,
                                  PlantCommentRepository plantCommentRepository,
                                  SeedPackageRepository seedPackageRepository,
-                                 CustomProperties customProperties) {
+                                 CustomProperties customProperties, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.botanicalSpeciesRepository = botanicalSpeciesRepository;
         this.growingLocationRepository = growingLocationRepository;
         this.plantRepository = plantRepository;
         this.plantCommentRepository = plantCommentRepository;
         this.seedPackageRepository = seedPackageRepository;
         this.customProperties = customProperties;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
@@ -122,6 +120,25 @@ public class DataInitializerConfig {
         basilComment1.setCreatedDate(LocalDateTime.now());
         plantCommentRepository.save(basilComment1);
 
+        createTestUser();
+
         log.info("Test data initialized.");
+    }
+
+    public void createTestUser() {
+        String testUsername = "testuser";
+        log.info("Adding test user");
+
+        if (userRepository.findByUsername(testUsername).isEmpty()) {
+            User user = new User();
+            user.setUsername(testUsername);
+            user.setPassword(passwordEncoder.encode("test123")); // plaintext password: test123
+            user.setRoles(List.of("ROLE_USER"));
+
+            userRepository.save(user);
+            System.out.println("✅ Test user 'testuser' with password 'test123' created.");
+        } else {
+            System.out.println("ℹ️ Test user already exists.");
+        }
     }
 }
