@@ -37,7 +37,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/actuator",
-                                "/actuator/**").permitAll()
+                                "/actuator/**",
+                                "/api/trefle",
+                                "/api/trefle/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess
